@@ -6,7 +6,7 @@ app.use(
     origin: "*",
   })
 );
-
+//test
 app.use(express.json());
 //test2
 app.use("/manga", express.static("manga"));
