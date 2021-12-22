@@ -9,7 +9,15 @@ app.use(
 //test
 app.use(express.json());
 
-app.use("/manga", express.static("manga"));
+//link tĩnh
+app.use("/m", express.static("manga"));
+app.use("/g", express.static("genre"));
+
+//thể loại
+const postGenre = require("./routes/Genre")
+app.use("/genre", postGenre)
+
+// const postGenre = require("/routes/Genre");
 
 const postUser = require("./routes/User");
 app.use("/users", postUser);
