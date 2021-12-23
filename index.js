@@ -17,6 +17,10 @@ app.use("/g", express.static("genre"));
 const postGenre = require("./routes/Genre")
 app.use("/genre", postGenre)
 
+//lấy ảnh từ một chapter
+const postManga = require("./routes/Manga")
+app.use("/manga", postManga)
+
 // const postGenre = require("/routes/Genre");
 
 const postUser = require("./routes/User");
