@@ -53,17 +53,15 @@ router.get("/:idManga/chapter", (req, res) => {
 })
 
 //show toàn bộ image trong chapter
+let path = './manga/gantz/chap'
 router.get("/chapter/:idChapter", (req, res) => {
     let img = []
-
-    let path = './manga/a_silent_voice/chap'
-
     fs.readdir(path, (err, files) => {
         if (err) {
-            res.send(err)
+            console.log(err)
         } else {
             files.forEach(file => {
-                img.push(file)
+                img.push('localhost:3000/:idManga/1/:idChapter/' + file)
             })
             res.send(img)
         }
