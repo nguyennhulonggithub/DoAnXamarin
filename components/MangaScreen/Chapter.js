@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { set_height_chapter } from "../../redux/actions";
 import { useEffect } from "react";
 
-export default function Chapter({ data, index }) {
+export default function Chapter({ data, index, navigation }) {
   const dispatch = useDispatch();
   const cur_height = useRef(0);
   function set_height_onPress() {
@@ -50,7 +50,10 @@ export default function Chapter({ data, index }) {
 
       {data.map((item) => {
         return (
-          <View key={item.key}>
+          <Pressable
+            key={item.key}
+            onPress={() => navigation.navigate("ChapterScreen")}
+          >
             <View style={styles.container}>
               <Image
                 style={styles.image}
@@ -68,7 +71,7 @@ export default function Chapter({ data, index }) {
             >
               <View style={styles.line}></View>
             </View>
-          </View>
+          </Pressable>
         );
       })}
     </View>

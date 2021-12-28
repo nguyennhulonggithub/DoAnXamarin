@@ -11,6 +11,7 @@ import MangaScreen from "../screen/MangaScreen";
 import SearchScreen from "../screen/SearchScreen";
 import UpdateScreen from "../screen/UpdateScreen";
 import ProfileScreen from "../screen/ProfileScreen";
+import ChapterScreen from "../screen/ChapterScreen";
 
 //gọi hàm stack
 const Stack = createNativeStackNavigator();
@@ -21,6 +22,7 @@ export function ScreenStack() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name='TabNavigation' component={Navigate} />
         <Stack.Screen name='MangaScreen' component={MangaScreen} />
+        <Stack.Screen name='ChapterScreen' component={ChapterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

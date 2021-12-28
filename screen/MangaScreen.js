@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   Animated,
+  Button,
 } from "react-native";
 
 import Header from "../components/MangaScreen/Header";
@@ -15,6 +16,7 @@ import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Font } from "../variable/Font";
 
 const data = [
   {
@@ -79,6 +81,11 @@ export default function MangaScreen({ navigation }) {
     outputRange: [0, 1],
     extrapolate: "clamp",
   });
+  const translateTitle = ref.interpolate({
+    inputRange: [230, 232, 9999],
+    outputRange: [0, 1, 1],
+    extrapolate: "clamp",
+  });
   const translateTab = ref.interpolate({
     inputRange: [232, 5000],
     outputRange: [0, 4770],
@@ -103,6 +110,17 @@ export default function MangaScreen({ navigation }) {
         style={[styles.control, { transform: [{ translateY: ref }] }]}
       >
         <Ionicons name='chevron-back' size={24} color={Color.white} />
+        <Animated.View
+          style={{
+            width: 270,
+            alignItems: "center",
+            opacity: translateTitle,
+          }}
+        >
+          <Text style={Font.baseTitle} numberOfLines={1}>
+            Let's Dance a WaltzLet's Dance a Waltz Let's Dance a Waltz
+          </Text>
+        </Animated.View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <MaterialCommunityIcons
             name='comment-processing-outline'
@@ -125,7 +143,7 @@ export default function MangaScreen({ navigation }) {
           width: "100%",
         }}
       >
-        <Body data={data} translate={translateTab} />
+        <Body data={data} translate={translateTab} navigation={navigation} />
       </View>
     </Animated.ScrollView>
   );

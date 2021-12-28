@@ -5,7 +5,7 @@ import { Color } from "../../variable/Color";
 import Chapter from "./Chapter";
 import Detail from "./Detail";
 
-export default function Body({ data, translate }) {
+export default function Body({ data, translate, navigation }) {
   const renderTabBar = (props) => (
     <TabBar
       {...props}
@@ -28,7 +28,7 @@ export default function Body({ data, translate }) {
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "Chapter":
-        return <Chapter data={data} index={index} />;
+        return <Chapter data={data} index={index} navigation={navigation} />;
       case "Detail":
         return <Detail index={index} />;
 
