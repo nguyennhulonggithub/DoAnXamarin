@@ -66,9 +66,9 @@ export default function HomeScreen({ navigation }) {
         </View>
 
         {/*resume reading*/}
-        <View style={styles.list}>
-          <Text style={Font.homeTitle}>Resume Reading</Text>
-          <ScrollView horizontal={true}>
+        <View style={[styles.list]}>
+          <Text style={[Font.homeTitle, { padding: 20 }]}>Resume Reading</Text>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <ResumeReading />
             <ResumeReading />
             <ResumeReading />
@@ -76,8 +76,8 @@ export default function HomeScreen({ navigation }) {
         </View>
 
         {/*action title*/}
-        <View style={styles.list}>
-          <Text style={Font.homeTitle}>Action Title</Text>
+        <View style={styles.action_list}>
+          <Text style={[Font.homeTitle, { padding: 15 }]}>Action Title</Text>
           <ScrollView horizontal={true}>
             <MangaTag
               count_chapter='44'
@@ -106,8 +106,8 @@ export default function HomeScreen({ navigation }) {
         </View>
 
         {/*explore inkr catalog*/}
-        <View style={{ marginTop: 40 }}>
-          <Text style={[Font.homeTitle, { padding: 20 }]}>
+        <View>
+          <Text style={[Font.homeTitle, { padding: 15 }]}>
             Explore INKR Catalog
           </Text>
           <ExploreCataLog />
@@ -148,9 +148,13 @@ const styles = StyleSheet.create({
   },
   //list của một mục truyện tranh
   list: {
-    height: 350,
+    height: 250,
     width: "100%",
-    marginTop: 40,
+
     backgroundColor: "black",
+  },
+  action_list: {
+    height: 380,
+    width: "100%",
   },
 });

@@ -3,49 +3,47 @@ import { Text, View, StyleSheet, Image } from "react-native";
 import { Font } from "../../variable/Font";
 
 function ResumeReading() {
-    return (
-        <View style={styles.container}>
-            <Image source={require('../../assets/home/home-manga-2.jpg')} style={styles.img}></Image>
+  return (
+    <View style={styles.container}>
+      <Image
+        source={require("../../assets/home/home-manga-2.jpg")}
+        style={styles.img}
+      ></Image>
 
-            <View style={styles.detail}>
-                <Text style={Font.title}>Dorohedoro</Text>
-                <Text style={Font.description}>Chapter 5: Killing Mushroom</Text>
-                <Text style={Font.description}>6% read</Text>
-            </View>
+      <View style={styles.detail}>
+        <Text style={Font.title}>Dorohedoro</Text>
+        <Text style={Font.description} numberOfLines={1}>
+          Chapter 5: Killing Mushroom Chapter 5: Killing Mushroom
+        </Text>
+        <Text style={Font.description}>6% read</Text>
+        <Text style={[Font.description, { marginTop: 10 }]}>6 days ago</Text>
+      </View>
 
-            {/* dấu 3 chấm hiện bảng tương tác với manga */}
-
-            <View style={styles.date}>
-                <Text style={Font.description}>6 days ago</Text>
-            </View>
-        </View>
-    )
+      {/* dấu 3 chấm hiện bảng tương tác với manga */}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#1E1E1E',
-        padding: 20,
-        borderRadius: 10,
-        position: "relative",
-        width: 380,
-        height: 220,
-        marginLeft: 20
-    },
-    img: {
-        height: 180,
-        width: 120
-    },
-    detail: {
-        position: "absolute",
-        left: 150,
-        top: 20
-    },
-    date: {
-        position: "absolute",
-        left: 150,
-        bottom: 20
-    }
-})
+  container: {
+    backgroundColor: "#1E1E1E",
+    alignItems: "center",
+    borderRadius: 10,
+    width: 350,
+    height: 150,
+    paddingHorizontal: 15,
+    flexDirection: "row",
+    marginLeft: 20,
+  },
+  img: {
+    height: 120,
+    width: 80,
+    resizeMode: "cover",
+  },
+  detail: {
+    paddingHorizontal: 15,
+    width: 250,
+  },
+});
 
-export default ResumeReading 
+export default ResumeReading;
