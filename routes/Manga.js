@@ -3,9 +3,6 @@ const router = express.Router();
 const sqlConnection = require("./sqlConnection");
 const fs = require('fs');
 
-let nameManga
-let idManga
-
 //show toàn bộ manga
 router.get("/", (req, res) => {
     let sql = 'select * from manga';
@@ -51,22 +48,6 @@ router.get("/:idManga/chapter", (req, res) => {
         }
     })
 })
-
-//show toàn bộ image trong chapter
-let path = './manga/gantz/chap'
-router.get("/chapter/:idChapter", (req, res) => {
-    let img = []
-    fs.readdir(path, (err, files) => {
-        if (err) {
-            console.log(err)
-        } else {
-            files.forEach(file => {
-                img.push('localhost:3000/:idManga/1/:idChapter/' + file)
-            })
-            res.send(img)
-        }
-    })
-});
 
 // router.gett("/:idManga/c/:idChapter", (req, res) => {
 //     sql
