@@ -26,18 +26,27 @@ router.get("/:idChapter", (req, res) => {
             console.log(err);
           } else {
             if (order == 1) {
-              console.log("hi");
               files.forEach((file) => {
                 let cur_path = idManga + "/chap/" + file;
-                img.push("/m/" + cur_path);
+                const { width, height } = sizeOf("./manga/" + cur_path);
+
+                img.push({
+                  imgUrl: "/m/" + cur_path,
+                  width: width,
+                  height: height,
+                });
               });
               res.send(img);
             } else {
-              console.log("ho");
               files.forEach((file) => {
                 let cur_path = idManga + "/chap (" + order + ")/" + file;
+                const { width, height } = sizeOf("./manga/" + cur_path);
 
-                img.push("/m/" + cur_path);
+                img.push({
+                  imgUrl: "/m/" + cur_path,
+                  width: width,
+                  height: height,
+                });
               });
               res.send(img);
             }
