@@ -18,22 +18,25 @@ router.get("/:idChapter", (req, res) => {
         let idManga = results[0].manga_idManga;
         let order = results[0].Order;
         let path = "./manga/" + idManga + "/chap";
-
+        if (order != 1) {
+          path = path + " (" + order + ")";
+        }
         fs.readdir(path, (err, files) => {
           if (err) {
             console.log(err);
           } else {
             if (order == 1) {
+              console.log("hi");
               files.forEach((file) => {
                 let cur_path = idManga + "/chap/" + file;
-                console.log(sizeOf("./manga/" + cur_path));
                 img.push("/m/" + cur_path);
               });
               res.send(img);
             } else {
+              console.log("ho");
               files.forEach((file) => {
                 let cur_path = idManga + "/chap (" + order + ")/" + file;
-                console.log(cur_path);
+
                 img.push("/m/" + cur_path);
               });
               res.send(img);
