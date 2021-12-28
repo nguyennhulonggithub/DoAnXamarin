@@ -4,10 +4,9 @@ const sqlConnection = require("./sqlConnection");
 const fs = require('fs');
 
 //show toàn bộ image trong chapter
-let path = './manga/gantz/chap'
 router.get("/:idChapter", (req, res) => {
     let img = []
-    let sql = 'select manga_idManga from chapter where idChapter=?'
+    let sql = 'select * from chapter where idChapter=?'
     sqlConnection(sql, [req.params.idChapter], (err, results) => {
         if (err) {
             res.send('Chapter not exist');
@@ -17,18 +16,25 @@ router.get("/:idChapter", (req, res) => {
             } else {
 
                 let idManga = results[0].manga_idManga
+                let order = results[0].Order
                 let path = './manga/' + idManga + '/chap'
 
-                console.log("11231231313111231")
+                console.log(order)
                 fs.readdir(path, (err, files) => {
                     if (err) {
                         console.log(err)
-                        console.log(path)
                     } else {
-                        files.forEach(file => {
-                            img.push('localhost:3000/m/' + idManga + '/chap/' + file)
-                        })
-                        res.send(img)
+                        if (order == 1) {
+                            files.forEach(file => {
+                                img.push('/m/' + idManga + '/chap/' + file)
+                            })
+                            res.send(img)
+                        } else {
+                            files.forEach(file => {
+                                img.push('/m/' + idManga + '/chap (' + order + ')/' + file)
+                            })
+                            res.send(img)
+                        }
                     }
                 })
             }
