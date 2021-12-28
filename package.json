@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "debug": "F:Download/rn-debugger-windows-x64/react-native-debugger.exe"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.0.9",
@@ -32,7 +33,10 @@
     "react-native-screens": "^3.8.0",
     "react-native-tab-view": "^3.1.1",
     "react-native-web": "0.17.1",
-    "react-navigation": "^4.4.4"
+    "react-navigation": "^4.4.4",
+    "react-redux": "^7.2.6",
+    "redux": "^4.1.2",
+    "redux-devtools-extension": "^2.13.9"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

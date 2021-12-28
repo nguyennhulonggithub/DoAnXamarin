@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     height: 700,
     backgroundColor: Color.defaultColor,
     position: "absolute",
-
+    top: 100,
     padding: 15,
   },
   tags: {

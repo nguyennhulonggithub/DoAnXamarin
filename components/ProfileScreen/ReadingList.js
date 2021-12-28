@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
+
+import Stats from "../AllScreen/Stats";
 
 export default class ProfileList extends Component {
   render() {
@@ -12,17 +12,11 @@ export default class ProfileList extends Component {
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <View style={[styles.circle, { backgroundColor: this.props.color }]}>
-            {this.props.source == "awesome5" ? (
-              <FontAwesome5
-                name={this.props.iconName}
-                size={18}
-                color='white'
-              />
-            ) : (
-              <AntDesign name={this.props.iconName} size={18} color='white' />
-            )}
-          </View>
+          <Stats
+            color={this.props.color}
+            iconName={this.props.iconName}
+            source={this.props.source}
+          />
         </View>
         <View style={{ flex: 2 }}>
           <View style={{ flex: 1, justifyContent: "flex-end" }}>
@@ -44,13 +38,5 @@ const styles = StyleSheet.create({
     width: "45%",
 
     flexDirection: "row",
-  },
-  circle: {
-    width: 34,
-    height: 34,
-
-    borderRadius: 17,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

@@ -17,12 +17,16 @@ import BigManga from "../components/MangaList/BigManga";
 import ScrollManga from "../components/MangaList/ScrollManga";
 import TabScrollView from "../components/SearchScreen/TabScrollView";
 import TabScrollNewRelease from "../components/SearchScreen/TabScrollNewRelease";
+import SearchPopup from "../components/Popup/SearchPopup";
+import Test from "./Test";
+import SearchTabBar from "../components/SearchScreen/SearchTabBar";
 
 export default function SearchScreen({ navigation }) {
   const scroll_Pallax = useRef(new Animated.Value(0)).current;
 
   return (
     <View>
+      <SearchTabBar />
       <ScrollView>
         <View style={{ height: 800, backgroundColor: Color.defaultColor }}>
           <SearchSlide />

@@ -1,24 +1,12 @@
 import React, { useState } from "react";
 import { Image, View, Text, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
 
 function Header() {
   return (
-    <View>
-      {/* thanh control chứa comment, điều hướng */}
-      <View style={styles.control}>
-        <Ionicons name='arrow-back-circle' size={36} color='#262626' />
-        <MaterialCommunityIcons
-          name='dots-vertical-circle'
-          size={36}
-          color='#262626'
-        />
-      </View>
-
+    <View style={{ backgroundColor: Color.mangaColor }}>
       {/* header chứa cover manga, thông tin manga */}
       <View style={styles.header}>
         <Image
@@ -36,27 +24,20 @@ function Header() {
 }
 
 const styles = StyleSheet.create({
-  control: {
-    backgroundColor: "white",
-    height: 40,
-    backgroundColor: "#191815",
-  },
   header: {
-    backgroundColor: "#191815",
+    paddingTop: 80,
+    backgroundColor: Color.mangaColor,
     paddingBottom: 30,
     paddingHorizontal: 20,
+    flexDirection: "row",
   },
   mangaCover: {
     height: 200,
     width: 140,
     borderRadius: 10,
-    marginTop: 50,
   },
   mangaInfo: {
-    position: "absolute",
-    left: 180,
-    top: 50,
-    width: 200,
+    marginLeft: 20,
   },
 });
 

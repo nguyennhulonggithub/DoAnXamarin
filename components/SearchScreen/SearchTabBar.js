@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+
 import { useRef } from "react";
 import {
   Image,
@@ -11,12 +11,14 @@ import {
   Animated,
   Pressable,
 } from "react-native";
-import { Color } from "../variable/Color";
-import { AntDesign } from "@expo/vector-icons";
-import { Font } from "../variable/Font";
-import SearchPopup from "../components/Popup/SearchPopup";
 
-export default function Test() {
+import { AntDesign } from "@expo/vector-icons";
+
+import { Color } from "../../variable/Color";
+import { Font } from "../../variable/Font";
+import SearchPopup from "../Popup/SearchPopup";
+
+export default function SearchTabBar() {
   const loose_focus = useRef();
   const seach_modal = React.createRef(null);
   const transform_search = useRef(new Animated.Value(0)).current;
