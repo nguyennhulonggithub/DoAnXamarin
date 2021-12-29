@@ -16,11 +16,17 @@ import { Color } from "../variable/Color";
 
 import { server } from "../variable/ServerName";
 
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
+const top = windowHeight / 3;
+const bottom = (windowHeight / 3) * 2;
+
 export default function ChapterScreen() {
   const [data, setdata] = useState([]);
-  const windowWidth = Dimensions.get("window").width;
+
   const scrollItem = useRef();
   const [itemHeights, set_itemHeights] = useState([]);
+  const length = itemHeights.length - 1;
   useEffect(() => {
     axios.get(server + "/chapter/10").then((res) => {
       setdata(res.data);
@@ -37,14 +43,11 @@ export default function ChapterScreen() {
 
   const renderItem = ({ item, index }) => {
     const _height = itemHeights[index] - 15;
-    console.log(_height);
+
     return (
       <TouchableWithoutFeedback
-        onPress={() => {
-          scrollItem.current.scrollToIndex({
-            index: index - 1,
-            viewPosition: 0.5,
-          });
+        onPress={(evt) => {
+          scrollFlatlist(evt.nativeEvent.pageY, index);
         }}
       >
         <Image
@@ -67,7 +70,19 @@ export default function ChapterScreen() {
     }
     return { length, offset, index };
   };
-
+  const scrollFlatlist = (press_pos, index) => {
+    if (press_pos < top && index > 0) {
+      scrollItem.current.scrollToIndex({
+        index: index - 1,
+        viewPosition: 0.5,
+      });
+    } else if (press_pos > bottom && index < length) {
+      scrollItem.current.scrollToIndex({
+        index: index + 1,
+        viewPosition: 0.5,
+      });
+    }
+  };
   return (
     <FlatList
       ItemSeparatorComponent={renderSeparator}
