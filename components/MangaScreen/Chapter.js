@@ -7,6 +7,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { set_height_chapter } from "../../redux/actions";
 import { useEffect } from "react";
+import Chaps from "../AllScreen/Chaps";
 
 export default function Chapter({ data, index, navigation }) {
   const dispatch = useDispatch();
@@ -48,65 +49,15 @@ export default function Chapter({ data, index, navigation }) {
         </View>
       </View>
 
-      {data.map((item) => {
-        return (
-          <Pressable
-            key={item.key}
-            onPress={() => navigation.navigate("ChapterScreen")}
-          >
-            <View style={styles.container}>
-              <Image
-                style={styles.image}
-                source={require("../../assets/genre/action.png")}
-              />
-              <View style={styles.DetailContainer}>
-                <Text style={Font.baseTitle}>{item.name}</Text>
-                <Text style={Font.baseTitle}>{item.status}</Text>
-              </View>
-            </View>
-            <View
-              style={{
-                alignItems: "flex-end",
-              }}
-            >
-              <View style={styles.line}></View>
-            </View>
-          </Pressable>
-        );
-      })}
+      <Chaps data={data} navigation={navigation} />
     </View>
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginVertical: 10,
-  },
   container_header: {
     height: 80,
     justifyContent: "space-between",
     paddingHorizontal: 12,
     flexDirection: "row",
-  },
-  DetailContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: 280,
-    paddingRight: 20,
-    justifyContent: "space-between",
-  },
-  image: {
-    height: 80,
-    width: 100,
-    marginLeft: 15,
-  },
-  line: {
-    width: 280,
-    height: 1,
-    backgroundColor: Color.white,
-    opacity: 0.1,
   },
 });

@@ -11,10 +11,13 @@ import {
   TouchableWithoutFeedback,
   View,
   StyleSheet,
+  Pressable,
 } from "react-native";
 import { Color } from "../variable/Color";
 
 import { server } from "../variable/ServerName";
+import { Font } from "../variable/Font";
+import Linear from "../components/ChapterScreen/Linear";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -23,7 +26,7 @@ const bottom = (windowHeight / 3) * 2;
 
 export default function ChapterScreen() {
   const [data, setdata] = useState([]);
-
+  const refLinear = useRef();
   const scrollItem = useRef();
   const [itemHeights, set_itemHeights] = useState([]);
   const length = itemHeights.length - 1;
@@ -81,19 +84,27 @@ export default function ChapterScreen() {
         index: index + 1,
         viewPosition: 0.5,
       });
+    } else {
+      refLinear.current.setLinear();
     }
   };
+
   return (
-    <FlatList
-      ItemSeparatorComponent={renderSeparator}
-      showsVerticalScrollIndicator={false}
-      ref={scrollItem}
-      data={data}
-      keyExtractor={(item, index) => item.key}
-      renderItem={renderItem}
-      getItemLayout={getItemLayout}
-      maxToRenderPerBatch={60} // Reduce number in each render batch
-    />
+    <View>
+      <FlatList
+        ItemSeparatorComponent={renderSeparator}
+        showsVerticalScrollIndicator={false}
+        ref={scrollItem}
+        data={data}
+        onScrollBeginDrag={() => refLinear.current.hideLinear()}
+        keyExtractor={(item, index) => item.key}
+        renderItem={renderItem}
+        getItemLayout={getItemLayout}
+        maxToRenderPerBatch={60} // Reduce number in each render batch
+        style={{ zIndex: 1 }}
+      />
+      <Linear ref={refLinear} />
+    </View>
   );
 }
 const styles = StyleSheet.create({
