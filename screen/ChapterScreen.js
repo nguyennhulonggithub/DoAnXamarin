@@ -19,7 +19,6 @@ import { server } from "../variable/ServerName";
 export default function ChapterScreen() {
   const [data, setdata] = useState([]);
   const windowWidth = Dimensions.get("window").width;
-
   const scrollItem = useRef();
   const [itemHeights, set_itemHeights] = useState([]);
   useEffect(() => {
@@ -35,12 +34,13 @@ export default function ChapterScreen() {
     });
     return;
   }, []);
-  console.log(Dimensions.get("window").height);
+
   const renderItem = ({ item, index }) => {
+    const _height = itemHeights[index] - 15;
+    console.log(_height);
     return (
       <TouchableWithoutFeedback
-        onPress={(evt) => {
-          console.log(evt.nativeEvent.pageY);
+        onPress={() => {
           scrollItem.current.scrollToIndex({
             index: index - 1,
             viewPosition: 0.5,
@@ -51,7 +51,7 @@ export default function ChapterScreen() {
           source={{ uri: server + item.imgUrl }}
           style={{
             width: windowWidth,
-            height: itemHeights[index] - 15,
+            height: _height ? _height : 0,
           }}
           fadeDuration={0}
         />
