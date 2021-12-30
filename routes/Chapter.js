@@ -29,7 +29,6 @@ router.get("/:idChapter", (req, res) => {
               files.forEach((file) => {
                 let cur_path = idManga + "/chap/" + file;
                 const { width, height } = sizeOf("./manga/" + cur_path);
-
                 img.push({
                   imgUrl: "/m/" + cur_path,
                   width: width,
