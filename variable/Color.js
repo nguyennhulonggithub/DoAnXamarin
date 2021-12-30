@@ -5,4 +5,5 @@ export const Color = {
   white: "#e6e6e6",
   mangaColor: "#252324",
   onBaseColor: "#404040",
+  blue: "#0073e6",
 };

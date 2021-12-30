@@ -45,7 +45,7 @@ export default class Linear extends Component {
         colors={["#050505", "#403f3f", "rgba(255, 255, 255, 0)"]}
         style={[
           styles.linear,
-          { opacity: this.state.linearVisible ? 0.95 : 0 },
+          this.state.linearVisible && { opacity: 0.95, zIndex: 2 },
         ]}
       >
         <Text style={styles.title}>BIKINGS</Text>
@@ -79,7 +79,8 @@ const styles = StyleSheet.create({
     height: 200,
     position: "absolute",
     top: 0,
-    zIndex: 10,
+    opacity: 0,
+    zIndex: 0,
   },
   title: {
     position: "absolute",

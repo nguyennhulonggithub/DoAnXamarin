@@ -20,6 +20,7 @@ import TabScrollNewRelease from "../components/SearchScreen/TabScrollNewRelease"
 import SearchPopup from "../components/Popup/SearchPopup";
 import Test from "./Test";
 import SearchTabBar from "../components/SearchScreen/SearchTabBar";
+import ExploreMore from "../components/SearchScreen/ExploreMore";
 
 export default function SearchScreen({ navigation }) {
   const scroll_Pallax = useRef(new Animated.Value(0)).current;
@@ -78,7 +79,12 @@ export default function SearchScreen({ navigation }) {
             />
           </Animated.ScrollView>
         </View>
-        <View style={{ backgroundColor: Color.defaultColor, flex: 1 }}>
+        <View
+          style={{
+            backgroundColor: Color.defaultColor,
+            flex: 1,
+          }}
+        >
           <View
             style={{
               backgroundColor: Color.baseColor,
@@ -117,14 +123,28 @@ export default function SearchScreen({ navigation }) {
             </Text>
             <TabScrollNewRelease />
           </View>
+          <Text style={[Font.homeTitle, { marginLeft: 18, marginBottom: 18 }]}>
+            Explore More
+          </Text>
           <View
-            style={[
-              styles.tab,
-              {
-                height: 1000,
-              },
-            ]}
-          ></View>
+            style={{
+              backgroundColor: Color.defaultColor,
+              alignItems: "center",
+              width: "100%",
+              height: 600,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: Color.baseColor,
+                height: 480,
+                width: "90%",
+                borderRadius: 15,
+              }}
+            >
+              <ExploreMore />
+            </View>
+          </View>
         </View>
       </ScrollView>
     </View>

@@ -18,6 +18,7 @@ import GenreTag from "../components/HomeScreen/GenreTag";
 import ResumeReading from "../components/HomeScreen/ResumeReading";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ExploreCataLog from "../components/HomeScreen/ExploreCataLog";
+import CategoryFlatlist from "../components/HomeScreen/CategoryFlatlist";
 
 //màn hình HomeScreen
 export default function HomeScreen({ navigation }) {
@@ -78,31 +79,7 @@ export default function HomeScreen({ navigation }) {
         {/*action title*/}
         <View style={styles.action_list}>
           <Text style={[Font.homeTitle, { padding: 15 }]}>Action Title</Text>
-          <ScrollView horizontal={true}>
-            <MangaTag
-              count_chapter='44'
-              time_update='On going'
-              status='New'
-              navigation={navigation}
-            />
-            <MangaTag
-              count_chapter='33'
-              time_update='Update Weekly'
-              navigation={navigation}
-            />
-            <MangaTag
-              count_chapter='22'
-              time_update='On going'
-              status='New'
-              navigation={navigation}
-            />
-            <MangaTag
-              count_chapter='11'
-              time_update='On going'
-              status='New'
-              navigation={navigation}
-            />
-          </ScrollView>
+          <CategoryFlatlist navigation={navigation} />
         </View>
 
         {/*explore inkr catalog*/}
