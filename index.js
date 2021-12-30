@@ -8,7 +8,8 @@ app.use(
         origin: "*",
     })
 );
-//test
+
+//lấy thông tin file json
 app.use(express.json());
 
 //dùng body-parser làm middle-ware
@@ -34,6 +35,12 @@ app.use("/chapter", postChapter)
 //resume_reading
 const postResumeReading = require("./routes/ResumeReading")
 app.use("/resume_reading", postResumeReading)
+
+//like
+const postLike = require("./routes/Like")
+app.use("/like", postLike)
+
+//read
 
 // const postGenre = require("/routes/Genre");
 
