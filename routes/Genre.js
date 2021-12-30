@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
 
 //show theo thể loại
 router.get("/:nameGenre", (req, res) => {
-    let sql = 'select * from manga where idManga in (select idManga from category c join manga_category m on c.idCategory = m.category_idCategory where c.Name = ?)';
+    let sql = 'select idManga, Name, TotalView, Status, Description from manga join (select manga_idManga from category c join manga_category m on c.idCategory = m.category_idCategory where c.Name = ?) as s on manga.idManga = s.manga_idManga';
     sqlConnection(sql, [req.params.nameGenre], (err, results) => {
         if (err) {
             res.send('Genre not exist');

@@ -17,8 +17,11 @@ router.get("/", (req, res) => {
 //show thông tin manga theo id
 router.get("/:idManga", (req, res) => {
     // lấy thông tin của manga
-    let sql = 'select * from manga where idManga=?';
-    sqlConnection(sql, [req.params.idManga], (err, results) => {
+    let idManga = req.params.idManga;
+    let sql = 'select * from manga where idManga=?;'
+    sql += 'select count(*) as likes from likes where manga_idManga = ?;';
+    sql += 'select count(*) as subscribe from subscribe where manga_idManga = ?;'
+    sqlConnection(sql, [idManga, idManga, idManga], (err, results) => {
         if (err) {
             res.send(false);
         } else {
