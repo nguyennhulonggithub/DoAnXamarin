@@ -40,7 +40,9 @@ app.use("/resume_reading", postResumeReading)
 const postLike = require("./routes/Like")
 app.use("/like", postLike)
 
-//read
+//list tittle
+const postList = require("./routes/ListTitle")
+app.use("/list", postList)
 
 // const postGenre = require("/routes/Genre");
 
