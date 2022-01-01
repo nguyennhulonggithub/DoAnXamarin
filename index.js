@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
 
 app.use(
   cors({
@@ -33,16 +33,16 @@ const postChapter = require("./routes/Chapter");
 app.use("/chapter", postChapter);
 
 //resume_reading
-const postResumeReading = require("./routes/ResumeReading")
-app.use("/resume_reading", postResumeReading)
+const postResumeReading = require("./routes/ResumeReading");
+app.use("/resume_reading", postResumeReading);
 
 //like
-const postLike = require("./routes/Like")
-app.use("/like", postLike)
+const postLike = require("./routes/Like");
+app.use("/like", postLike);
 
 //list tittle
-const postList = require("./routes/ListTitle")
-app.use("/list", postList)
+const postList = require("./routes/ListTitle");
+app.use("/list", postList);
 
 // const postGenre = require("/routes/Genre");
 
