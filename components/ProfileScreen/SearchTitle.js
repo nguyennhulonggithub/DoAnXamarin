@@ -14,24 +14,29 @@ import { AntDesign } from "@expo/vector-icons";
 
 import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
-import SearchPopup from "../Popup/SearchPopup";
 
-export default function SearchTabBar() {
+export default function SearchTitle(props) {
   const loose_focus = useRef();
-  const seach_modal = React.createRef(null);
+
   const transform_search = useRef(new Animated.Value(0)).current;
-  const transf = transform_search.interpolate({
+  const transX = transform_search.interpolate({
     inputRange: [0, 1],
     outputRange: ["120%", "100%"],
+  });
+
+  const transY = transform_search.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -35],
   });
   function transform() {
     Animated.timing(transform_search, {
       toValue: 1,
+
       useNativeDriver: false,
     }).start();
-    seach_modal.current.setModalVisible(1);
+    props.hideOnSearch(false);
   }
-  function back_transfrom() {
+  function back_transform() {
     Animated.timing(transform_search, {
       toValue: 0,
 
@@ -39,44 +44,39 @@ export default function SearchTabBar() {
     }).start();
 
     loose_focus.current.blur();
+    props.hideOnSearch(true);
   }
 
   return (
-    <View>
-      <View style={[styles.search_container]}>
-        <Animated.View
-          style={[styles.search_inside_container, { width: transf }]}
+    <Animated.View
+      style={[styles.search_container, { transform: [{ translateY: transY }] }]}
+    >
+      <Animated.View
+        style={[styles.search_inside_container, { width: transX }]}
+      >
+        <TextInput
+          ref={loose_focus}
+          style={styles.input}
+          onFocus={() => transform()}
+          placeholder='Search Title'
+          placeholderTextColor={Color.white}
+        />
+        <AntDesign
+          name='search1'
+          style={styles.searchButton}
+          size={24}
+          color='white'
+        />
+        <Pressable
+          style={styles.cancel_button}
+          onPress={() => {
+            back_transform();
+          }}
         >
-          <TextInput
-            ref={loose_focus}
-            style={styles.input}
-            onFocus={() => transform()}
-            placeholder='Search'
-            placeholderTextColor={Color.white}
-          />
-          <AntDesign
-            name='search1'
-            style={styles.searchButton}
-            size={24}
-            color='white'
-          />
-          <Pressable
-            style={styles.cancel_button}
-            onPress={() => {
-              back_transfrom();
-              seach_modal.current.setModalVisible(0);
-            }}
-          >
-            <Text style={[Font.baseTitle, { fontSize: 16 }]}>Cancel</Text>
-          </Pressable>
-        </Animated.View>
-      </View>
-
-      <SearchPopup
-        ref={seach_modal}
-        remove_focus={() => loose_focus.current.blur()}
-      />
-    </View>
+          <Text style={[Font.baseTitle, { fontSize: 16 }]}>Cancel</Text>
+        </Pressable>
+      </Animated.View>
+    </Animated.View>
   );
 }
 const styles = StyleSheet.create({
@@ -84,8 +84,8 @@ const styles = StyleSheet.create({
     backgroundColor: Color.baseColor,
     height: 100,
     width: "100%",
-    justifyContent: "center",
-    paddingTop: 20,
+    position: "absolute",
+    top: 70,
   },
   search_inside_container: {
     backgroundColor: Color.baseColor,

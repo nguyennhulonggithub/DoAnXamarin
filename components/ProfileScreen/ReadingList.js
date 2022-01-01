@@ -5,10 +5,13 @@ import { Font } from "../../variable/Font";
 
 import Stats from "../AllScreen/Stats";
 
-export default class ProfileList extends Component {
+export default class ReadingList extends Component {
   render() {
     return (
-      <Pressable style={styles.press}>
+      <Pressable
+        style={styles.press}
+        onPress={() => this.props.setReadingListPopUp(this.props.title)}
+      >
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >

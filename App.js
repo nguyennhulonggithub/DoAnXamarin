@@ -9,6 +9,7 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import allReducer from "./redux/reducers";
 import { composeWithDevTools } from "redux-devtools-extension";
+import SearchTabBar from "./components/SearchScreen/SearchTabBar";
 const store = createStore(allReducer, composeWithDevTools());
 //checkout
 export default class App extends Component {

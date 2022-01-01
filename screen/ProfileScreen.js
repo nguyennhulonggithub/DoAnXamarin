@@ -14,13 +14,16 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Font } from "../variable/Font";
 import { Ionicons } from "@expo/vector-icons";
 
-import ProfileList from "../components/ProfileScreen/ReadingList";
+import ReadingList from "../components/ProfileScreen/ReadingList";
 import { baseThing } from "../variable/BaseThing";
 import ModelPopup from "../components/Popup/ModelPopup";
 import { deleteUser, getdata } from "../InteractServer/GetUserSqlite";
 import OnSuccessPopUp from "../components/Popup/OnSuccessPopUp";
 import AwesomeAlert from "react-native-awesome-alerts";
 import LogoutPopup from "../components/Popup/LogoutPopup";
+import ReadingListPopup from "../components/Popup/ReadingListPopup";
+import SearchTitle from "../components/ProfileScreen/SearchTitle";
+import SearchTabBar from "../components/SearchScreen/SearchTabBar";
 
 export default class ProfileScreen extends Component {
   constructor(props) {
@@ -28,6 +31,7 @@ export default class ProfileScreen extends Component {
     this.myRef = React.createRef();
     this.successRef = React.createRef();
     this.LogoutRef = React.createRef();
+    this.ReadingListRef = React.createRef();
     this.state = {
       userLogin: false,
       userInfo: {},
@@ -119,85 +123,98 @@ export default class ProfileScreen extends Component {
   changeUserProfile = (data) => {
     this.setState({ userInfo: data });
   };
+  setReadingListPopup = (title) => {
+    this.ReadingListRef.current.setModalVisible(true, title);
+  };
   render() {
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.account}>
-          {this.refreshScreenUser()}
-          <Ionicons
-            style={styles.setting}
-            name='settings-outline'
-            size={24}
-            color='white'
+      <View>
+        <ScrollView style={styles.container} keyboardShouldPersistTaps='always'>
+          <View style={styles.account}>
+            {this.refreshScreenUser()}
+            <Ionicons
+              style={styles.setting}
+              name='settings-outline'
+              size={24}
+              color='white'
+            />
+          </View>
+          <View style={styles.list}>
+            <Text style={[Font.title, { marginBottom: 20 }]}>Reading List</Text>
+            <View style={styles.reading}>
+              <ReadingList
+                iconName='readme'
+                source='awesome5'
+                title='Read Later'
+                color='#e65c00'
+                setReadingListPopUp={this.setReadingListPopup}
+              />
+              <ReadingList
+                iconName='bell'
+                source='awesome5'
+                title='Subscribed'
+                color='#cc00ff'
+                setReadingListPopUp={this.setReadingListPopup}
+              />
+            </View>
+            <View style={styles.reading}>
+              <ReadingList
+                iconName='like2'
+                source='ant'
+                title='Liked'
+                color='#008ae6'
+                setReadingListPopUp={this.setReadingListPopup}
+              />
+              <ReadingList
+                iconName='clouddownload'
+                source='ant'
+                title='Downloaded'
+                color='#009933'
+                setReadingListPopUp={this.setReadingListPopup}
+              />
+            </View>
+          </View>
+          <View style={styles.resume}>
+            <Text style={[Font.title, { marginBottom: 20 }]}>
+              Resume Reading
+            </Text>
+            <View style={{ width: "100%", height: 200, alignItems: "center" }}>
+              <Image
+                source={require("../assets/Resume.png")}
+                style={{
+                  resizeMode: "contain",
+                  height: 200,
+                  width: "80%",
+                }}
+              />
+            </View>
+
+            <Text
+              style={[Font.baseTitle, { marginTop: 20, alignSelf: "center" }]}
+            >
+              There is nothing in recently read
+            </Text>
+            <Text
+              style={[
+                Font.description,
+                { marginTop: 10, paddingHorizontal: 40, textAlign: "center" },
+              ]}
+            >
+              Just start reading. Recently read titles will be shown here.
+            </Text>
+          </View>
+
+          <ModelPopup
+            ref={this.myRef}
+            onLoginSuccess={this.changeLoginInfo}
+            changeUserProfile={this.changeUserProfile}
           />
-        </View>
-        <View style={styles.list}>
-          <Text style={[Font.title, { marginBottom: 20 }]}>Reading List</Text>
-          <View style={styles.reading}>
-            <ProfileList
-              iconName='readme'
-              source='awesome5'
-              title='Read Later'
-              color='#e65c00'
-            />
-            <ProfileList
-              iconName='bell'
-              source='awesome5'
-              title='Subscribed'
-              color='#cc00ff'
-            />
-          </View>
-          <View style={styles.reading}>
-            <ProfileList
-              iconName='like2'
-              source='ant'
-              title='Liked'
-              color='#008ae6'
-            />
-            <ProfileList
-              iconName='clouddownload'
-              source='ant'
-              title='Downloaded'
-              color='#009933'
-            />
-          </View>
-        </View>
-        <View style={styles.resume}>
-          <Text style={[Font.title, { marginBottom: 20 }]}>Resume Reading</Text>
-          <View style={{ width: "100%", height: 200, alignItems: "center" }}>
-            <Image
-              source={require("../assets/Resume.png")}
-              style={{
-                resizeMode: "contain",
-                height: 200,
-                width: "80%",
-              }}
-            />
-          </View>
+          <OnSuccessPopUp ref={this.successRef} />
+          <LogoutPopup ref={this.LogoutRef} onLogout={this.onLogout} />
 
-          <Text
-            style={[Font.baseTitle, { marginTop: 20, alignSelf: "center" }]}
-          >
-            There is nothing in recently read
-          </Text>
-          <Text
-            style={[
-              Font.description,
-              { marginTop: 10, paddingHorizontal: 40, textAlign: "center" },
-            ]}
-          >
-            Just start reading. Recently read titles will be shown here.
-          </Text>
-        </View>
-
-        <ModelPopup
-          ref={this.myRef}
-          onLoginSuccess={this.changeLoginInfo}
-          changeUserProfile={this.changeUserProfile}
-        />
-        <OnSuccessPopUp ref={this.successRef} />
-        <LogoutPopup ref={this.LogoutRef} onLogout={this.onLogout} />
-      </ScrollView>
+          <ReadingListPopup ref={this.ReadingListRef} />
+        </ScrollView>
+      </View>
     );
   }
 }

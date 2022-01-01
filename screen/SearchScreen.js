@@ -31,6 +31,7 @@ export default function SearchScreen({ navigation }) {
       <ScrollView>
         <View style={{ height: 800, backgroundColor: Color.defaultColor }}>
           <SearchSlide />
+
           <Text style={[Font.title, { marginTop: 20, marginLeft: 20 }]}>
             New & Noteworthy
           </Text>
