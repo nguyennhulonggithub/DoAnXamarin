@@ -15,12 +15,12 @@ const store = createStore(allReducer, composeWithDevTools());
 export default class App extends Component {
   render() {
     return (
-      // <Provider store={store}>
-      //   <NavigationContainer>
-      //     <TabNavigation />
-      //   </NavigationContainer>
-      // </Provider>
-      <Test />
+      <Provider store={store}>
+        <NavigationContainer>
+          <TabNavigation />
+        </NavigationContainer>
+      </Provider>
+      // <Test />
     );
   }
 }

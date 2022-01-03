@@ -1,14 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useEffect } from "react";
-import {
-  View,
-  Image,
-  useWindowDimensions,
-  Animated,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-} from "react-native";
+import { View, Image, Animated, StyleSheet, Dimensions } from "react-native";
 import { Color } from "../../variable/Color";
 import images from "./Banner";
 
@@ -17,81 +9,94 @@ const data = [
     key: 1,
     bannerImg: images.banner1,
   },
-  { key: 2, bannerImg: images.banner2 },
+  { key: 3, bannerImg: images.banner2 },
   {
-    key: 3,
+    key: 5,
     bannerImg: images.banner3,
   },
 ];
+const length_data = data.length;
+const first_key = data[0].key;
+const last_key = data[length_data - 1].key;
+
 export default function SearchSlide() {
   const width = Dimensions.get("window").width;
+  const half_width = width / 2;
   const refScrollView = useRef();
-  const [position_width, set_position_width] = useState(0);
-  function set_circle(value) {
-    if (value > 0 && value < width / 2) {
-      set_position_width(3);
-    } else if (value > width / 2 && value < (width / 2) * 3) {
-      set_position_width(1);
-    } else if (value > (width / 2) * 3 && value < (width / 2) * 5) {
-      set_position_width(2);
-    } else if (value > (width / 2) * 5 && value < (width / 2) * 7) {
-      set_position_width(3);
-    } else if (value > (width / 2) * 7) {
-      set_position_width(1);
+
+  const refAnimatedScroll = useRef(new Animated.Value(width)).current;
+
+  function animatedSlide(item, refAnimatedScroll) {
+    let translation = null;
+    if (item.key == first_key) {
+      translation = refAnimatedScroll.interpolate({
+        inputRange: [
+          half_width * item.key,
+          half_width * (item.key + 1),
+          half_width * (item.key + 2),
+          half_width * (last_key + 2),
+          half_width * (last_key + 3),
+        ],
+        outputRange: [8, 16, 8, 8, 16],
+        extrapolate: "clamp",
+      });
+    } else if (item.key == last_key) {
+      translation = refAnimatedScroll.interpolate({
+        inputRange: [
+          0,
+          half_width,
+          half_width * item.key,
+          half_width * (item.key + 1),
+          half_width * (item.key + 2),
+        ],
+        outputRange: [16, 8, 8, 16, 8],
+        extrapolate: "clamp",
+      });
+    } else {
+      translation = refAnimatedScroll.interpolate({
+        inputRange: [
+          half_width * item.key,
+          half_width * (item.key + 1),
+          half_width * (item.key + 2),
+        ],
+        outputRange: [8, 16, 8],
+        extrapolate: "clamp",
+      });
     }
-  }
-  function animatedSlide(item) {
-    const refSlide = useRef(new Animated.Value(8)).current;
-    useEffect(() => {
-      if (position_width == item.key) {
-        Animated.timing(refSlide, {
-          toValue: 16,
-          duration: 100,
-          useNativeDriver: false,
-        }).start();
-      } else {
-        Animated.timing(refSlide, {
-          toValue: 8,
-          duration: 100,
-          useNativeDriver: false,
-        }).start();
-      }
-    }, [position_width]);
 
     return (
       <Animated.View
         key={item.key}
-        style={[
-          styles.circle,
-          position_width == item.key && {
-            backgroundColor: Color.baseColor,
-          },
-          { width: refSlide },
-        ]}
+        style={[styles.circle, { width: translation }]}
       ></Animated.View>
     );
   }
+
   return (
     <View>
-      <ScrollView
+      <Animated.ScrollView
         ref={refScrollView}
         horizontal
         pagingEnabled
         bounces={false}
         showsHorizontalScrollIndicator={false}
-        scrollEventThrottle={500}
-        onScroll={(e) => {
-          set_circle(e.nativeEvent.contentOffset.x);
-        }}
+        contentOffset={{ x: width, y: 0 }}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: refAnimatedScroll } } }],
+          { useNativeDriver: false }
+        )}
         onMomentumScrollEnd={(e) => {
-          if (e.nativeEvent.contentOffset.x > (width / 2) * 7) {
+          if (
+            e.nativeEvent.contentOffset.x >
+            half_width * (length_data * 2 + 1)
+          ) {
             refScrollView.current.scrollTo({
-              x: (width / 2) * 2,
+              x: half_width * 2,
               animated: false,
             });
-          } else if (e.nativeEvent.contentOffset.x < width / 2) {
+          } else if (e.nativeEvent.contentOffset.x < half_width) {
             refScrollView.current.scrollTo({
-              x: (width / 2) * 6,
+              x: half_width * length_data * 2,
               animated: false,
             });
           }
@@ -99,7 +104,7 @@ export default function SearchSlide() {
       >
         <Image
           style={[styles.BannerImage, { width: width }]}
-          source={images.banner3}
+          source={data[length_data - 1].bannerImg}
         />
         {data.map((item) => {
           return (
@@ -112,9 +117,9 @@ export default function SearchSlide() {
         })}
         <Image
           style={[styles.BannerImage, { width: width }]}
-          source={images.banner1}
+          source={data[0].bannerImg}
         />
-      </ScrollView>
+      </Animated.ScrollView>
       <View
         style={{
           position: "absolute",
@@ -124,7 +129,7 @@ export default function SearchSlide() {
           justifyContent: "center",
         }}
       >
-        {data.map((item) => animatedSlide(item))}
+        {data.map((item) => animatedSlide(item, refAnimatedScroll))}
       </View>
     </View>
   );
