@@ -19,7 +19,7 @@ router.get("/:idManga", (req, res) => {
   // lấy thông tin của manga
   let idManga = req.params.idManga;
   let sql =
-    "select idManga, Name, ImageAPI, Summary,DateAdded, TotalView, WeekView, Status, Description, 0 +(select count(*) from likes where manga_idManga = 1) as Likes, 0 +(select count(*) as subscribe from subscribe where manga_idManga = 1) as Subscribes from manga where idManga=1;";
+    "select idManga, Name, ImageAPI, Summary,DateAdded, TotalView, WeekView, Status, Description, 0 +(select count(*) from likes where manga_idManga = ?) as Likes, 0 +(select count(*) as subscribe from subscribe where manga_idManga = ?) as Subscribes from manga where idManga= ?;";
   sqlConnection(sql, [idManga, idManga, idManga], (err, results) => {
     if (err) {
       res.send(false);
