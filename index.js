@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 //link tĩnh
 app.use("/m", express.static("manga"));
 app.use("/g", express.static("genre"));
+app.use("/b", express.static("banner"));
 
 //thể loại
 const postGenre = require("./routes/Genre");
@@ -44,6 +45,9 @@ app.use("/like", postLike);
 const postList = require("./routes/ListTitle");
 app.use("/list", postList);
 
+//banner
+const banner = require("./routes/Banner");
+app.use("/banner", banner);
 // const postGenre = require("/routes/Genre");
 
 const postUser = require("./routes/User");

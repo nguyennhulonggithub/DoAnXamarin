@@ -27,7 +27,6 @@ router.get("/:idManga", (req, res) => {
       if (results.length == 0) {
         res.send("Manga not exist");
       } else {
-        console.log(results);
         res.send(results);
       }
     }
