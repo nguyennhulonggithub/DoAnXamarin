@@ -8,7 +8,11 @@ export default function Tags({ data }) {
     <View>
       <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
         {data.map((item) => {
-          return <Text style={[Font.description, styles.tag]}>{item}</Text>;
+          return (
+            <Text key={item} style={[Font.description, styles.tag]}>
+              {item}
+            </Text>
+          );
         })}
       </View>
     </View>

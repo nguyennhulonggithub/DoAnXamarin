@@ -5,7 +5,17 @@ import { Color } from "../../variable/Color";
 import Chapter from "./Chapter";
 import Detail from "./Detail";
 
-export default function Body({ data, translate, navigation }) {
+export default function Body({
+  data,
+  translate,
+  navigation,
+  status,
+  like,
+  subscribe,
+  summary,
+  read,
+  mangaTitle,
+}) {
   const renderTabBar = (props) => (
     <TabBar
       {...props}
@@ -28,9 +38,25 @@ export default function Body({ data, translate, navigation }) {
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "Chapter":
-        return <Chapter data={data} index={index} navigation={navigation} />;
+        return (
+          <Chapter
+            data={data}
+            status={status}
+            index={index}
+            navigation={navigation}
+            mangaTitle={mangaTitle}
+          />
+        );
       case "Detail":
-        return <Detail index={index} />;
+        return (
+          <Detail
+            index={index}
+            like={like}
+            subscribe={subscribe}
+            summary={summary}
+            read={read}
+          />
+        );
 
       default:
         return null;

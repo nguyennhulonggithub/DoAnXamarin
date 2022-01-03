@@ -8,9 +8,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { set_height_chapter } from "../../redux/actions";
 import { useEffect } from "react";
 import Chaps from "../AllScreen/Chaps";
+import { useState } from "react";
 
-export default function Chapter({ data, index, navigation }) {
+export default function Chapter({
+  data,
+  index,
+  navigation,
+  status,
+  mangaTitle,
+}) {
   const dispatch = useDispatch();
+
+  const [reverse, set_reverse] = useState(false);
   const cur_height = useRef(0);
   function set_height_onPress() {
     dispatch(set_height_chapter(cur_height.current));
@@ -21,6 +30,7 @@ export default function Chapter({ data, index, navigation }) {
       set_height_onPress();
     }
   }, [index]);
+
   return (
     <View
       onLayout={(event) => {
@@ -32,7 +42,7 @@ export default function Chapter({ data, index, navigation }) {
       <View style={styles.container_header}>
         <View style={{ justifyContent: "center" }}>
           <Text style={Font.baseTitle}>{data.length} chapters</Text>
-          <Text style={Font.description}>Update Weekly</Text>
+          <Text style={Font.description}>{status}</Text>
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Ionicons
@@ -40,16 +50,30 @@ export default function Chapter({ data, index, navigation }) {
             size={24}
             color={Color.white}
           />
-          <FontAwesome
-            name='exchange'
-            size={15}
-            color={Color.white}
-            style={{ marginHorizontal: 10, transform: [{ rotate: "90deg" }] }}
-          />
+          <Pressable
+            onPress={() => set_reverse(!reverse)}
+            style={styles.reverse}
+          >
+            <FontAwesome
+              name='long-arrow-up'
+              size={15}
+              color={reverse ? Color.gray : "white"}
+            />
+            <FontAwesome
+              name='long-arrow-down'
+              size={15}
+              color={reverse ? "white" : Color.gray}
+            />
+          </Pressable>
         </View>
       </View>
 
-      <Chaps data={data} navigation={navigation} />
+      <Chaps
+        data={data}
+        mangaTitle={mangaTitle}
+        navigation={navigation}
+        reverseBoolean={reverse}
+      />
     </View>
   );
 }
@@ -59,5 +83,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 12,
     flexDirection: "row",
+  },
+  reverse: {
+    flexDirection: "row",
+    marginHorizontal: 10,
+    backgroundColor: Color.onBaseColor,
+    height: 30,
+    width: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 15,
   },
 });

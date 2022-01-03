@@ -11,7 +11,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import Stats from "../AllScreen/Stats";
 import SimilarTitle from "./SimilarTitle";
 
-export default function Detail({ index }) {
+export default function Detail({ index, summary, read, subscribe, like }) {
   const dispatch = useDispatch();
   const cur_height = useRef(0);
   const data = ["Sports", "Ecomomic"];
@@ -33,21 +33,7 @@ export default function Detail({ index }) {
       <Text style={[Font.title, { marginBottom: 15 }]}>Genres</Text>
       <Tags data={data} />
       <Text style={[Font.title, { marginVertical: 15 }]}>Summary</Text>
-      <Text style={Font.description}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Sed ullamcorper
-        morbi tincidunt ornare massa eget egestas purus. Quam elementum pulvinar
-        etiam non. Commodo nulla facilisi nullam vehicula ipsum. Est ultricies
-        integer quis auctor elit. Placerat vestibulum lectus mauris ultrices
-        eros in cursus turpis massa. Fermentum leo vel orci porta non pulvinar
-        neque laoreet suspendisse. Magna sit amet purus gravida quis. Ac turpis
-        egestas integer eget. Imperdiet dui accumsan sit amet nulla facilisi
-        morbi tempus iaculis. Eget mauris pharetra et ultrices. Interdum velit
-        laoreet id donec ultrices tincidunt arcu non sodales. Facilisi etiam
-        dignissim diam quis enim lobortis scelerisque fermentum dui. Neque
-        volutpat ac tincidunt vitae semper quis lectus nulla at. Id ornare arcu
-        odio ut sem nulla pharetra.
-      </Text>
+      <Text style={Font.description}>{summary}</Text>
       <Text style={[Font.title, { marginVertical: 15 }]}>Stats</Text>
       <View>
         <View style={{ backgroundColor: Color.baseColor }}>
@@ -56,7 +42,7 @@ export default function Detail({ index }) {
               <Stats iconName='readme' source='awesome5' color='#e65c00' />
               <Text style={[{ marginLeft: 10 }, Font.description]}>Reads</Text>
             </View>
-            <Text style={Font.baseTitle}>64</Text>
+            <Text style={Font.baseTitle}>{read}</Text>
           </View>
           <View style={styles.statsContainer}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -65,14 +51,14 @@ export default function Detail({ index }) {
                 Subscribes
               </Text>
             </View>
-            <Text style={Font.baseTitle}>45</Text>
+            <Text style={Font.baseTitle}>{subscribe}</Text>
           </View>
           <View style={styles.statsContainer}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Stats iconName='like2' source='ant' color='#008ae6' />
               <Text style={[{ marginLeft: 10 }, Font.description]}>Likes</Text>
             </View>
-            <Text style={Font.baseTitle}>5</Text>
+            <Text style={Font.baseTitle}>{like}</Text>
           </View>
         </View>
       </View>

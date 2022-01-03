@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   Image,
   View,
@@ -7,74 +7,34 @@ import {
   ScrollView,
   Animated,
   Button,
+  Pressable,
 } from "react-native";
 
 import Header from "../components/MangaScreen/Header";
-import Body from "../components/MangaScreen/Body";
 import { Color } from "../variable/Color";
-import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Font } from "../variable/Font";
+import axios from "axios";
+import { server } from "../variable/ServerName";
+import ContainerBody from "../components/MangaScreen/ContainerBody";
 
-const data = [
-  {
-    image: "../../assets/genre/action.png",
-    name: "Chapter 1",
-    status: "free",
-    key: 1,
-  },
-  {
-    image: "../../assets/genre/romance.png",
-    name: "Chapter 2",
-    status: "free",
-    key: 2,
-  },
-  {
-    image: "../../assets/genre/action.png",
-    name: "Chapter 3",
-    status: "paid",
-    key: 3,
-  },
-  {
-    image: "../../assets/genre/action.png",
-    name: "Chapter 1",
-    status: "free",
-    key: 4,
-  },
-  {
-    image: "../../assets/genre/romance.png",
-    name: "Chapter 2",
-    status: "free",
-    key: 5,
-  },
-  {
-    image: "../../assets/genre/action.png",
-    name: "Chapter 3",
-    status: "paid",
-    key: 6,
-  },
-  {
-    image: "../../assets/genre/action.png",
-    name: "Chapter 1",
-    status: "free",
-    key: 7,
-  },
-  {
-    image: "../../assets/genre/romance.png",
-    name: "Chapter 2",
-    status: "free",
-    key: 8,
-  },
-  {
-    image: "../../assets/genre/action.png",
-    name: "Chapter 3",
-    status: "paid",
-    key: 9,
-  },
-];
-export default function MangaScreen({ navigation }) {
+export default function MangaScreen({ route, navigation }) {
+  const [dataHeader, set_dataHeader] = useState([]);
+  const [dataBody, set_dataBody] = useState([]);
+  useEffect(() => {
+    axios.get(server + "/manga/" + route.params.idManga).then((res) => {
+      set_dataHeader(res.data[0]);
+    });
+    axios
+      .get(server + "/manga/" + route.params.idManga + "/chapter")
+      .then((res) => {
+        set_dataBody(res.data);
+      });
+    return;
+  }, []);
+
   const ref = useRef(new Animated.Value(0)).current;
   const translation = ref.interpolate({
     inputRange: [0, 232],
@@ -91,6 +51,7 @@ export default function MangaScreen({ navigation }) {
     outputRange: [0, 4770],
     extrapolate: "clamp",
   });
+
   return (
     <Animated.ScrollView
       style={{ backgroundColor: Color.baseColor }}
@@ -109,7 +70,9 @@ export default function MangaScreen({ navigation }) {
       <Animated.View
         style={[styles.control, { transform: [{ translateY: ref }] }]}
       >
-        <Ionicons name='chevron-back' size={24} color={Color.white} />
+        <Pressable onPress={() => navigation.pop()}>
+          <Ionicons name='chevron-back' size={24} color={Color.white} />
+        </Pressable>
         <Animated.View
           style={{
             width: 270,
@@ -118,7 +81,7 @@ export default function MangaScreen({ navigation }) {
           }}
         >
           <Text style={Font.baseTitle} numberOfLines={1}>
-            Let's Dance a WaltzLet's Dance a Waltz Let's Dance a Waltz
+            {dataHeader.Name}
           </Text>
         </Animated.View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -136,15 +99,24 @@ export default function MangaScreen({ navigation }) {
         </View>
       </Animated.View>
 
-      <Header />
-      <View
-        style={{
-          height: 50 + useSelector((state) => state.height),
-          width: "100%",
-        }}
-      >
-        <Body data={data} translate={translateTab} navigation={navigation} />
-      </View>
+      <Header
+        image={dataHeader.ImageAPI}
+        name={dataHeader.Name}
+        like={dataHeader.Likes}
+        view={dataHeader.TotalView}
+        count_chapter={dataBody.length}
+      />
+      <ContainerBody
+        data={dataBody}
+        status={dataHeader.Status}
+        summary={dataHeader.Summary}
+        like={dataHeader.Likes}
+        subscribe={dataHeader.Subscribes}
+        read={dataHeader.TotalView}
+        translate={translateTab}
+        mangaTitle={dataHeader.Name}
+        navigation={navigation}
+      />
     </Animated.ScrollView>
   );
 }
@@ -156,7 +128,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     position: "absolute",
-
     top: 0,
     height: 80,
     width: "100%",

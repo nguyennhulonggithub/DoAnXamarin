@@ -18,28 +18,42 @@ import { Color } from "../variable/Color";
 import { server } from "../variable/ServerName";
 import { Font } from "../variable/Font";
 import Linear from "../components/ChapterScreen/Linear";
+import SliderScroll from "../components/ChapterScreen/SliderScroll";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const top = windowHeight / 3;
 const bottom = (windowHeight / 3) * 2;
 
-export default function ChapterScreen() {
+export default function ChapterScreen({ route, navigation }) {
+  const { chapterName, chapterId, mangaTitle, dataChapter } = route.params;
+
   const [data, setdata] = useState([]);
   const refLinear = useRef();
+  const refSlider = useRef();
   const scrollItem = useRef();
   const [itemHeights, set_itemHeights] = useState([]);
+
+  const [cur_posY, set_cur_posY] = useState(0);
   const length = itemHeights.length - 1;
+
   useEffect(() => {
-    axios.get(server + "/chapter/10").then((res) => {
+    axios.get(server + "/chapter/" + chapterId).then((res) => {
       setdata(res.data);
       let array = [];
+      let final_height = 0;
       res.data.forEach((element) => {
-        array.push(
-          Math.floor((windowWidth * element.height) / element.width) + 15
-        );
+        let height =
+          Math.floor((windowWidth * element.height) / element.width) + 15;
+        final_height += height;
+        array.push(height);
       });
+
       set_itemHeights(array);
+
+      refSlider.current.setState({
+        actual_height: final_height - windowHeight,
+      });
     });
     return;
   }, []);
@@ -86,9 +100,12 @@ export default function ChapterScreen() {
       });
     } else {
       refLinear.current.setLinear();
+      refSlider.current.setLinear();
     }
   };
-
+  const scrollToFlatlist = (posY) => {
+    scrollItem.current.scrollToOffset({ animated: true, offset: posY });
+  };
   return (
     <View>
       <FlatList
@@ -96,14 +113,31 @@ export default function ChapterScreen() {
         showsVerticalScrollIndicator={false}
         ref={scrollItem}
         data={data}
-        onScrollBeginDrag={() => refLinear.current.hideLinear()}
+        onScrollBeginDrag={() => {
+          refLinear.current.hideLinear();
+          refSlider.current.hideLinear();
+        }}
         keyExtractor={(item, index) => item.key}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
         maxToRenderPerBatch={60} // Reduce number in each render batch
         style={{ zIndex: 1 }}
+        onScroll={(e) =>
+          refSlider.current.setState({ value: e.nativeEvent.contentOffset.y })
+        }
       />
-      <Linear ref={refLinear} />
+      <Linear
+        ref={refLinear}
+        navigation={navigation}
+        mangaTitle={mangaTitle}
+        chapterName={chapterName}
+        dataChapter={dataChapter}
+      />
+      <SliderScroll
+        ref={refSlider}
+        value={cur_posY}
+        scrollOffset={scrollToFlatlist}
+      />
     </View>
   );
 }

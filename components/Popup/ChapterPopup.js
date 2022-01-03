@@ -115,7 +115,7 @@ class ChapterPopup extends Component {
               </View>
               <View style={styles.line} />
               <ScrollView>
-                <Chaps data={data} />
+                <Chaps data={this.props.dataChapter} />
               </ScrollView>
             </View>
           </TouchableWithoutFeedback>

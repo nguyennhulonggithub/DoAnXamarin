@@ -2,26 +2,25 @@ import React, { useState } from "react";
 import { Text, View, Image, Pressable, StyleSheet } from "react-native";
 
 import { Font } from "../../variable/Font";
+import { server } from "../../variable/ServerName";
 
 function MangaTag(props) {
   return (
     <Pressable
       style={styles.viewManga}
       onPress={() => {
-        props.navigation.navigate("MangaScreen");
+        props.navigation.navigate("MangaScreen", { idManga: props.idManga });
       }}
     >
       <Image
         style={styles.manga}
-        source={require("../../assets/home/home-manga-1.jpg")}
+        source={{ uri: server + props.image_api }}
       ></Image>
       <Text style={[Font.description, { marginTop: 10 }]}>
-        {props.count_chapter}
+        {props.count_chapter} chapters
       </Text>
-      <Text style={[Font.description, { marginTop: 2 }]}>
-        {props.time_update}
-      </Text>
-      <Text style={Font.baseTitle}>{props.status}</Text>
+      <Text style={[Font.description, { marginTop: 2 }]}>{props.status}</Text>
+      <Text style={Font.baseTitle}>{props.description}</Text>
     </Pressable>
   );
 }
