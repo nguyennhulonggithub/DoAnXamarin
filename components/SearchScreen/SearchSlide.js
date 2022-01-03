@@ -7,32 +7,37 @@ import {
   Animated,
   StyleSheet,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import { Color } from "../../variable/Color";
 import images from "./Banner";
 
 const data = [
   {
-    key: 0,
+    key: 1,
     bannerImg: images.banner1,
   },
-  { key: 1, bannerImg: images.banner2 },
+  { key: 2, bannerImg: images.banner2 },
   {
-    key: 2,
+    key: 3,
     bannerImg: images.banner3,
   },
 ];
 export default function SearchSlide() {
   const width = Dimensions.get("window").width;
-
+  const refScrollView = useRef();
   const [position_width, set_position_width] = useState(0);
   function set_circle(value) {
-    if (value > 0 && value < 200) {
-      set_position_width(0);
-    } else if (value > 200 && value < 600) {
+    if (value > 0 && value < width / 2) {
+      set_position_width(3);
+    } else if (value > width / 2 && value < (width / 2) * 3) {
       set_position_width(1);
-    } else if (value > 600) {
+    } else if (value > (width / 2) * 3 && value < (width / 2) * 5) {
       set_position_width(2);
+    } else if (value > (width / 2) * 5 && value < (width / 2) * 7) {
+      set_position_width(3);
+    } else if (value > (width / 2) * 7) {
+      set_position_width(1);
     }
   }
   function animatedSlide(item) {
@@ -68,7 +73,8 @@ export default function SearchSlide() {
   }
   return (
     <View>
-      <Animated.ScrollView
+      <ScrollView
+        ref={refScrollView}
         horizontal
         pagingEnabled
         bounces={false}
@@ -77,7 +83,24 @@ export default function SearchSlide() {
         onScroll={(e) => {
           set_circle(e.nativeEvent.contentOffset.x);
         }}
+        onMomentumScrollEnd={(e) => {
+          if (e.nativeEvent.contentOffset.x > (width / 2) * 7) {
+            refScrollView.current.scrollTo({
+              x: (width / 2) * 2,
+              animated: false,
+            });
+          } else if (e.nativeEvent.contentOffset.x < width / 2) {
+            refScrollView.current.scrollTo({
+              x: (width / 2) * 6,
+              animated: false,
+            });
+          }
+        }}
       >
+        <Image
+          style={[styles.BannerImage, { width: width }]}
+          source={images.banner3}
+        />
         {data.map((item) => {
           return (
             <Image
@@ -87,7 +110,11 @@ export default function SearchSlide() {
             />
           );
         })}
-      </Animated.ScrollView>
+        <Image
+          style={[styles.BannerImage, { width: width }]}
+          source={images.banner1}
+        />
+      </ScrollView>
       <View
         style={{
           position: "absolute",

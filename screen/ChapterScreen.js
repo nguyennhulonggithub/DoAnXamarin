@@ -106,6 +106,7 @@ export default function ChapterScreen({ route, navigation }) {
   const scrollToFlatlist = (posY) => {
     scrollItem.current.scrollToOffset({ animated: true, offset: posY });
   };
+
   return (
     <View>
       <FlatList
@@ -117,7 +118,7 @@ export default function ChapterScreen({ route, navigation }) {
           refLinear.current.hideLinear();
           refSlider.current.hideLinear();
         }}
-        keyExtractor={(item, index) => item.key}
+        keyExtractor={(item) => item.imgUrl}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
         maxToRenderPerBatch={60} // Reduce number in each render batch
