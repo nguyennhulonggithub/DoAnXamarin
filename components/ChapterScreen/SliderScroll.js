@@ -16,7 +16,9 @@ export default class SliderScroll extends Component {
     this.windowHeight = Dimensions.get("window").height;
   }
   componentWillUnmount() {
-    return;
+    this.setState = () => {
+      return;
+    };
   }
   setLinear = () => {
     this.setState({ linearVisible: !this.state.linearVisible }, () => {

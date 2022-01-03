@@ -19,7 +19,9 @@ export default class Linear extends Component {
     };
   }
   componentWillUnmount() {
-    return;
+    this.setState = () => {
+      return;
+    };
   }
   setLinear = () => {
     this.setState({ linearVisible: !this.state.linearVisible }, () => {
