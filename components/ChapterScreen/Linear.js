@@ -55,7 +55,7 @@ export default class Linear extends Component {
         <Text style={styles.title}>{this.props.mangaTitle}</Text>
         <Pressable
           onPress={() => {
-            clearTimeout(this.state.timeout);
+            // clearTimeout(this.state.timeout);
             this.refChapter.current.setModalVisible(true);
           }}
           style={styles.description}
@@ -77,6 +77,7 @@ export default class Linear extends Component {
         <ChapterPopup
           ref={this.refChapter}
           dataChapter={this.props.dataChapter}
+          changeData={this.props.changeData}
         />
       </LinearGradient>
     );
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     opacity: 0,
-    zIndex: 10,
+    zIndex: 0,
   },
   title: {
     position: "absolute",

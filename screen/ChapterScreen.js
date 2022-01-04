@@ -12,6 +12,7 @@ import {
   View,
   StyleSheet,
   Pressable,
+  Button,
 } from "react-native";
 import { Color } from "../variable/Color";
 
@@ -19,6 +20,7 @@ import { server } from "../variable/ServerName";
 import { Font } from "../variable/Font";
 import Linear from "../components/ChapterScreen/Linear";
 import SliderScroll from "../components/ChapterScreen/SliderScroll";
+import NavigateButton from "../components/ChapterScreen/NavigateButton";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -26,19 +28,30 @@ const top = windowHeight / 3;
 const bottom = (windowHeight / 3) * 2;
 
 export default function ChapterScreen({ route, navigation }) {
-  const { chapterName, chapterId, mangaTitle, dataChapter } = route.params;
+  const { chapterId, mangaTitle, dataChapter, chapterOrder } = route.params;
 
+  const chapterNameRoute = route.params.chapterName;
+  const [chapterName, setChapterName] = useState();
   const [data, setdata] = useState([]);
+
   const refLinear = useRef();
   const refSlider = useRef();
+  const refNavigationButton = useRef();
+
   const scrollItem = useRef();
   const [itemHeights, set_itemHeights] = useState([]);
-
+  const [saveOrder, set_saveOrder] = useState();
   const [cur_posY, set_cur_posY] = useState(0);
   const length = itemHeights.length - 1;
 
   useEffect(() => {
-    axios.get(server + "/chapter/" + chapterId).then((res) => {
+    changeData(chapterId, chapterNameRoute, chapterOrder);
+
+    return;
+  }, []);
+
+  const changeData = (_chapterId, _chapterName, _order = 0) => {
+    axios.get(server + "/chapter/" + _chapterId).then((res) => {
       setdata(res.data);
       let array = [];
       let final_height = 0;
@@ -55,9 +68,10 @@ export default function ChapterScreen({ route, navigation }) {
         actual_height: final_height - windowHeight,
       });
     });
-    return;
-  }, []);
 
+    setChapterName(_chapterName);
+    set_saveOrder(_order);
+  };
   const renderItem = ({ item, index }) => {
     const _height = itemHeights[index] - 15;
 
@@ -101,6 +115,7 @@ export default function ChapterScreen({ route, navigation }) {
     } else {
       refLinear.current.setLinear();
       refSlider.current.setLinear();
+      refNavigationButton.current.setLinear();
     }
   };
   const scrollToFlatlist = (posY) => {
@@ -127,17 +142,25 @@ export default function ChapterScreen({ route, navigation }) {
           refSlider.current.setState({ value: e.nativeEvent.contentOffset.y })
         }
       />
+
       <Linear
         ref={refLinear}
         navigation={navigation}
         mangaTitle={mangaTitle}
         chapterName={chapterName}
         dataChapter={dataChapter}
+        changeData={changeData}
       />
       <SliderScroll
         ref={refSlider}
         value={cur_posY}
         scrollOffset={scrollToFlatlist}
+      />
+      <NavigateButton
+        ref={refNavigationButton}
+        changeData={changeData}
+        dataChapter={dataChapter}
+        saveOrder={saveOrder}
       />
     </View>
   );

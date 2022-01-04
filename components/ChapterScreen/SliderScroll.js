@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, Text, Dimensions, StyleSheet, Animated } from "react-native";
+import {
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  Animated,
+  Pressable,
+} from "react-native";
 import { Slider } from "@miblanchard/react-native-slider";
 import { Color } from "../../variable/Color";
 
@@ -44,7 +51,7 @@ export default class SliderScroll extends Component {
       <View
         style={[
           styles.containerSlider,
-          this.state.linearVisible && { opacity: 0.95, zIndex: 2 },
+          this.state.linearVisible && { opacity: 0.95, zIndex: 4 },
         ]}
       >
         <Slider

@@ -99,13 +99,7 @@ export default function MangaScreen({ route, navigation }) {
         </View>
       </Animated.View>
 
-      <Header
-        image={dataHeader.ImageAPI}
-        name={dataHeader.Name}
-        like={dataHeader.Likes}
-        view={dataHeader.TotalView}
-        count_chapter={dataBody.length}
-      />
+      <Header data={dataHeader} count_chapter={dataBody.length} />
       <ContainerBody
         data={dataBody}
         status={dataHeader.Status}

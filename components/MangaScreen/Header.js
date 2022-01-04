@@ -6,18 +6,20 @@ import { Font } from "../../variable/Font";
 import { server } from "../../variable/ServerName";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-function Header({ image, name, like, view, count_chapter }) {
+function Header({ data, count_chapter }) {
+  const { ImageAPI, Likes, Name, TotalView, Author } = data;
+
   return (
     <View style={{ backgroundColor: Color.mangaColor }}>
       {/* header chứa cover manga, thông tin manga */}
       <View style={styles.header}>
         <Image
-          source={{ uri: server + image }}
+          source={{ uri: server + ImageAPI }}
           style={styles.mangaCover}
         ></Image>
         <View style={styles.mangaInfo}>
-          <Text style={Font.title}>{name}</Text>
-          <Text style={Font.description}>By Shirahama Kamome</Text>
+          <Text style={Font.title}>{Name}</Text>
+          <Text style={Font.description}>By {Author}</Text>
           <Text style={Font.description}>Fantasy</Text>
           <Text style={Font.description}>{count_chapter} chapters</Text>
           <View
@@ -29,11 +31,11 @@ function Header({ image, name, like, view, count_chapter }) {
           >
             <FontAwesome5 name='readme' size={18} color={Color.white} />
             <Text style={[Font.baseTitle, { marginHorizontal: 10 }]}>
-              {view}
+              {TotalView}
             </Text>
             <AntDesign name='like1' size={18} color='white' />
             <Text style={[Font.baseTitle, { marginHorizontal: 10 }]}>
-              {like}
+              {Likes}
             </Text>
           </View>
         </View>

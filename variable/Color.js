@@ -7,4 +7,6 @@ export const Color = {
   onBaseColor: "#404040",
   blue: "#0073e6",
   gray: "#808080",
+  green: "#33cc33",
+  purple: "#6666ff",
 };

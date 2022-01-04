@@ -7,7 +7,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { set_height_chapter } from "../../redux/actions";
 import { useEffect } from "react";
-import Chaps from "../AllScreen/Chaps";
+import Chaps from "./Chaps";
 import { useState } from "react";
 
 export default function Chapter({

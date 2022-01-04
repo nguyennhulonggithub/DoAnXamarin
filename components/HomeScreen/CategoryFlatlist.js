@@ -9,7 +9,7 @@ export default function CategoryFlatlist({ navigation }) {
   const [data, set_data] = useState([]);
   useEffect(() => {
     axios.get(server + "/genre/Action").then((res) => {
-      set_data(res.data.slice(0, 8));
+      set_data(res.data[0].slice(0, 8));
     });
   }, []);
 
@@ -20,10 +20,12 @@ export default function CategoryFlatlist({ navigation }) {
           <MangaTag
             key={item.idManga}
             idManga={item.idManga}
-            image_api={item.ImageApi}
-            count_chapter={item.count_chapter}
+            image_api={item.ImageAPI}
+            count_chapter={item.Chapter}
             status={item.Status}
-            description={item.Description}
+            new={item.New}
+            hot={item.Hot}
+            save={item.Save}
             navigation={navigation}
           />
         );

@@ -4,40 +4,16 @@ import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
 import { server } from "../../variable/ServerName";
 
-export default function Chaps({
-  data,
-  navigation,
-  reverseBoolean,
-  mangaTitle,
-}) {
-  const [reverse_data, set_reverse_data] = useState([]);
-  const [map_data, set_map_data] = useState([]);
-  useEffect(() => {
-    set_map_data(data);
-    set_reverse_data(data.slice().reverse());
-  }, [data]);
-
-  useEffect(() => {
-    if (reverseBoolean) {
-      set_map_data(reverse_data);
-    } else {
-      set_map_data(data);
-    }
-  }, [reverseBoolean]);
-
+export default function ChapsNavigate({ data, changeData, hidePopup }) {
   return (
     <>
-      {map_data.map((item) => {
+      {data.map((item) => {
         return (
           <Pressable
             key={item.idChapter}
             onPress={() => {
-              navigation.navigate("ChapterScreen", {
-                dataChapter: data,
-                chapterId: item.idChapter,
-                chapterName: item.Name,
-                mangaTitle: mangaTitle,
-              });
+              changeData(item.idChapter, item.Name, item.Order);
+              hidePopup();
             }}
           >
             <View style={styles.container}>

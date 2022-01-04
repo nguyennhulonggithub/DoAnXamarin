@@ -14,65 +14,10 @@ import { Color } from "../../variable/Color";
 import { Ionicons } from "@expo/vector-icons";
 import { Font } from "../../variable/Font";
 import { Entypo } from "@expo/vector-icons";
-import Chaps from "../AllScreen/Chaps";
+import ChapsNavigate from "../ChapterScreen/ChapsNavigate";
+
 //pop up login
 
-const data = [
-  {
-    image: "../../assets/genre/action.png",
-    name: "Chapter 1",
-    status: "free",
-    key: 1,
-  },
-  {
-    image: "../../assets/genre/romance.png",
-    name: "Chapter 2",
-    status: "free",
-    key: 2,
-  },
-  {
-    image: "../../assets/genre/action.png",
-    name: "Chapter 3",
-    status: "paid",
-    key: 3,
-  },
-  {
-    image: "../../assets/genre/action.png",
-    name: "Chapter 1",
-    status: "free",
-    key: 4,
-  },
-  {
-    image: "../../assets/genre/romance.png",
-    name: "Chapter 2",
-    status: "free",
-    key: 5,
-  },
-  {
-    image: "../../assets/genre/action.png",
-    name: "Chapter 3",
-    status: "paid",
-    key: 6,
-  },
-  {
-    image: "../../assets/genre/action.png",
-    name: "Chapter 1",
-    status: "free",
-    key: 7,
-  },
-  {
-    image: "../../assets/genre/romance.png",
-    name: "Chapter 2",
-    status: "free",
-    key: 8,
-  },
-  {
-    image: "../../assets/genre/action.png",
-    name: "Chapter 3",
-    status: "paid",
-    key: 9,
-  },
-];
 class ChapterPopup extends Component {
   constructor(props) {
     super(props);
@@ -115,7 +60,11 @@ class ChapterPopup extends Component {
               </View>
               <View style={styles.line} />
               <ScrollView>
-                <Chaps data={this.props.dataChapter} />
+                <ChapsNavigate
+                  data={this.props.dataChapter}
+                  changeData={this.props.changeData}
+                  hidePopup={() => this.setModalVisible(false)}
+                />
               </ScrollView>
             </View>
           </TouchableWithoutFeedback>
