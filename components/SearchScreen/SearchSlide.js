@@ -63,11 +63,17 @@ export default function SearchSlide() {
         extrapolate: "clamp",
       });
     }
-
+    const backgroundref = translation.interpolate({
+      inputRange: [8, 16],
+      outputRange: [Color.gray, "black"],
+    });
     return (
       <Animated.View
         key={item.key}
-        style={[styles.circle, { width: translation }]}
+        style={[
+          styles.circle,
+          { width: translation, backgroundColor: backgroundref },
+        ]}
       ></Animated.View>
     );
   }
