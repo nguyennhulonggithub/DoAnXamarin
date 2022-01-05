@@ -14,7 +14,7 @@ export default function New({ status }) {
           style={{ marginRight: 5 }}
         />
       )}
-      <Text style={[styles.description, { color: Color.green }]}>NEW</Text>
+      <Text style={styles.description}>NEW</Text>
     </View>
   );
 }
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 15,
     fontWeight: "700",
+    color: Color.green,
   },
   containerDescription: { flexDirection: "row", alignItems: "center" },
 });

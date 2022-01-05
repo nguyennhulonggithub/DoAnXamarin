@@ -5,47 +5,29 @@ import { Font } from "../../variable/Font";
 import { server } from "../../variable/ServerName";
 import { Ionicons } from "@expo/vector-icons";
 import { Color } from "../../variable/Color";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import Circle from "../AllScreen/Circle";
 import New from "../AllScreen/New";
+import Save from "../AllScreen/Save";
+import Hot from "../AllScreen/Hot";
 function MangaTag(props) {
   function description() {
     if (props.save) {
-      return (
-        <View style={styles.containerDescription}>
-          <MaterialCommunityIcons name='crown' size={18} color={Color.purple} />
-          <Text style={[styles.description, { color: Color.purple }]}>
-            SAVE {props.save}%
-          </Text>
-        </View>
-      );
+      return <Save save={props.save} />;
     } else if (props.new) {
       if (props.hot) {
         return (
           <View style={styles.containerDescription}>
             <New status={props.status} />
             <Circle />
-            <Text
-              style={[
-                styles.description,
-                { color: Color.button, marginLeft: 0 },
-              ]}
-            >
-              HOT
-            </Text>
+            <Hot />
           </View>
         );
       } else {
         return <New status={props.status} />;
       }
     } else if (props.hot) {
-      return (
-        <Text
-          style={[styles.description, { color: Color.button, marginLeft: 0 }]}
-        >
-          HOT
-        </Text>
-      );
+      return <Hot />;
     }
   }
   return (

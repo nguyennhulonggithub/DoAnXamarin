@@ -19,6 +19,7 @@ import ListFlatlist from "../components/HomeScreen/ListFlatlist";
 import { useEffect } from "react";
 import axios from "axios";
 import { server } from "../variable/ServerName";
+import Banner from "../components/HomeScreen/Banner";
 
 //màn hình HomeScreen
 export default function HomeScreen({ navigation }) {
@@ -65,12 +66,7 @@ export default function HomeScreen({ navigation }) {
         )}
       >
         {/*banner to trên cùng*/}
-        <View style={styles.banner}>
-          <ImageBackground
-            style={styles.bannerImg}
-            source={{ uri: server + "/m/1/cover/cover.jpg" }}
-          ></ImageBackground>
-        </View>
+        <Banner navigation={navigation} />
 
         {/*resume reading*/}
         <View style={[styles.list]}>
@@ -151,19 +147,7 @@ const styles = StyleSheet.create({
     top: 0,
     zIndex: 1,
   },
-  //banner màn hình chính
-  banner: {
-    width: "100%",
-    height: 400,
-    backgroundColor: "white",
-  },
-  //imgbackground của banner
-  bannerImg: {
-    flex: 1,
-    width: null,
-    height: null,
-    resizeMode: "cover",
-  },
+
   //list của một mục truyện tranh
   list: {
     height: 250,
