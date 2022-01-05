@@ -25,7 +25,7 @@ export default function MangaScreen({ route, navigation }) {
   const [dataBody, set_dataBody] = useState([]);
   useEffect(() => {
     axios.get(server + "/manga/" + route.params.idManga).then((res) => {
-      set_dataHeader(res.data[0]);
+      set_dataHeader(res.data[0][0]);
     });
     axios
       .get(server + "/manga/" + route.params.idManga + "/chapter")

@@ -49,7 +49,10 @@ export default class Linear extends Component {
         colors={["#050505", "#403f3f", "rgba(255, 255, 255, 0)"]}
         style={[
           styles.linear,
-          this.state.linearVisible && { opacity: 0.95, zIndex: 2 },
+          this.state.linearVisible && {
+            opacity: 0.95,
+            zIndex: 2,
+          },
         ]}
       >
         <Text style={styles.title}>{this.props.mangaTitle}</Text>
@@ -92,6 +95,7 @@ const styles = StyleSheet.create({
     top: 0,
     opacity: 0,
     zIndex: 0,
+    elevation: 2,
   },
   title: {
     position: "absolute",

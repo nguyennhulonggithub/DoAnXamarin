@@ -6,6 +6,7 @@ import { server } from "../../variable/ServerName";
 import { Ionicons } from "@expo/vector-icons";
 import { Color } from "../../variable/Color";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Circle from "../AllScreen/Circle";
 function MangaTag(props) {
   function description() {
     if (props.save) {
@@ -25,8 +26,13 @@ function MangaTag(props) {
             <Text style={[styles.description, { color: Color.green }]}>
               NEW
             </Text>
-            <View style={styles.circle} />
-            <Text style={[styles.description, { color: Color.button }]}>
+            <Circle />
+            <Text
+              style={[
+                styles.description,
+                { color: Color.button, marginLeft: 0 },
+              ]}
+            >
               HOT
             </Text>
           </View>
@@ -98,13 +104,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "700",
   },
-  circle: {
-    backgroundColor: Color.gray,
-    height: 4,
-    width: 4,
-    borderRadius: 2,
-    marginLeft: 5,
-  },
+
   containerDescription: { flexDirection: "row", alignItems: "center" },
 });
 

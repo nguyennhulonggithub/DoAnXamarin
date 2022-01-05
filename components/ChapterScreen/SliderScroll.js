@@ -99,5 +99,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     zIndex: 0,
     opacity: 0,
+    elevation: 2,
   },
 });

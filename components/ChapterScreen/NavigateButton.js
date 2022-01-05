@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     opacity: 0,
     zIndex: 0,
     justifyContent: "space-between",
+    elevation: 2,
   },
   pressButton: {
     backgroundColor: Color.defaultColor,

@@ -6,8 +6,13 @@ import { Font } from "../../variable/Font";
 import { server } from "../../variable/ServerName";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import Circle from "../AllScreen/Circle";
 function Header({ data, count_chapter }) {
-  const { ImageAPI, Likes, Name, TotalView, Author } = data;
+  const { ImageAPI, Likes, Name, TotalView, Author, Genre } = data;
+  let dataGenre = [];
+  if (Genre) {
+    dataGenre = Genre.split(",");
+  }
 
   return (
     <View style={{ backgroundColor: Color.mangaColor }}>
@@ -20,7 +25,35 @@ function Header({ data, count_chapter }) {
         <View style={styles.mangaInfo}>
           <Text style={Font.title}>{Name}</Text>
           <Text style={Font.description}>By {Author}</Text>
-          <Text style={Font.description}>Fantasy</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              width: 220,
+            }}
+          >
+            {dataGenre.map((item, index) => {
+              if (index != dataGenre.length - 1) {
+                return (
+                  <View
+                    key={index}
+                    style={{ alignItems: "center", flexDirection: "row" }}
+                  >
+                    <Text style={Font.description}>{item}</Text>
+                    <Circle />
+                  </View>
+                );
+              }
+              return (
+                <View
+                  key={index}
+                  style={{ alignItems: "center", flexDirection: "row" }}
+                >
+                  <Text style={Font.description}>{item}</Text>
+                </View>
+              );
+            })}
+          </View>
           <Text style={Font.description}>{count_chapter} chapters</Text>
           <View
             style={{

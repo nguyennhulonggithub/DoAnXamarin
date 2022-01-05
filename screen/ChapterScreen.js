@@ -21,6 +21,7 @@ import { Font } from "../variable/Font";
 import Linear from "../components/ChapterScreen/Linear";
 import SliderScroll from "../components/ChapterScreen/SliderScroll";
 import NavigateButton from "../components/ChapterScreen/NavigateButton";
+import LoadingChapter from "../components/ChapterScreen/LoadingChapter";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -30,18 +31,20 @@ const bottom = (windowHeight / 3) * 2;
 export default function ChapterScreen({ route, navigation }) {
   const { chapterId, mangaTitle, dataChapter, chapterOrder } = route.params;
 
-  const chapterNameRoute = route.params.chapterName;
   const [chapterName, setChapterName] = useState();
   const [data, setdata] = useState([]);
+  const [itemHeights, set_itemHeights] = useState([]);
+  const [saveOrder, set_saveOrder] = useState();
+  const [cur_posY, set_cur_posY] = useState(0);
+  let flag = useRef(0);
 
   const refLinear = useRef();
   const refSlider = useRef();
   const refNavigationButton = useRef();
-
+  const refLoading = useRef();
   const scrollItem = useRef();
-  const [itemHeights, set_itemHeights] = useState([]);
-  const [saveOrder, set_saveOrder] = useState();
-  const [cur_posY, set_cur_posY] = useState(0);
+
+  const chapterNameRoute = route.params.chapterName;
   const length = itemHeights.length - 1;
 
   useEffect(() => {
@@ -51,22 +54,28 @@ export default function ChapterScreen({ route, navigation }) {
   }, []);
 
   const changeData = (_chapterId, _chapterName, _order = 0) => {
+    const cur_flag = flag.current + 1;
+    flag.current = cur_flag;
+    refLoading.current.setState({ show: true });
     axios.get(server + "/chapter/" + _chapterId).then((res) => {
-      setdata(res.data);
-      let array = [];
-      let final_height = 0;
-      res.data.forEach((element) => {
-        let height =
-          Math.floor((windowWidth * element.height) / element.width) + 15;
-        final_height += height;
-        array.push(height);
-      });
+      if (flag.current == cur_flag) {
+        setdata(res.data);
+        let array = [];
+        let final_height = 0;
+        res.data.forEach((element) => {
+          let height =
+            Math.floor((windowWidth * element.height) / element.width) + 15;
+          final_height += height;
+          array.push(height);
+        });
 
-      set_itemHeights(array);
+        set_itemHeights(array);
 
-      refSlider.current.setState({
-        actual_height: final_height - windowHeight,
-      });
+        refSlider.current.setState({
+          actual_height: final_height - windowHeight,
+        });
+        refLoading.current.setState({ show: false });
+      }
     });
 
     setChapterName(_chapterName);
@@ -124,6 +133,8 @@ export default function ChapterScreen({ route, navigation }) {
 
   return (
     <View>
+      <LoadingChapter ref={refLoading} />
+
       <FlatList
         ItemSeparatorComponent={renderSeparator}
         showsVerticalScrollIndicator={false}
@@ -132,6 +143,7 @@ export default function ChapterScreen({ route, navigation }) {
         onScrollBeginDrag={() => {
           refLinear.current.hideLinear();
           refSlider.current.hideLinear();
+          refNavigationButton.current.hideLinear();
         }}
         keyExtractor={(item) => item.imgUrl}
         renderItem={renderItem}
@@ -156,6 +168,7 @@ export default function ChapterScreen({ route, navigation }) {
         value={cur_posY}
         scrollOffset={scrollToFlatlist}
       />
+
       <NavigateButton
         ref={refNavigationButton}
         changeData={changeData}
