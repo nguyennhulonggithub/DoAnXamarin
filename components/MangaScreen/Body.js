@@ -9,13 +9,12 @@ export default function Body({
   data,
   translate,
   navigation,
-  status,
-  like,
-  subscribe,
-  summary,
-  read,
-  mangaTitle,
+
+  dataHeader,
 }) {
+  const { Status, Summary, Likes, Subscribes, TotalView, Name, Genre } =
+    dataHeader;
+
   const renderTabBar = (props) => (
     <TabBar
       {...props}
@@ -41,20 +40,21 @@ export default function Body({
         return (
           <Chapter
             data={data}
-            status={status}
+            status={Status}
             index={index}
+            mangaTitle={Name}
             navigation={navigation}
-            mangaTitle={mangaTitle}
           />
         );
       case "Detail":
         return (
           <Detail
             index={index}
-            like={like}
-            subscribe={subscribe}
-            summary={summary}
-            read={read}
+            like={Likes}
+            subscribe={Subscribes}
+            summary={Summary}
+            read={TotalView}
+            genre={Genre}
           />
         );
 

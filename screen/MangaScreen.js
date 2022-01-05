@@ -102,13 +102,8 @@ export default function MangaScreen({ route, navigation }) {
       <Header data={dataHeader} count_chapter={dataBody.length} />
       <ContainerBody
         data={dataBody}
-        status={dataHeader.Status}
-        summary={dataHeader.Summary}
-        like={dataHeader.Likes}
-        subscribe={dataHeader.Subscribes}
-        read={dataHeader.TotalView}
+        dataHeader={dataHeader}
         translate={translateTab}
-        mangaTitle={dataHeader.Name}
         navigation={navigation}
       />
     </Animated.ScrollView>

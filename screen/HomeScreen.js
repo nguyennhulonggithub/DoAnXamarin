@@ -19,6 +19,7 @@ import ResumeReading from "../components/HomeScreen/ResumeReading";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ExploreCataLog from "../components/HomeScreen/ExploreCataLog";
 import CategoryFlatlist from "../components/HomeScreen/CategoryFlatlist";
+import ListFlatlist from "../components/HomeScreen/ListFlatlist";
 
 //màn hình HomeScreen
 export default function HomeScreen({ navigation }) {
@@ -75,11 +76,17 @@ export default function HomeScreen({ navigation }) {
             <ResumeReading />
           </ScrollView>
         </View>
-
+        {/* New titles for you */}
+        <View style={styles.action_list}>
+          <Text style={[Font.homeTitle, { padding: 15 }]}>
+            New titles for you
+          </Text>
+          <ListFlatlist navigation={navigation} type='new_title' />
+        </View>
         {/*action title*/}
         <View style={styles.action_list}>
           <Text style={[Font.homeTitle, { padding: 15 }]}>Action Title</Text>
-          <CategoryFlatlist navigation={navigation} />
+          <CategoryFlatlist navigation={navigation} type='Action' />
         </View>
 
         {/*explore inkr catalog*/}

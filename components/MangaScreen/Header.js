@@ -12,7 +12,7 @@ import BorderTags from "../AllScreen/BorderTags";
 function Header({ data, count_chapter }) {
   const { ImageAPI, Likes, Name, TotalView, Author, Genre, New, Hot, Status } =
     data;
-  console.log(New, Hot);
+
   let dataGenre = [];
   const dataTags = [];
   if (Genre) {

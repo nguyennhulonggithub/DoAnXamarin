@@ -11,10 +11,20 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import Stats from "../AllScreen/Stats";
 import SimilarTitle from "./SimilarTitle";
 
-export default function Detail({ index, summary, read, subscribe, like }) {
+export default function Detail({
+  index,
+  summary,
+  read,
+  subscribe,
+  like,
+  genre,
+}) {
   const dispatch = useDispatch();
   const cur_height = useRef(0);
-  const data = ["Sports", "Ecomomic"];
+  let data = [];
+  if (genre) {
+    data = genre.split(",");
+  }
   function set_height_onPress() {
     dispatch(set_height_chapter(cur_height.current));
   }

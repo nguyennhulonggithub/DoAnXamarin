@@ -59,10 +59,12 @@ function MangaTag(props) {
         style={styles.manga}
         source={{ uri: server + props.image_api }}
       ></Image>
-      <Text style={[Font.description, { marginTop: 10 }]}>
-        {props.count_chapter} chapters
+      {props.first_line && (
+        <Text style={Font.description}>{props.first_line}</Text>
+      )}
+      <Text style={[Font.description, { marginTop: 2 }]}>
+        {props.second_line}
       </Text>
-      <Text style={[Font.description, { marginTop: 2 }]}>{props.status}</Text>
       <View style={{ flexDirection: "row", marginTop: 8 }}>
         {description()}
         {/* <Text style={Font.baseTitle}>{props.hot}</Text> */}
@@ -88,6 +90,7 @@ const styles = StyleSheet.create({
     width: 140,
     resizeMode: "cover",
     borderRadius: 10,
+    marginBottom: 10,
   },
   //title của manga
   description: {
