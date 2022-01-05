@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Color } from "../../variable/Color";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Circle from "../AllScreen/Circle";
+import New from "../AllScreen/New";
 function MangaTag(props) {
   function description() {
     if (props.save) {
@@ -18,14 +19,11 @@ function MangaTag(props) {
           </Text>
         </View>
       );
-    } else if (props.new != 1) {
+    } else if (props.new) {
       if (props.hot) {
         return (
           <View style={styles.containerDescription}>
-            <Ionicons name='ios-book-outline' size={18} color={Color.green} />
-            <Text style={[styles.description, { color: Color.green }]}>
-              NEW
-            </Text>
+            <New status={props.status} />
             <Circle />
             <Text
               style={[
@@ -38,14 +36,7 @@ function MangaTag(props) {
           </View>
         );
       } else {
-        return (
-          <View style={styles.containerDescription}>
-            <Ionicons name='ios-book-outline' size={15} color={Color.green} />
-            <Text style={[styles.description, { color: Color.green }]}>
-              NEW
-            </Text>
-          </View>
-        );
+        return <New status={props.status} />;
       }
     } else if (props.hot) {
       return (

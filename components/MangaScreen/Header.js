@@ -7,11 +7,22 @@ import { server } from "../../variable/ServerName";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import Circle from "../AllScreen/Circle";
+import BorderTags from "../AllScreen/BorderTags";
+
 function Header({ data, count_chapter }) {
-  const { ImageAPI, Likes, Name, TotalView, Author, Genre } = data;
+  const { ImageAPI, Likes, Name, TotalView, Author, Genre, New, Hot, Status } =
+    data;
+  console.log(New, Hot);
   let dataGenre = [];
+  const dataTags = [];
   if (Genre) {
     dataGenre = Genre.split(",");
+  }
+  if (New) {
+    dataTags.push("New");
+  }
+  if (Hot) {
+    dataTags.push("Hot");
   }
 
   return (
@@ -30,6 +41,7 @@ function Header({ data, count_chapter }) {
               flexDirection: "row",
               flexWrap: "wrap",
               width: 220,
+              marginTop: 2,
             }}
           >
             {dataGenre.map((item, index) => {
@@ -54,7 +66,7 @@ function Header({ data, count_chapter }) {
               );
             })}
           </View>
-          <Text style={Font.description}>{count_chapter} chapters</Text>
+          {/* <Text style={Font.description}>{count_chapter} chapters</Text> */}
           <View
             style={{
               flexDirection: "row",
@@ -70,6 +82,9 @@ function Header({ data, count_chapter }) {
             <Text style={[Font.baseTitle, { marginHorizontal: 10 }]}>
               {Likes}
             </Text>
+          </View>
+          <View style={styles.borderTags}>
+            <BorderTags data={dataTags} status={Status} />
           </View>
         </View>
       </View>
@@ -92,6 +107,12 @@ const styles = StyleSheet.create({
   },
   mangaInfo: {
     marginLeft: 20,
+  },
+  borderTags: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    flexDirection: "row",
   },
 });
 
