@@ -21,64 +21,16 @@ import SearchPopup from "../components/Popup/SearchPopup";
 import Test from "./Test";
 import SearchTabBar from "../components/SearchScreen/SearchTabBar";
 import ExploreMore from "../components/SearchScreen/ExploreMore";
+import ParallaxSlide from "../components/MangaList/ParallaxSlide";
 
 export default function SearchScreen({ navigation }) {
-  const scroll_Pallax = useRef(new Animated.Value(0)).current;
-
   return (
     <View>
       <SearchTabBar />
       <ScrollView>
-        <View style={{ height: 800, backgroundColor: Color.defaultColor }}>
+        <View style={{ height: 920, backgroundColor: Color.defaultColor }}>
           <SearchSlide />
-
-          <Text style={[Font.title, { marginTop: 20, marginLeft: 20 }]}>
-            New & Noteworthy
-          </Text>
-
-          <Animated.ScrollView
-            horizontal
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { x: scroll_Pallax } } }],
-              { useNativeDriver: true }
-            )}
-          >
-            <BigManga
-              count_chapter='44'
-              time_update='On Going'
-              status='New'
-              scroll_Pallax={scroll_Pallax}
-              index={0}
-            />
-            <BigManga
-              count_chapter='50'
-              time_update='Update Weekly'
-              status='New'
-              scroll_Pallax={scroll_Pallax}
-              index={1}
-            />
-            <BigManga
-              count_chapter='90'
-              time_update='On Going'
-              status='New'
-              scroll_Pallax={scroll_Pallax}
-              index={2}
-            />
-            <BigManga
-              count_chapter='90'
-              time_update='On Going'
-              status='New'
-              scroll_Pallax={scroll_Pallax}
-              index={3}
-            />
-            <BigManga
-              count_chapter='90'
-              time_update='On Going'
-              status='New'
-              scroll_Pallax={scroll_Pallax}
-              index={4}
-            />
-          </Animated.ScrollView>
+          <ParallaxSlide />
         </View>
         <View
           style={{
@@ -86,14 +38,7 @@ export default function SearchScreen({ navigation }) {
             flex: 1,
           }}
         >
-          <View
-            style={{
-              backgroundColor: Color.baseColor,
-              width: "100%",
-              height: 420,
-              marginBottom: 30,
-            }}
-          >
+          <View style={styles.container_highlight}>
             <Text
               style={[
                 Font.title,
@@ -106,14 +51,7 @@ export default function SearchScreen({ navigation }) {
             <TabScrollView />
           </View>
           {/* Top new releases */}
-          <View
-            style={[
-              styles.tab,
-              {
-                height: 500,
-              },
-            ]}
-          >
+          <View style={[styles.tab]}>
             <Text
               style={[
                 Font.title,
@@ -127,22 +65,8 @@ export default function SearchScreen({ navigation }) {
           <Text style={[Font.homeTitle, { marginLeft: 18, marginBottom: 18 }]}>
             Explore More
           </Text>
-          <View
-            style={{
-              backgroundColor: Color.defaultColor,
-              alignItems: "center",
-              width: "100%",
-              height: 600,
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: Color.baseColor,
-                height: 480,
-                width: "90%",
-                borderRadius: 15,
-              }}
-            >
+          <View style={styles.exploreMoreContainer}>
+            <View style={styles.inside_exploreMore}>
               <ExploreMore />
             </View>
           </View>
@@ -167,6 +91,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     opacity: 0.5,
     flexDirection: "row",
+  },
+  container_highlight: {
+    backgroundColor: Color.baseColor,
+    width: "100%",
+    height: 420,
+    marginBottom: 30,
   },
   input: {
     marginLeft: 15,
@@ -202,7 +132,19 @@ const styles = StyleSheet.create({
   tab: {
     backgroundColor: Color.baseColor,
     width: "100%",
-
+    height: 500,
     marginBottom: 30,
+  },
+  exploreMoreContainer: {
+    backgroundColor: Color.defaultColor,
+    alignItems: "center",
+    width: "100%",
+    height: 600,
+  },
+  inside_exploreMore: {
+    backgroundColor: Color.baseColor,
+    height: 480,
+    width: "90%",
+    borderRadius: 15,
   },
 });

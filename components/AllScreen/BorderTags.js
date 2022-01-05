@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
 import New from "./New";
+import Save from "./Save";
 
 export default function BorderTags({ data, status }) {
   return (
@@ -19,6 +20,12 @@ export default function BorderTags({ data, status }) {
             return (
               <View key={index} style={styles.containerHot}>
                 <Text style={styles.hot}>HOT</Text>
+              </View>
+            );
+          } else if (typeof item == "number") {
+            return (
+              <View key={index} style={styles.containerHot}>
+                <Save save={item} />
               </View>
             );
           }

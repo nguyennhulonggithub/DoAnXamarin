@@ -11,14 +11,19 @@ import {
 import { Color } from "../../variable/Color";
 
 import { Font } from "../../variable/Font";
+import { server } from "../../variable/ServerName";
+import { LinearGradient } from "expo-linear-gradient";
+import Circle from "../AllScreen/Circle";
+import BorderTags from "../AllScreen/BorderTags";
 
 function BigManga(props) {
-  const { time_update, count_chapter, status, scroll_Pallax, index } = props;
-  // const { index, scroll_Pallax, status, time_update, count_chapter } = props;
+  const { status, count_chapter, scroll_Pallax, index, imageAPI, data_status } =
+    props;
+  // const { index, scroll_Pallax, status, status, count_chapter } = props;
 
   const translation = scroll_Pallax.interpolate({
-    inputRange: [(index - 1) * 280, index * 280, (index + 1) * 280],
-    outputRange: [-45, 0, 45],
+    inputRange: [(index - 1) * 350, index * 350, (index + 1) * 350],
+    outputRange: [-60, 0, 60],
     extrapolate: "clamp",
   });
   return (
@@ -26,60 +31,64 @@ function BigManga(props) {
       <View style={styles.cover_manga}>
         <Animated.Image
           style={[styles.manga, { transform: [{ translateX: translation }] }]}
-          source={require("../../assets/home/home-manga-1.jpg")}
+          source={{ uri: server + imageAPI }}
         />
       </View>
-      <View style={styles.text_inside}>
+
+      <LinearGradient
+        // Background Linear Gradient
+        colors={["rgba(255, 255, 255, 0)", "#403f3f", "#050505"]}
+        style={[styles.linear]}
+      >
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
+            marginBottom: 10,
           }}
         >
-          <Text style={[Font.base_description, { color: "black" }]}>
-            {count_chapter} Chapters
-          </Text>
-          <View
-            style={{
-              height: 5,
-              width: 5,
-              marginHorizontal: 5,
-              marginTop: 5,
-              borderRadius: 2.5,
-              backgroundColor: "white",
-            }}
-          ></View>
-          <Text style={[Font.base_description, { color: "black" }]}>
-            {time_update}
-          </Text>
+          <Text style={[Font.base_description]}>{count_chapter} Chapters</Text>
+          <Circle />
+          <Text style={[Font.base_description]}>{status}</Text>
         </View>
-        <Text style={[Font.baseTitle, styles.status_text]}>{status}</Text>
-      </View>
+        <BorderTags data={data_status} status={status} />
+      </LinearGradient>
     </Pressable>
   );
 }
 
 //style sheet
 const styles = StyleSheet.create({
+  linear: {
+    paddingTop: 60,
+    width: 320,
+    height: 150,
+    position: "absolute",
+    bottom: 0,
+    opacity: 0.8,
+    zIndex: 2,
+    elevation: 2,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   viewManga: {
-    height: 350,
-    width: 280,
+    height: 450,
+    width: 350,
     backgroundColor: Color.defaultColor,
     borderRadius: 10,
     marginTop: 20,
     alignItems: "center",
   },
   cover_manga: {
-    width: 250,
-    height: 350,
-
+    width: 320,
+    height: 450,
     alignItems: "center",
     overflow: "hidden",
-    borderRadius: 10,
+    borderRadius: 20,
   },
   manga: {
-    height: 350,
-    width: 300,
+    height: 450,
+    width: 380,
     resizeMode: "cover",
   },
   text_inside: {
