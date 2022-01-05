@@ -19,6 +19,7 @@ import { Font } from "../variable/Font";
 import axios from "axios";
 import { server } from "../variable/ServerName";
 import ContainerBody from "../components/MangaScreen/ContainerBody";
+import MangaSetting from "../components/Popup/MangaSettings";
 
 export default function MangaScreen({ route, navigation }) {
   const [dataHeader, set_dataHeader] = useState([]);
@@ -36,6 +37,8 @@ export default function MangaScreen({ route, navigation }) {
   }, []);
 
   const ref = useRef(new Animated.Value(0)).current;
+  const refMangaSettings = useRef();
+
   const translation = ref.interpolate({
     inputRange: [0, 232],
     outputRange: [0, 1],
@@ -90,12 +93,18 @@ export default function MangaScreen({ route, navigation }) {
             size={20}
             color={Color.white}
           />
-          <Entypo
-            name='dots-three-horizontal'
-            size={20}
-            color={Color.white}
-            style={{ marginHorizontal: 15 }}
-          />
+          <Pressable
+            onPress={() =>
+              refMangaSettings.current.setState({ isShowing: true })
+            }
+          >
+            <Entypo
+              name='dots-three-horizontal'
+              size={20}
+              color={Color.white}
+              style={{ marginHorizontal: 15 }}
+            />
+          </Pressable>
         </View>
       </Animated.View>
 
@@ -105,6 +114,11 @@ export default function MangaScreen({ route, navigation }) {
         dataHeader={dataHeader}
         translate={translateTab}
         navigation={navigation}
+      />
+      <MangaSetting
+        ref={refMangaSettings}
+        name={dataHeader.Name}
+        image={dataHeader.ImageAPI}
       />
     </Animated.ScrollView>
   );

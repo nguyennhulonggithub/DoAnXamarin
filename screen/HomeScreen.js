@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { server } from "../variable/ServerName";
 import Banner from "../components/HomeScreen/Banner";
+import MangaSetting from "../components/Popup/MangaSettings";
 
 //màn hình HomeScreen
 export default function HomeScreen({ navigation }) {
