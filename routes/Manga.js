@@ -14,6 +14,40 @@ router.get("/", (req, res) => {
     });
 });
 
+//lấy random manga 
+router.get("/random", (req, res) => {
+    let sql = "call Manga_random();";
+    sqlConnection(sql, (err, results) => {
+        if (err) {
+            res.send("Chapter or Manga not exist");
+        } else {
+            idManga = req.params.idManga;
+            if (results.length == 0) {
+                res.send("Chapter not exist");
+            } else {
+                res.send(results);
+            }
+        }
+    });
+});
+
+//lấy random manga trong thể loại
+router.get("/random/:genreName", (req, res) => {
+    let sql = "call Manga_random_genre(?);";
+    sqlConnection(sql, [req.params.genreName], (err, results) => {
+        if (err) {
+            res.send("Chapter or Manga not exist");
+        } else {
+            idManga = req.params.idManga;
+            if (results.length == 0) {
+                res.send("Chapter not exist");
+            } else {
+                res.send(results);
+            }
+        }
+    });
+});
+
 //show thông tin manga theo id
 router.get("/:idManga", (req, res) => {
     // lấy thông tin của manga
@@ -48,9 +82,5 @@ router.get("/:idManga/chapter", (req, res) => {
         }
     });
 });
-
-// router.gett("/:idManga/c/:idChapter", (req, res) => {
-//     sql
-// })
 
 module.exports = router;

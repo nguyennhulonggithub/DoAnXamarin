@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const sqlConnection = require("./sqlConnection");
 
+
 //show toàn bộ thể loại
 router.get("/", (req, res) => {
     let sql = "select * from category";
@@ -31,7 +32,7 @@ router.get("/:nameGenre", (req, res) => {
 });
 
 //Trending in genre
-//Pick random
+//Lấy theo Hot is not null
 router.get("/:nameGenre/trending", (req, res) => {
     let sql = 'call Genre_trending(?)'
     sqlConnection(sql, [req.params.nameGenre], (err, results) => {
@@ -48,7 +49,7 @@ router.get("/:nameGenre/trending", (req, res) => {
 });
 
 //Highlighted titles
-//Lấy random theo New, Hot, Save is not null
+//Lấy theo New, Hot, Save is not null
 router.get("/:nameGenre/highlight_title", (req, res) => {
     let sql = 'call Genre_highlight_title(?)';
     sqlConnection(sql, [req.params.nameGenre], (err, results) => {
