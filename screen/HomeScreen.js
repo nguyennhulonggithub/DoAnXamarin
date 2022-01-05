@@ -8,18 +8,17 @@ import {
   ImageBackground,
   Animated,
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Color } from "../variable/Color";
 import { Font } from "../variable/Font";
-import MangaTag from "../components/MangaList/MangaTag";
-import GenreTag from "../components/HomeScreen/GenreTag";
 import ResumeReading from "../components/HomeScreen/ResumeReading";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ExploreCataLog from "../components/HomeScreen/ExploreCataLog";
 import CategoryFlatlist from "../components/HomeScreen/CategoryFlatlist";
 import ListFlatlist from "../components/HomeScreen/ListFlatlist";
+import { useEffect } from "react";
+import axios from "axios";
+import { server } from "../variable/ServerName";
 
 //màn hình HomeScreen
 export default function HomeScreen({ navigation }) {
@@ -29,7 +28,13 @@ export default function HomeScreen({ navigation }) {
     outputRange: [0, 1],
     extrapolate: "clamp",
   });
+  const [data, set_data] = useState([]);
 
+  useEffect(() => {
+    axios.get(server + "/genre").then((res) => {
+      set_data(res.data);
+    });
+  }, []);
   return (
     <View style={styles.container}>
       <Animated.View
@@ -63,7 +68,7 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.banner}>
           <ImageBackground
             style={styles.bannerImg}
-            source={require("../assets/home/home-manga-1.jpg")}
+            source={{ uri: server + "/m/1/cover/cover.jpg" }}
           ></ImageBackground>
         </View>
 
@@ -79,22 +84,51 @@ export default function HomeScreen({ navigation }) {
         {/* New titles for you */}
         <View style={styles.action_list}>
           <Text style={[Font.homeTitle, { padding: 15 }]}>
-            New titles for you
+            New Titles For You
           </Text>
           <ListFlatlist navigation={navigation} type='new_title' />
         </View>
-        {/*action title*/}
+        {/* Top pick for you */}
         <View style={styles.action_list}>
-          <Text style={[Font.homeTitle, { padding: 15 }]}>Action Title</Text>
-          <CategoryFlatlist navigation={navigation} type='Action' />
+          <Text style={[Font.homeTitle, { padding: 15 }]}>
+            Top Picks For You
+          </Text>
+          <ListFlatlist navigation={navigation} type='top_pick' />
         </View>
+        {data.map((item, index) => {
+          return (
+            <View key={index} style={styles.action_list}>
+              <Text style={[Font.homeTitle, { padding: 15 }]}>
+                {item.Name} Titles
+              </Text>
+              <CategoryFlatlist
+                navigation={navigation}
+                type={item.Name}
+                other=''
+              />
+            </View>
+          );
+        })}
+        {data.map((item, index) => {
+          return (
+            <View key={index} style={styles.action_list}>
+              <Text style={[Font.homeTitle, { padding: 15 }]}>
+                Trending In {item.Name}
+              </Text>
+              <CategoryFlatlist
+                navigation={navigation}
+                type={item.Name}
+                other='trending'
+              />
+            </View>
+          );
+        })}
 
-        {/*explore inkr catalog*/}
         <View>
           <Text style={[Font.homeTitle, { padding: 15 }]}>
             Explore INKR Catalog
           </Text>
-          <ExploreCataLog />
+          <ExploreCataLog data={data} />
         </View>
       </Animated.ScrollView>
     </View>

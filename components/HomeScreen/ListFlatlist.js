@@ -12,7 +12,7 @@ export default function ListFlatlist({ navigation, type }) {
       set_data(res.data[0].slice(0, 8));
     });
   }, []);
-  console.log(data);
+
   return (
     <ScrollView horizontal={true}>
       {data.map((item) => {

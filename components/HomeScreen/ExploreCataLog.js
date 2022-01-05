@@ -6,14 +6,7 @@ import GenreTag from "./GenreTag";
 import axios from "axios";
 import { server } from "../../variable/ServerName";
 
-export default function ExploreCataLog() {
-  const [data, set_data] = useState([]);
-  useEffect(() => {
-    axios.get(server + "/genre").then((res) => {
-      set_data(res.data);
-    });
-  }, []);
-
+export default function ExploreCataLog({ data }) {
   return (
     <View style={styles.genreContainer}>
       {data.map((item) => {

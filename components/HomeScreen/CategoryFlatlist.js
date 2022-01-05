@@ -5,11 +5,10 @@ import { View, Text, ScrollView } from "react-native";
 import { server } from "../../variable/ServerName";
 import MangaTag from "../MangaList/MangaTag";
 
-export default function CategoryFlatlist({ navigation, type }) {
-  console.log(type);
+export default function CategoryFlatlist({ navigation, type, other }) {
   const [data, set_data] = useState([]);
   useEffect(() => {
-    axios.get(server + "/genre/" + type).then((res) => {
+    axios.get(server + "/genre/" + type + "/" + other).then((res) => {
       set_data(res.data[0].slice(0, 8));
     });
   }, []);
