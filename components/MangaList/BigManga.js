@@ -17,8 +17,16 @@ import Circle from "../AllScreen/Circle";
 import BorderTags from "../AllScreen/BorderTags";
 
 function BigManga(props) {
-  const { status, count_chapter, scroll_Pallax, index, imageAPI, data_status } =
-    props;
+  const {
+    status,
+    count_chapter,
+    scroll_Pallax,
+    index,
+    imageAPI,
+    data_status,
+    idManga,
+    navigation,
+  } = props;
   // const { index, scroll_Pallax, status, status, count_chapter } = props;
 
   const translation = scroll_Pallax.interpolate({
@@ -26,8 +34,16 @@ function BigManga(props) {
     outputRange: [-60, 0, 60],
     extrapolate: "clamp",
   });
+
   return (
-    <Pressable style={styles.viewManga}>
+    <Pressable
+      style={styles.viewManga}
+      onPress={() =>
+        navigation.navigate("MangaScreen", {
+          idManga: idManga,
+        })
+      }
+    >
       <View style={styles.cover_manga}>
         <Animated.Image
           style={[styles.manga, { transform: [{ translateX: translation }] }]}

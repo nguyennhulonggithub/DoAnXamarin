@@ -30,7 +30,7 @@ export default function SearchScreen({ navigation }) {
       <ScrollView>
         <View style={{ height: 920, backgroundColor: Color.defaultColor }}>
           <SearchSlide />
-          <ParallaxSlide />
+          <ParallaxSlide navigation={navigation} />
         </View>
         <View
           style={{

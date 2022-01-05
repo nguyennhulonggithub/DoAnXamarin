@@ -8,7 +8,7 @@ import { Font } from "../../variable/Font";
 import { server } from "../../variable/ServerName";
 import BigManga from "./BigManga";
 
-export default function ParallaxSlide() {
+export default function ParallaxSlide({ navigation }) {
   const scroll_Pallax = useRef(new Animated.Value(0)).current;
   const [data, set_data] = useState([]);
 
@@ -54,9 +54,11 @@ export default function ParallaxSlide() {
               imageAPI={item.ImageAPI}
               count_chapter={item.Chapter}
               status={item.Status}
+              idManga={item.idManga}
               data_status={data_status}
               scroll_Pallax={scroll_Pallax}
               index={index}
+              navigation={navigation}
             />
           );
         })}
