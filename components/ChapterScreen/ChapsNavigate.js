@@ -22,7 +22,9 @@ export default function ChapsNavigate({ data, changeData, hidePopup }) {
                 source={{ uri: server + item.ImageAPI }}
               />
               <View style={styles.DetailContainer}>
-                <Text style={Font.baseTitle}>{item.Name}</Text>
+                <Text style={Font.baseTitle}>
+                  Chapter {item.Order}: {item.Name}
+                </Text>
                 <Text style={Font.baseTitle}>{item.status}</Text>
               </View>
             </View>
