@@ -133,4 +133,21 @@ router.get("/:nameGenre/top_new_release", (req, res) => {
     });
 })
 
+//Hot updates
+//Lấy theo Hot, New is not null
+router.get("/:nameGenre/hot_update", (req, res) => {
+    let sql = 'call Genre_hot_update(?)';
+    sqlConnection(sql, [req.params.nameGenre], (err, results) => {
+        if (err) {
+            res.send(err)
+        } else {
+            if (results.length == 0) {
+                res.send('No manga available');
+            } else {
+                res.send(results);
+            }
+        }
+    });
+})
+
 module.exports = router;
