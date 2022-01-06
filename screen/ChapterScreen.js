@@ -11,13 +11,10 @@ import {
   TouchableWithoutFeedback,
   View,
   StyleSheet,
-  Pressable,
-  Button,
 } from "react-native";
 import { Color } from "../variable/Color";
 
 import { server } from "../variable/ServerName";
-import { Font } from "../variable/Font";
 import Linear from "../components/ChapterScreen/Linear";
 import SliderScroll from "../components/ChapterScreen/SliderScroll";
 import NavigateButton from "../components/ChapterScreen/NavigateButton";
@@ -29,7 +26,8 @@ const top = windowHeight / 3;
 const bottom = (windowHeight / 3) * 2;
 
 export default function ChapterScreen({ route, navigation }) {
-  const { chapterId, mangaTitle, dataChapter, chapterOrder } = route.params;
+  const { chapterId, mangaTitle, dataChapter, chapterOrder, idManga } =
+    route.params;
 
   const [chapterName, setChapterName] = useState();
   const [data, setdata] = useState([]);

@@ -10,15 +10,13 @@ import {
   Pressable,
 } from "react-native";
 import { Color } from "../variable/Color";
-import { AntDesign } from "@expo/vector-icons";
+
 import { Font } from "../variable/Font";
 import SearchSlide from "../components/SearchScreen/SearchSlide";
-import BigManga from "../components/MangaList/BigManga";
-import ScrollManga from "../components/MangaList/ScrollManga";
+
 import TabScrollView from "../components/SearchScreen/TabScrollView";
 import TabScrollNewRelease from "../components/SearchScreen/TabScrollNewRelease";
-import SearchPopup from "../components/Popup/SearchPopup";
-import Test from "./Test";
+
 import SearchTabBar from "../components/SearchScreen/SearchTabBar";
 import ExploreMore from "../components/SearchScreen/ExploreMore";
 import ParallaxSlide from "../components/MangaList/ParallaxSlide";

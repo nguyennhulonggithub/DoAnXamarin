@@ -4,3 +4,8 @@ export const set_height_chapter = (value) => {
     data: value,
   };
 };
+export const set_resume_reading = () => {
+  return {
+    type: "SET_RESUME",
+  };
+};

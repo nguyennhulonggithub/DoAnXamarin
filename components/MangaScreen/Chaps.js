@@ -38,6 +38,7 @@ export default function Chaps({
                 chapterName: item.Name,
                 mangaTitle: mangaTitle,
                 chapterOrder: item.Order,
+                idManga: item.manga_idManga,
               });
             }}
           >
@@ -47,7 +48,9 @@ export default function Chaps({
                 source={{ uri: server + item.ImageAPI }}
               />
               <View style={styles.DetailContainer}>
-                <Text style={Font.baseTitle}>{item.Name}</Text>
+                <Text style={Font.baseTitle}>
+                  Chapter {item.Order}: {item.Name}
+                </Text>
                 <Text style={Font.baseTitle}>{item.status}</Text>
               </View>
             </View>

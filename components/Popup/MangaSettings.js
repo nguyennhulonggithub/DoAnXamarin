@@ -11,6 +11,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { server } from "../../variable/ServerName";
 import { Color } from "../../variable/Color";
@@ -88,8 +89,8 @@ export default class MangaSetting extends Component {
               </Pressable>
               <Line />
               <Pressable style={styles.row}>
-                <MaterialIcons name='people' size={24} color='white' />
-                <Text style={styles.title}>Refer Friends</Text>
+                <FontAwesome name='bell-o' size={24} color='white' />
+                <Text style={styles.title}>Subscribe</Text>
               </Pressable>
             </View>
           </View>

@@ -6,8 +6,7 @@ import { set_height_chapter } from "../../redux/actions";
 import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
 import Tags from "../AllScreen/Tags";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
+
 import Stats from "../AllScreen/Stats";
 import SimilarTitle from "./SimilarTitle";
 
