@@ -116,4 +116,21 @@ router.get("/:nameGenre/all_time_popular", (req, res) => {
     });
 })
 
+//Top new release
+//Lấy theo DateAdded, xếp theo TotalView
+router.get("/:nameGenre/top_new_release", (req, res) => {
+    let sql = 'call Genre_top_new_release(?)';
+    sqlConnection(sql, [req.params.nameGenre], (err, results) => {
+        if (err) {
+            res.send(err)
+        } else {
+            if (results.length == 0) {
+                res.send('No manga available');
+            } else {
+                res.send(results);
+            }
+        }
+    });
+})
+
 module.exports = router;
