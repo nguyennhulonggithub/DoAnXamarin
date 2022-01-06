@@ -5,12 +5,12 @@ import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
 import { server } from "../../variable/ServerName";
 
-function TrendingTag({ idManga, image, view, index }) {
+function TrendingTag({ idManga, image, view, index, navigation }) {
   return (
     <Pressable
       style={styles.viewManga}
       onPress={() => {
-        props.navigation.navigate("MangaScreen", { idManga: idManga });
+        navigation.navigate("MangaScreen", { idManga: idManga });
       }}
     >
       <Image style={styles.manga} source={{ uri: server + image }}></Image>

@@ -5,10 +5,11 @@ import { Font } from "../../variable/Font";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
-import { set_height_chapter } from "../../redux/actions";
+
 import { useEffect } from "react";
 import Chaps from "./Chaps";
 import { useState } from "react";
+import { SetHeightChapter } from "../../redux/actions";
 
 export default function Chapter({
   data,
@@ -20,9 +21,9 @@ export default function Chapter({
   const dispatch = useDispatch();
 
   const [reverse, set_reverse] = useState(false);
-  const cur_height = useRef(0);
+  const cur_height = useRef(500);
   function set_height_onPress() {
-    dispatch(set_height_chapter(cur_height.current));
+    dispatch(SetHeightChapter(cur_height.current));
   }
 
   useEffect(() => {
@@ -34,7 +35,11 @@ export default function Chapter({
   return (
     <View
       onLayout={(event) => {
-        dispatch(set_height_chapter(event.nativeEvent.layout.height));
+        const height = event.nativeEvent.layout.height;
+        if (height > 150) {
+          dispatch(SetHeightChapter(event.nativeEvent.layout.height));
+        }
+
         cur_height.current = event.nativeEvent.layout.height;
       }}
       style={{ paddingTop: 50 }}

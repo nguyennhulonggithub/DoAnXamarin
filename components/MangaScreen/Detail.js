@@ -2,13 +2,14 @@ import React, { useRef } from "react";
 import { useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
-import { set_height_chapter } from "../../redux/actions";
+
 import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
 import Tags from "../AllScreen/Tags";
 
 import Stats from "../AllScreen/Stats";
 import SimilarTitle from "./SimilarTitle";
+import { SetHeightChapter } from "../../redux/actions";
 
 export default function Detail({
   index,
@@ -25,7 +26,7 @@ export default function Detail({
     data = genre.split(",");
   }
   function set_height_onPress() {
-    dispatch(set_height_chapter(cur_height.current));
+    dispatch(SetHeightChapter(cur_height.current));
   }
   useEffect(() => {
     if (index == 1) {

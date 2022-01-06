@@ -1,11 +1,13 @@
-export const set_height_chapter = (value) => {
+export const SetHeightChapter = (value) => {
   return {
     type: "SET_HEIGHT",
     data: value,
   };
 };
-export const set_resume_reading = () => {
+export const SetResumeReading = (data) => {
   return {
     type: "SET_RESUME",
+
+    data: data,
   };
 };

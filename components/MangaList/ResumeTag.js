@@ -1,22 +1,28 @@
 import React, { Component } from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 import { Font } from "../../variable/Font";
-
-function ResumeTag() {
+import { server } from "../../variable/ServerName";
+import dateFormat from "dateformat";
+function ResumeTag({ data_resume }) {
+  console.log(data_resume);
   return (
     <View style={styles.container}>
       <Image
-        source={require("../../assets/home/home-manga-2.jpg")}
+        source={{ uri: server + data_resume.image_chapter }}
         style={styles.img}
       ></Image>
 
       <View style={styles.detail}>
-        <Text style={Font.title}>Dorohedoro</Text>
+        <Text style={Font.title}>{data_resume.mangaTitle}</Text>
         <Text style={Font.description} numberOfLines={1}>
-          Chapter 5: Killing Mushroom Chapter 5: Killing Mushroom
+          {data_resume.chapterName}
         </Text>
-        <Text style={Font.description}>6% read</Text>
-        <Text style={[Font.description, { marginTop: 10 }]}>6 days ago</Text>
+        <Text style={Font.description}>
+          {Math.round(data_resume.percent_read)}% read
+        </Text>
+        <Text style={[Font.description, { marginTop: 10 }]}>
+          {dateFormat(Date.now() - data_resume.time_read, "dd mmm yyyy")}
+        </Text>
       </View>
 
       {/* dấu 3 chấm hiện bảng tương tác với manga */}

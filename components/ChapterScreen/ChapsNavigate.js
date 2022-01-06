@@ -4,7 +4,12 @@ import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
 import { server } from "../../variable/ServerName";
 
-export default function ChapsNavigate({ data, changeData, hidePopup }) {
+export default function ChapsNavigate({
+  data,
+  changeData,
+  hidePopup,
+  changeImage,
+}) {
   return (
     <>
       {data.map((item) => {
@@ -12,7 +17,12 @@ export default function ChapsNavigate({ data, changeData, hidePopup }) {
           <Pressable
             key={item.idChapter}
             onPress={() => {
-              changeData(item.idChapter, item.Name, item.Order);
+              changeData(
+                item.idChapter,
+                item.Name ? item.Name : "Chapter " + item.Order,
+                item.Order
+              );
+              changeImage(item.ImageAPI);
               hidePopup();
             }}
           >
@@ -23,7 +33,9 @@ export default function ChapsNavigate({ data, changeData, hidePopup }) {
               />
               <View style={styles.DetailContainer}>
                 <Text style={Font.baseTitle}>
-                  Chapter {item.Order}: {item.Name}
+                  Chapter {item.Order}
+                  {item.Name && ": "}
+                  {item.Name}
                 </Text>
                 <Text style={Font.baseTitle}>{item.status}</Text>
               </View>

@@ -35,10 +35,11 @@ export default function Chaps({
               navigation.navigate("ChapterScreen", {
                 dataChapter: data,
                 chapterId: item.idChapter,
-                chapterName: item.Name,
+                chapterName: item.Name ? item.Name : "Chapter " + item.Order,
                 mangaTitle: mangaTitle,
                 chapterOrder: item.Order,
                 idManga: item.manga_idManga,
+                imageAPI: item.ImageAPI,
               });
             }}
           >
@@ -49,7 +50,9 @@ export default function Chaps({
               />
               <View style={styles.DetailContainer}>
                 <Text style={Font.baseTitle}>
-                  Chapter {item.Order}: {item.Name}
+                  Chapter {item.Order}
+                  {item.Name && ": "}
+                  {item.Name}
                 </Text>
                 <Text style={Font.baseTitle}>{item.status}</Text>
               </View>

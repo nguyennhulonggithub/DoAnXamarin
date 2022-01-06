@@ -64,6 +64,7 @@ class ChapterPopup extends Component {
                   data={this.props.dataChapter}
                   changeData={this.props.changeData}
                   hidePopup={() => this.setModalVisible(false)}
+                  changeImage={this.props.changeImage}
                 />
               </ScrollView>
             </View>

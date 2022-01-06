@@ -19,6 +19,8 @@ import Linear from "../components/ChapterScreen/Linear";
 import SliderScroll from "../components/ChapterScreen/SliderScroll";
 import NavigateButton from "../components/ChapterScreen/NavigateButton";
 import LoadingChapter from "../components/ChapterScreen/LoadingChapter";
+import { useDispatch, useSelector } from "react-redux";
+import { SetResumeReading } from "../redux/actions";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -26,14 +28,21 @@ const top = windowHeight / 3;
 const bottom = (windowHeight / 3) * 2;
 
 export default function ChapterScreen({ route, navigation }) {
-  const { chapterId, mangaTitle, dataChapter, chapterOrder, idManga } =
-    route.params;
+  const {
+    chapterId,
+    mangaTitle,
+    dataChapter,
+    chapterOrder,
+    idManga,
+    imageAPI,
+  } = route.params;
 
   const [chapterName, setChapterName] = useState();
   const [data, setdata] = useState([]);
   const [itemHeights, set_itemHeights] = useState([]);
   const [saveOrder, set_saveOrder] = useState();
   const [cur_posY, set_cur_posY] = useState(0);
+  const image_resume = useRef("");
   let flag = useRef(0);
 
   const refLinear = useRef();
@@ -41,13 +50,34 @@ export default function ChapterScreen({ route, navigation }) {
   const refNavigationButton = useRef();
   const refLoading = useRef();
   const scrollItem = useRef();
+  const refPercent = useRef(0);
+  const refTotalHeight = useRef(0);
+  const refChapterName = useRef("");
 
   const chapterNameRoute = route.params.chapterName;
   const length = itemHeights.length - 1;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const didBlurSubscription = navigation.addListener("blur", (e) => {
+      dispatch(
+        SetResumeReading({
+          idManga: idManga,
+          mangaTitle: mangaTitle,
+          chapterName: refChapterName.current,
+          chapterId: chapterId,
+          percent_read: (refPercent.current / refTotalHeight.current) * 100,
+          time_read: Date.now(),
+          chapterOrder: chapterOrder,
+          image_chapter: image_resume.current,
+        })
+      );
+    });
+    return () => didBlurSubscription;
+  }, [navigation]);
 
   useEffect(() => {
     changeData(chapterId, chapterNameRoute, chapterOrder);
-
+    image_resume.current = imageAPI;
     return;
   }, []);
 
@@ -68,7 +98,7 @@ export default function ChapterScreen({ route, navigation }) {
         });
 
         set_itemHeights(array);
-
+        refTotalHeight.current = final_height - windowHeight;
         refSlider.current.setState({
           actual_height: final_height - windowHeight,
         });
@@ -77,8 +107,10 @@ export default function ChapterScreen({ route, navigation }) {
     });
 
     setChapterName(_chapterName);
+    refChapterName.current = _chapterName;
     set_saveOrder(_order);
   };
+
   const renderItem = ({ item, index }) => {
     const _height = itemHeights[index] - 15;
 
@@ -143,6 +175,9 @@ export default function ChapterScreen({ route, navigation }) {
           refSlider.current.hideLinear();
           refNavigationButton.current.hideLinear();
         }}
+        onMomentumScrollEnd={(e) => {
+          refPercent.current = e.nativeEvent.contentOffset.y;
+        }}
         keyExtractor={(item) => item.imgUrl}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
@@ -160,6 +195,7 @@ export default function ChapterScreen({ route, navigation }) {
         chapterName={chapterName}
         dataChapter={dataChapter}
         changeData={changeData}
+        changeImage={(image) => (image_resume.current = image)}
       />
       <SliderScroll
         ref={refSlider}
