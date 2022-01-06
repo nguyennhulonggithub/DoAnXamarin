@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Color } from "../../variable/Color";
 
-export default function Hot() {
+export default function HotStatus() {
   return <Text style={styles.description}>HOT</Text>;
 }
 const styles = StyleSheet.create({

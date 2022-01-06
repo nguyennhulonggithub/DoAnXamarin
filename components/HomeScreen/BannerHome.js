@@ -11,12 +11,13 @@ import { server } from "../../variable/ServerName";
 import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
 import { useState } from "react";
-import New from "../AllScreen/New";
-import Hot from "../AllScreen/Hot";
-import Save from "../AllScreen/Save";
+
 import { Font } from "../../variable/Font";
 import Circle from "../AllScreen/Circle";
-export default function Banner({ navigation }) {
+import NewStatus from "../AllScreen/NewStatus";
+import HotStatus from "../AllScreen/HotStatus";
+import SaveStatus from "../AllScreen/SaveStatus";
+export default function BannerHome({ navigation }) {
   const [data, set_data] = useState([]);
 
   useEffect(() => {
@@ -32,12 +33,14 @@ export default function Banner({ navigation }) {
 
   function description() {
     if (data.Save) {
-      return <Save save={data.Save} />;
+      return <SaveStatus save={data.Save} />;
     }
     if (data.New) {
-      return <New status={data.Status} />;
+      return <NewStatus status={data.Status} />;
     }
-    return <Hot />;
+    if (data.Hot) {
+      return <HotStatus />;
+    }
   }
 
   return (

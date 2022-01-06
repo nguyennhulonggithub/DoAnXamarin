@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Color } from "../../variable/Color";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-export default function Save({ save }) {
+export default function SaveStatus({ save }) {
   return (
     <View style={styles.containerDescription}>
       <MaterialCommunityIcons

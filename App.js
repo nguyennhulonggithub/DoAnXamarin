@@ -12,6 +12,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 const store = createStore(allReducer, composeWithDevTools());
 //checkout
+
 export default class App extends Component {
   render() {
     return (

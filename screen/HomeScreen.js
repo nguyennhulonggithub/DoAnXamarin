@@ -11,7 +11,7 @@ import {
 
 import { Color } from "../variable/Color";
 import { Font } from "../variable/Font";
-import ResumeReading from "../components/HomeScreen/ResumeReading";
+
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ExploreCataLog from "../components/HomeScreen/ExploreCataLog";
 import CategoryFlatlist from "../components/HomeScreen/CategoryFlatlist";
@@ -19,8 +19,8 @@ import ListFlatlist from "../components/HomeScreen/ListFlatlist";
 import { useEffect } from "react";
 import axios from "axios";
 import { server } from "../variable/ServerName";
-import Banner from "../components/HomeScreen/Banner";
-import MangaSetting from "../components/Popup/MangaSettings";
+import BannerHome from "../components/HomeScreen/BannerHome";
+import ResumeTag from "../components/MangaList/ResumeTag";
 
 //màn hình HomeScreen
 export default function HomeScreen({ navigation }) {
@@ -67,15 +67,15 @@ export default function HomeScreen({ navigation }) {
         )}
       >
         {/*banner to trên cùng*/}
-        <Banner navigation={navigation} />
+        <BannerHome navigation={navigation} />
 
         {/*resume reading*/}
         <View style={[styles.list]}>
           <Text style={[Font.homeTitle, { padding: 20 }]}>Resume Reading</Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <ResumeReading />
-            <ResumeReading />
-            <ResumeReading />
+            <ResumeTag />
+            <ResumeTag />
+            <ResumeTag />
           </ScrollView>
         </View>
         {/* New titles for you */}

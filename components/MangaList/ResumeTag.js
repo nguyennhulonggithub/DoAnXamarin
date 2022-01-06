@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 import { Font } from "../../variable/Font";
 
-function ResumeReading() {
+function ResumeTag() {
   return (
     <View style={styles.container}>
       <Image
@@ -46,4 +46,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResumeReading;
+export default ResumeTag;

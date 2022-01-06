@@ -2,8 +2,9 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
-import New from "./New";
-import Save from "./Save";
+
+import NewStatus from "./NewStatus";
+import SaveStatus from "./SaveStatus";
 
 export default function BorderTags({ data, status }) {
   return (
@@ -13,7 +14,7 @@ export default function BorderTags({ data, status }) {
           if (item == "New") {
             return (
               <View key={index} style={styles.containerNew}>
-                <New status={status} />
+                <NewStatus status={status} />
               </View>
             );
           } else if (item == "Hot") {
@@ -25,7 +26,7 @@ export default function BorderTags({ data, status }) {
           } else if (typeof item == "number") {
             return (
               <View key={index} style={styles.containerHot}>
-                <Save save={item} />
+                <SaveStatus save={item} />
               </View>
             );
           }

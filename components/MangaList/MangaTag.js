@@ -7,27 +7,28 @@ import { Ionicons } from "@expo/vector-icons";
 import { Color } from "../../variable/Color";
 
 import Circle from "../AllScreen/Circle";
-import New from "../AllScreen/New";
-import Save from "../AllScreen/Save";
-import Hot from "../AllScreen/Hot";
+import NewStatus from "../AllScreen/NewStatus";
+import HotStatus from "../AllScreen/HotStatus";
+import SaveStatus from "../AllScreen/SaveStatus";
+
 function MangaTag(props) {
   function description() {
     if (props.save) {
-      return <Save save={props.save} />;
+      return <SaveStatus save={props.save} />;
     } else if (props.new) {
       if (props.hot) {
         return (
           <View style={styles.containerDescription}>
-            <New status={props.status} />
+            <NewStatus status={props.status} />
             <Circle />
-            <Hot />
+            <HotStatus />
           </View>
         );
       } else {
-        return <New status={props.status} />;
+        return <NewStatus status={props.status} />;
       }
     } else if (props.hot) {
-      return <Hot />;
+      return <HotStatus />;
     }
   }
   return (

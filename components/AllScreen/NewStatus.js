@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Color } from "../../variable/Color";
 
-export default function New({ status }) {
+export default function NewStatus({ status }) {
   return (
     <View style={styles.containerDescription}>
       {status != "Completed" && (

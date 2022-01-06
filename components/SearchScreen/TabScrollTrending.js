@@ -8,9 +8,9 @@ import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 
 import { Color } from "../../variable/Color";
 import { server } from "../../variable/ServerName";
-import SingleTabScrollView from "./SingleTabScrollView";
+import SingleTabTrending from "./SingleTabTrending";
 
-export default function TabScrollView({ navigation }) {
+export default function TabScrollTrending({ navigation }) {
   const layout = useWindowDimensions();
   const [data, set_data] = useState(new Object());
 
@@ -19,7 +19,7 @@ export default function TabScrollView({ navigation }) {
       const temp = new Object();
       res.data.map((item) => {
         axios
-          .get(server + "/genre/" + item.Name + "/highlight_title")
+          .get(server + "/genre/" + item.Name + "/trending_today")
           .then((response) => {
             temp[item.Name] = response.data[0];
             if (Object.keys(temp).length == 6) {
@@ -43,28 +43,22 @@ export default function TabScrollView({ navigation }) {
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "Action":
-        return (
-          <SingleTabScrollView data={data.Action} navigation={navigation} />
-        );
+        return <SingleTabTrending data={data.Action} navigation={navigation} />;
       case "Comedy":
-        return (
-          <SingleTabScrollView data={data.Comedy} navigation={navigation} />
-        );
+        return <SingleTabTrending data={data.Comedy} navigation={navigation} />;
       case "Romance":
         return (
-          <SingleTabScrollView data={data.Romance} navigation={navigation} />
+          <SingleTabTrending data={data.Romance} navigation={navigation} />
         );
       case "Horror":
-        return (
-          <SingleTabScrollView data={data.Horror} navigation={navigation} />
-        );
+        return <SingleTabTrending data={data.Horror} navigation={navigation} />;
       case "Fantasy":
         return (
-          <SingleTabScrollView data={data.Fantasy} navigation={navigation} />
+          <SingleTabTrending data={data.Fantasy} navigation={navigation} />
         );
       case "Slice of life":
         return (
-          <SingleTabScrollView
+          <SingleTabTrending
             data={data["Slice of life"]}
             navigation={navigation}
           />

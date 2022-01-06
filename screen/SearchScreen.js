@@ -22,6 +22,7 @@ import Test from "./Test";
 import SearchTabBar from "../components/SearchScreen/SearchTabBar";
 import ExploreMore from "../components/SearchScreen/ExploreMore";
 import ParallaxSlide from "../components/MangaList/ParallaxSlide";
+import TabScrollTrending from "../components/SearchScreen/TabScrollTrending";
 
 export default function SearchScreen({ navigation }) {
   return (
@@ -47,8 +48,21 @@ export default function SearchScreen({ navigation }) {
             >
               Highlighted Titles
             </Text>
-            <ScrollManga navigation={navigation} />
-            <TabScrollView />
+
+            <TabScrollView navigation={navigation} />
+          </View>
+          {/* Treding */}
+          <View style={[styles.tab, { height: 400 }]}>
+            <Text
+              style={[
+                Font.title,
+                { marginLeft: 18, marginTop: 20, marginBottom: 15 },
+              ]}
+            >
+              Trending Today
+            </Text>
+
+            <TabScrollTrending navigation={navigation} />
           </View>
           {/* Top new releases */}
           <View style={[styles.tab]}>
@@ -60,7 +74,7 @@ export default function SearchScreen({ navigation }) {
             >
               Top New Releases
             </Text>
-            <TabScrollNewRelease />
+            <TabScrollNewRelease navigation={navigation} />
           </View>
           <Text style={[Font.homeTitle, { marginLeft: 18, marginBottom: 18 }]}>
             Explore More

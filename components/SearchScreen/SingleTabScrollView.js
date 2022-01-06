@@ -6,29 +6,35 @@ import {
   StyleSheet,
   Pressable,
   Image,
+  FlatList,
 } from "react-native";
 import { TabBarItem } from "react-native-tab-view";
 import { Font } from "../../variable/Font";
 import MangaTag from "../MangaList/MangaTag";
 
-export default function SingleTabScrollView({ data }) {
+export default function SingleTabScrollView({ data = [], navigation }) {
   return (
-    <ScrollView
-      style={{ flex: 1 }}
+    <FlatList
       horizontal
-      showsHorizontalScrollIndicator={false}
-    >
-      {data.map((item) => {
+      data={data}
+      keyExtractor={(item) => item.idManga}
+      renderItem={({ item }) => {
         return (
           <MangaTag
-            key={item.key}
-            count_chapter={item.count_chapter}
-            status={item.status}
-            time_update={item.time_update}
+            idManga={item.idManga}
+            image_api={item.ImageAPI}
+            first_line={item.Chapter + " chapters"}
+            second_line={item.Status}
+            new={item.New}
+            hot={item.Hot}
+            save={item.Save}
+            navigation={navigation}
           />
         );
-      })}
-    </ScrollView>
+      }}
+      initialNumToRender={10}
+      maxToRenderPerBatch={60}
+    />
   );
 }
 const styles = StyleSheet.create({
