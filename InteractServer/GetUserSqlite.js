@@ -4,7 +4,7 @@ export async function getdata() {
   const db = SQLite.openDatabase("UserTable");
   db.transaction((tx) => {
     tx.executeSql(
-      "Create table if not exists UserInfo (UserName Text, UserEmail Text primary key, UserImage Text)",
+      "Create table if not exists UserInfo (UserId Text primary key, UserName Text, UserEmail Text, UserImage Text)",
       null,
       (tx, result) => {},
       (tx, err) => {
@@ -36,13 +36,13 @@ export async function getdata() {
 
 export async function insertUser(userinfo) {
   await new Promise((resolve, reject) => {
-    const { UserName, UserEmail, UserImage } = userinfo;
+    const { UserId, UserName, UserEmail, UserImage } = userinfo;
 
     const db = SQLite.openDatabase("UserTable");
     db.transaction((tx) => {
       tx.executeSql(
-        "Insert into UserInfo (UserName,UserEmail,UserImage) values (?,?,?)",
-        [UserName, UserEmail, UserImage],
+        "Insert into UserInfo (UserId, UserName,UserEmail,UserImage) values (?,?,?,?)",
+        [UserId, UserName, UserEmail, UserImage],
         (tx, result) => {
           resolve();
         },

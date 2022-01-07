@@ -18,5 +18,6 @@ export default async function LoginGoogle() {
     .catch((error) => {
       console.log(error);
     });
+
   return user_result;
 }

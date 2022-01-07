@@ -22,7 +22,7 @@ export default function ChapsNavigate({
                 item.Name ? item.Name : "Chapter " + item.Order,
                 item.Order
               );
-              changeImage(item.ImageAPI);
+
               hidePopup();
             }}
           >

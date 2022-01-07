@@ -24,7 +24,13 @@ import ResumeTag from "../components/MangaList/ResumeTag";
 import { useSelector, useDispatch } from "react-redux";
 import ResumeReading from "../components/HomeScreen/ResumeReading";
 import { getResume } from "../InteractServer/ResumeSave";
-import { InitialResume, SetResumeReading } from "../redux/actions";
+import {
+  InitialResume,
+  Login,
+  SetIdUser,
+  SetResumeReading,
+} from "../redux/actions";
+import { getdata } from "../InteractServer/GetUserSqlite";
 
 //màn hình HomeScreen
 export default function HomeScreen({ navigation }) {
@@ -37,13 +43,34 @@ export default function HomeScreen({ navigation }) {
   const [data, set_data] = useState([]);
   const dispatch = useDispatch();
   useEffect(() => {
+    let break_get = true;
     axios.get(server + "/genre").then((res) => {
-      set_data(res.data);
+      if (break_get) {
+        set_data(res.data);
+      }
     });
-    getResume().then((res) => {
-      dispatch(InitialResume(res));
+
+    getdata().then((res) => {
+      if (res) {
+        dispatch(SetIdUser(res.UserId));
+
+        dispatch(Login());
+        axios.get(server + "/resume_reading/user/" + res.UserId).then((res) => {
+          if (break_get) {
+            dispatch(InitialResume(res.data[0]));
+          }
+        });
+      } else {
+        getResume().then((res) => {
+          dispatch(InitialResume(res));
+        });
+      }
     });
+
+    return () => (break_get = false);
   }, []);
+  const data_resume = useSelector((state) => state.resume);
+
   return (
     <View style={styles.container}>
       <Animated.View
@@ -77,13 +104,17 @@ export default function HomeScreen({ navigation }) {
         <BannerHome navigation={navigation} />
 
         {/*resume reading*/}
-        <View style={[styles.list]}>
-          <Text style={[Font.homeTitle, { padding: 20 }]}>Resume Reading</Text>
-          <ResumeReading navigation={navigation} />
-        </View>
+        {data_resume.length > 0 && (
+          <View style={[styles.list]}>
+            <Text style={[Font.homeTitle, { padding: 20 }]}>
+              Resume Reading
+            </Text>
+            <ResumeReading navigation={navigation} />
+          </View>
+        )}
         {/* New titles for you */}
         <View style={styles.action_list}>
-          <Text style={[Font.homeTitle, { padding: 15 }]}>
+          <Text style={[Font.homeTitle, { padding: 15, marginTop: 15 }]}>
             New Titles For You
           </Text>
           <ListFlatlist navigation={navigation} type='new_title' />

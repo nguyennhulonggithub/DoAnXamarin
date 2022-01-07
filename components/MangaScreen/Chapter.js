@@ -17,6 +17,7 @@ export default function Chapter({
   navigation,
   status,
   mangaTitle,
+  mangaImage,
 }) {
   const dispatch = useDispatch();
 
@@ -78,6 +79,7 @@ export default function Chapter({
         mangaTitle={mangaTitle}
         navigation={navigation}
         reverseBoolean={reverse}
+        mangaImage={mangaImage}
       />
     </View>
   );

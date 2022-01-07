@@ -81,7 +81,6 @@ export default class Linear extends Component {
           ref={this.refChapter}
           dataChapter={this.props.dataChapter}
           changeData={this.props.changeData}
-          changeImage={this.props.changeImage}
         />
       </LinearGradient>
     );

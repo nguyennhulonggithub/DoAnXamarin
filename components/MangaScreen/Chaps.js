@@ -9,6 +9,7 @@ export default function Chaps({
   navigation,
   reverseBoolean,
   mangaTitle,
+  mangaImage,
 }) {
   const [reverse_data, set_reverse_data] = useState([]);
   const [map_data, set_map_data] = useState([]);
@@ -39,7 +40,7 @@ export default function Chaps({
                 mangaTitle: mangaTitle,
                 chapterOrder: item.Order,
                 idManga: item.manga_idManga,
-                imageAPI: item.ImageAPI,
+                imageAPI: mangaImage,
               });
             }}
           >

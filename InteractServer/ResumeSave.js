@@ -16,7 +16,7 @@ export async function getResume() {
   const dataResume = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "Select * from Resume",
+        "Select * from Resume order by time_read desc",
         null,
         (tx, result) => {
           final_result = result.rows._array;
@@ -81,7 +81,7 @@ export async function deleteResume() {
 
     db.transaction((tx) => {
       tx.executeSql(
-        "Delete from Resume",
+        "Drop table Resume",
         null,
         (tx, result) => {
           res();

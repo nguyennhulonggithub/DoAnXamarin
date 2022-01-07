@@ -61,9 +61,12 @@ export default function ChapterScreen({ route, navigation }) {
   const chapterNameRoute = route.params.chapterName;
   const length = itemHeights.length - 1;
   const dispatch = useDispatch();
+  const idUser = useSelector((state) => state.idUser);
+  const userlog = useSelector((state) => state.userlog);
+
   useEffect(() => {
     const didBlurSubscription = navigation.addListener("blur", (e) => {
-      const remuse_data = {
+      const resume_data = {
         idManga: idManga,
         mangaTitle: mangaTitle,
         chapterName: refChapterName.current,
@@ -74,8 +77,13 @@ export default function ChapterScreen({ route, navigation }) {
         image_chapter: image_resume.current,
         total_height: refTotalHeight.current,
       };
-      dispatch(SetResumeReading(remuse_data));
-      insertResume(remuse_data);
+      dispatch(SetResumeReading(resume_data));
+      if (userlog) {
+        resume_data["idUser"] = idUser;
+        axios.post(server + "/resume_reading/add", resume_data);
+      } else {
+        insertResume(resume_data);
+      }
     });
     return () => didBlurSubscription;
   }, [navigation]);
@@ -91,6 +99,7 @@ export default function ChapterScreen({ route, navigation }) {
   useEffect(() => {
     changeData(chapterId, chapterNameRoute, chapterOrder);
     image_resume.current = imageAPI;
+
     if (percent_read) {
       scrollItem.current.scrollToOffset({
         animated: false,
@@ -212,7 +221,6 @@ export default function ChapterScreen({ route, navigation }) {
         chapterName={chapterName}
         dataChapter={cur_dataChapter}
         changeData={changeData}
-        changeImage={(image) => (image_resume.current = image)}
       />
       <SliderScroll
         ref={refSlider}

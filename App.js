@@ -22,7 +22,7 @@ export default class App extends Component {
           <TabNavigation />
         </NavigationContainer>
       </Provider>
-      //   <Test />
+      // <Test />
     );
   }
 }

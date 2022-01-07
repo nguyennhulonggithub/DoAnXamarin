@@ -45,7 +45,6 @@ class ModelPopup extends Component {
               this.props.changeUserProfile(data);
             }
             //truyen tham so onloginsuccess vao parent
-            this.props.onLoginSuccess(true);
           });
 
           this.setState({ modalVisible: false });

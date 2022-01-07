@@ -12,8 +12,16 @@ export default function Body({
 
   dataHeader,
 }) {
-  const { Status, Summary, Likes, Subscribes, TotalView, Name, Genre } =
-    dataHeader;
+  const {
+    Status,
+    Summary,
+    Likes,
+    Subscribes,
+    TotalView,
+    Name,
+    Genre,
+    ImageAPI,
+  } = dataHeader;
 
   const renderTabBar = (props) => (
     <TabBar
@@ -44,6 +52,7 @@ export default function Body({
             index={index}
             mangaTitle={Name}
             navigation={navigation}
+            mangaImage={ImageAPI}
           />
         );
       case "Detail":

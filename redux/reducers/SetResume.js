@@ -25,7 +25,7 @@ export default function SetResume(state = [], action) {
 
       return data;
     case "INITIAL_RESUME":
-      return action.data;
+      return action.data.slice(0, 5);
     default:
       return state;
   }

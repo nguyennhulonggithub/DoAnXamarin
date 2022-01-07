@@ -9,6 +9,7 @@ import {
   Text,
 } from "react-native";
 import images from "../components/SearchScreen/Banner";
+import { deleteUser } from "../InteractServer/GetUserSqlite";
 import {
   deleteResume,
   getResume,
@@ -29,10 +30,10 @@ export default function Test() {
     //   image_chapter: "/m/27/cover/1.jpg",
     //   total_height: 21349.571428571428,
     // });
-    getResume().then((res) => {
-      console.log(res);
-    });
-    // deleteResume();
+    // getResume().then((res) => {
+    // });
+    // deleteUser();
+    deleteResume();
   }, []);
 
   return (
