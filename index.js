@@ -4,9 +4,9 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 app.use(
-  cors({
-    origin: "*",
-  })
+    cors({
+        origin: "*",
+    })
 );
 
 //lấy thông tin file json
@@ -40,6 +40,10 @@ app.use("/resume_reading", postResumeReading);
 const postLike = require("./routes/Like");
 app.use("/like", postLike);
 
+//subscribe
+const postSubscribe = require("./routes/Subscribe");
+app.use("/subscribe", postSubscribe);
+
 //list tittle
 const postList = require("./routes/ListTitle");
 app.use("/list", postList);
@@ -50,5 +54,5 @@ const postUser = require("./routes/User");
 app.use("/users", postUser);
 
 app.listen(3000, () => {
-  console.log("server is running on port 3000");
+    console.log("server is running on port 3000");
 });

@@ -7,7 +7,7 @@ const app = express()
 
 //lấy resume reading từ database
 router.get("/user/:idUser", (req, res) => {
-    let sql = 'select * from resume_reading where user_idUser=?';
+    let sql = 'call Get_resume_reading(?)';
     sqlConnection(sql, [req.params.idUser], (err, results) => {
         if (err) {
             res.send('User not exist');
@@ -22,19 +22,34 @@ router.get("/user/:idUser", (req, res) => {
 })
 
 //thêm resume reading mới 
-router.post("/", (req, res) => {
-    let idManga = req.body.idManga
-    let idUser = req.body.idUser
-    let email = req.body.email
-    let idChapter = req.body.idChapter
+router.post("/add", (req, res) => {
+    let data = req.body;
+    let length = Object.keys(data).length;
+    let idManga, idUser, idChapter, time_read, percent_read, total_height;
+    let statement;
+    let sql = '';
 
-    let sql = 'call AddResumeReading (?,?,?,?)';
+    for (let i = 0; i < length; i++) {
+        idManga = String(data[i].idManga);
+        idUser = String(data[i].idUser);
+        idChapter = String(data[i].chapterId);
+        percent_read = String(data[i].percent_read);
+        time_read = String(data[i].time_read);
+        total_height = String(data[i].total_height);
 
-    sqlConnection(sql, [idManga, idUser, email, idChapter], (err, results) => {
+        statement = 'replace into resume_reading (manga_idManga,user_idUser, chapter_idChapter, time_read, percent_read, total_height) values (' + idManga + ',' + idUser + ',' + idChapter + ',' + time_read + ',' + percent_read + ',' + total_height + ');';
+        sql += statement + "\n";
+    }
+
+    sqlConnection(sql, [req.params.idUser], (err, results) => {
         if (err) {
-            res.send('Add resume reading failed');
+            res.send('User not exist');
         } else {
-            res.send(results)
+            if (results.length == 0) {
+                res.send('User not reading yet');
+            } else {
+                res.send(results);
+            }
         }
     })
 })

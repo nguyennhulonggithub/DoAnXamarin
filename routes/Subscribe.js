@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const sqlConnection = require("./sqlConnection");
 
-//lấy like từ database
+//lấy subscribe từ database
 router.get("/user/:idUser", (req, res) => {
-    let sql = 'select count(manga_idManga) as Likes from likes where user_idUser=?';
+
+    let sql = 'select count(manga_idManga) as subscribe from subscribe where user_idUser=?';
     sqlConnection(sql, [req.params.idUser], (err, results) => {
         if (err) {
             res.send('User not exist');
@@ -18,33 +19,32 @@ router.get("/user/:idUser", (req, res) => {
     })
 })
 
-//thêm like vào database
+//thêm subscribe vào database
 router.post("/add", (req, res) => {
     let idManga = req.body.idManga
     let idUser = req.body.idUser
 
-    let sql = 'call Add_likes(?,?)';
+    let sql = 'call Add_subscribe(?,?)';
 
     sqlConnection(sql, [idUser, idManga], (err, results) => {
         if (err) {
-            res.send('Add like failed');
+            res.send('Add subscribe failed');
         } else {
             res.send(results)
         }
     })
 })
 
-
-//xóa like khỏi database
+//xóa subscribe khỏi database
 router.delete('/delete', (req, res) => {
     let idManga = req.body.idManga
     let idUser = req.body.idUser
 
-    let sql = 'delete from likes where user_idUser = ? and manga_idManga = ?;';
+    let sql = 'delete from subscribe where user_idUser = ? and manga_idManga = ?;';
 
     sqlConnection(sql, [idUser, idManga], (err, results) => {
         if (err) {
-            res.send('Delete like failed');
+            res.send('Delete subscribe failed');
         } else {
             res.send(results)
         }
