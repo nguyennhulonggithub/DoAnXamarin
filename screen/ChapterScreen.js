@@ -21,6 +21,7 @@ import NavigateButton from "../components/ChapterScreen/NavigateButton";
 import LoadingChapter from "../components/ChapterScreen/LoadingChapter";
 import { useDispatch, useSelector } from "react-redux";
 import { SetResumeReading } from "../redux/actions";
+import { insertResume } from "../InteractServer/ResumeSave";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -35,8 +36,11 @@ export default function ChapterScreen({ route, navigation }) {
     chapterOrder,
     idManga,
     imageAPI,
+    percent_read,
+    total_height,
   } = route.params;
 
+  const [cur_dataChapter, set_cur_dataChapter] = useState();
   const [chapterName, setChapterName] = useState();
   const [data, setdata] = useState([]);
   const [itemHeights, set_itemHeights] = useState([]);
@@ -59,25 +63,40 @@ export default function ChapterScreen({ route, navigation }) {
   const dispatch = useDispatch();
   useEffect(() => {
     const didBlurSubscription = navigation.addListener("blur", (e) => {
-      dispatch(
-        SetResumeReading({
-          idManga: idManga,
-          mangaTitle: mangaTitle,
-          chapterName: refChapterName.current,
-          chapterId: chapterId,
-          percent_read: (refPercent.current / refTotalHeight.current) * 100,
-          time_read: Date.now(),
-          chapterOrder: chapterOrder,
-          image_chapter: image_resume.current,
-        })
-      );
+      const remuse_data = {
+        idManga: idManga,
+        mangaTitle: mangaTitle,
+        chapterName: refChapterName.current,
+        chapterId: chapterId,
+        percent_read: (refPercent.current / refTotalHeight.current) * 100,
+        time_read: Date.now(),
+        chapterOrder: chapterOrder,
+        image_chapter: image_resume.current,
+        total_height: refTotalHeight.current,
+      };
+      dispatch(SetResumeReading(remuse_data));
+      insertResume(remuse_data);
     });
     return () => didBlurSubscription;
   }, [navigation]);
-
+  useEffect(() => {
+    if (dataChapter) {
+      set_cur_dataChapter(dataChapter);
+    } else {
+      axios.get(server + "/manga/" + idManga + "/chapter").then((res) => {
+        set_cur_dataChapter(res.data);
+      });
+    }
+  }, [dataChapter]);
   useEffect(() => {
     changeData(chapterId, chapterNameRoute, chapterOrder);
     image_resume.current = imageAPI;
+    if (percent_read) {
+      scrollItem.current.scrollToOffset({
+        animated: false,
+        offset: (percent_read / 100) * total_height,
+      });
+    }
     return;
   }, []);
 
@@ -175,17 +194,15 @@ export default function ChapterScreen({ route, navigation }) {
           refSlider.current.hideLinear();
           refNavigationButton.current.hideLinear();
         }}
-        onMomentumScrollEnd={(e) => {
-          refPercent.current = e.nativeEvent.contentOffset.y;
-        }}
         keyExtractor={(item) => item.imgUrl}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
         maxToRenderPerBatch={60} // Reduce number in each render batch
         style={{ zIndex: 1 }}
-        onScroll={(e) =>
-          refSlider.current.setState({ value: e.nativeEvent.contentOffset.y })
-        }
+        onScroll={(e) => {
+          refSlider.current.setState({ value: e.nativeEvent.contentOffset.y });
+          refPercent.current = e.nativeEvent.contentOffset.y;
+        }}
       />
 
       <Linear
@@ -193,7 +210,7 @@ export default function ChapterScreen({ route, navigation }) {
         navigation={navigation}
         mangaTitle={mangaTitle}
         chapterName={chapterName}
-        dataChapter={dataChapter}
+        dataChapter={cur_dataChapter}
         changeData={changeData}
         changeImage={(image) => (image_resume.current = image)}
       />
@@ -206,7 +223,7 @@ export default function ChapterScreen({ route, navigation }) {
       <NavigateButton
         ref={refNavigationButton}
         changeData={changeData}
-        dataChapter={dataChapter}
+        dataChapter={cur_dataChapter}
         saveOrder={saveOrder}
       />
     </View>

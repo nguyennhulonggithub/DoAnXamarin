@@ -15,14 +15,14 @@ const store = createStore(allReducer, composeWithDevTools());
 //checkout
 
 export default class App extends Component {
-    render() {
-        return (
-            <Provider store={store}>
-                <NavigationContainer>
-                    <TabNavigation />
-                </NavigationContainer>
-            </Provider>
-            // <Test />
-        );
-    }
+  render() {
+    return (
+      <Provider store={store}>
+        <NavigationContainer>
+          <TabNavigation />
+        </NavigationContainer>
+      </Provider>
+      //   <Test />
+    );
+  }
 }

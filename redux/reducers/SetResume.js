@@ -1,3 +1,5 @@
+import { getResume } from "../../InteractServer/ResumeSave";
+
 export default function SetResume(state = [], action) {
   switch (action.type) {
     case "SET_RESUME":
@@ -7,7 +9,6 @@ export default function SetResume(state = [], action) {
       for (let i = 0; i <= data.length; i++) {
         if (i == 5) {
           data.pop();
-
           data.unshift(cur_data);
           break;
         }
@@ -23,6 +24,8 @@ export default function SetResume(state = [], action) {
       }
 
       return data;
+    case "INITIAL_RESUME":
+      return action.data;
     default:
       return state;
   }

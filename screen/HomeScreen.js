@@ -21,8 +21,10 @@ import axios from "axios";
 import { server } from "../variable/ServerName";
 import BannerHome from "../components/HomeScreen/BannerHome";
 import ResumeTag from "../components/MangaList/ResumeTag";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ResumeReading from "../components/HomeScreen/ResumeReading";
+import { getResume } from "../InteractServer/ResumeSave";
+import { InitialResume, SetResumeReading } from "../redux/actions";
 
 //màn hình HomeScreen
 export default function HomeScreen({ navigation }) {
@@ -33,10 +35,13 @@ export default function HomeScreen({ navigation }) {
     extrapolate: "clamp",
   });
   const [data, set_data] = useState([]);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     axios.get(server + "/genre").then((res) => {
       set_data(res.data);
+    });
+    getResume().then((res) => {
+      dispatch(InitialResume(res));
     });
   }, []);
   return (
@@ -74,7 +79,7 @@ export default function HomeScreen({ navigation }) {
         {/*resume reading*/}
         <View style={[styles.list]}>
           <Text style={[Font.homeTitle, { padding: 20 }]}>Resume Reading</Text>
-          <ResumeReading />
+          <ResumeReading navigation={navigation} />
         </View>
         {/* New titles for you */}
         <View style={styles.action_list}>

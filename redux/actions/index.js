@@ -7,7 +7,12 @@ export const SetHeightChapter = (value) => {
 export const SetResumeReading = (data) => {
   return {
     type: "SET_RESUME",
-
+    data: data,
+  };
+};
+export const InitialResume = (data) => {
+  return {
+    type: "INITIAL_RESUME",
     data: data,
   };
 };
