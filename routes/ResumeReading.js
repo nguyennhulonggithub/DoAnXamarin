@@ -21,8 +21,31 @@ router.get("/user/:idUser", (req, res) => {
     })
 })
 
-//thêm resume reading mới 
+//thêm 1 resume reading
 router.post("/add", (req, res) => {
+    let idManga = String(req.body.idManga);
+    let idUser = String(req.body.idUser);
+    let idChapter = String(req.body.chapterId);
+    let percent_read = String(req.body.percent_read);
+    let time_read = String(req.body.time_read);
+    let total_height = String(req.body.total_height);
+
+    let sql = 'replace into resume_reading (manga_idManga,user_idUser, chapter_idChapter, time_read, percent_read, total_height) values (' + idManga + ',' + idUser + ',' + idChapter + ',' + time_read + ',' + percent_read + ',' + total_height + ');';
+    sqlConnection(sql, (err, results) => {
+        if (err) {
+            res.send('Add resume reading fail');
+        } else {
+            if (results.length == 0) {
+                res.send('User does not read yet');
+            } else {
+                res.send(results);
+            }
+        }
+    })
+})
+
+//thêm toàn bộ resume reading mới
+router.post("/addall", (req, res) => {
     let data = req.body;
     let length = Object.keys(data).length;
     let idManga, idUser, idChapter, time_read, percent_read, total_height;
@@ -41,12 +64,12 @@ router.post("/add", (req, res) => {
         sql += statement + "\n";
     }
 
-    sqlConnection(sql, [req.params.idUser], (err, results) => {
+    sqlConnection(sql, (err, results) => {
         if (err) {
-            res.send('User not exist');
+            res.send('Add resume reading fail');
         } else {
             if (results.length == 0) {
-                res.send('User not reading yet');
+                res.send('User does not read yet');
             } else {
                 res.send(results);
             }
