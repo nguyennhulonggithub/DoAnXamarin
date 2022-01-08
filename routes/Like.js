@@ -32,7 +32,7 @@ router.get("/user/:idUser", (req, res) => {
       res.send("User not exist");
     } else {
       if (results.length == 0) {
-        res.send("User not reading yet");
+        res.send([]);
       } else {
         res.send(results);
       }
@@ -44,10 +44,10 @@ router.get("/user/:idUser", (req, res) => {
 router.post("/add", (req, res) => {
   let idManga = req.body.idManga;
   let idUser = req.body.idUser;
+  let date_added = Date.now();
+  let sql = "call Add_likes(?,?,?)";
 
-  let sql = "call Add_likes(?,?)";
-
-  sqlConnection(sql, [idUser, idManga], (err, results) => {
+  sqlConnection(sql, [idUser, idManga, date_added], (err, results) => {
     if (err) {
       res.send("Add like failed");
     } else {
