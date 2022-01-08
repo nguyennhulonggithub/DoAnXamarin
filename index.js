@@ -52,6 +52,10 @@ app.use("/read_later", postReadLater);
 const postList = require("./routes/ListTitle");
 app.use("/list", postList);
 
+//tìm kiếm
+const postSearch = require("./routes/Search");
+app.use("/search", postSearch);
+
 // const postGenre = require("/routes/Genre");
 
 const postUser = require("./routes/User");

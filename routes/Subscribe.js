@@ -2,6 +2,22 @@ const express = require("express");
 const router = express.Router();
 const sqlConnection = require("./sqlConnection");
 
+//kiểm tra subscribe có tồn tại không 
+router.get("/check", (req, res) => {
+    let sql = 'select exists(select * from subscribe where user_idUser = ? and manga_idManga = ?) as exist;';
+    sqlConnection(sql, [req.body.idUser, req.body.idManga], (err, results) => {
+        if (err) {
+            res.send(err);
+        } else {
+            if (results.length == 0) {
+                res.send('something went wrong');
+            } else {
+                res.send(results);
+            }
+        }
+    })
+})
+
 //lấy subscribe từ database
 router.get("/user/:idUser", (req, res) => {
 
