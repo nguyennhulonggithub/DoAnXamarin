@@ -5,7 +5,7 @@ const sqlConnection = require("./sqlConnection");
 //lấy subscribe từ database
 router.get("/user/:idUser", (req, res) => {
 
-    let sql = 'select count(manga_idManga) as subscribe from subscribe where user_idUser=?';
+    let sql = 'select user_idUser as idUser, idManga, Name, ImageAPI, DateAdded, Free,(select count(*) from chapter where manga_idManga = idManga) as chapter from subscribe join manga on subscribe.manga_idManga = manga.idManga where user_idUser = ?';
     sqlConnection(sql, [req.params.idUser], (err, results) => {
         if (err) {
             res.send('User not exist');

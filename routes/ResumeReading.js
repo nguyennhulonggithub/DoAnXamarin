@@ -77,4 +77,20 @@ router.post("/addall", (req, res) => {
     })
 })
 
+//xóa toàn bộ resume reading
+router.post("/delete_all", (req, res) => {
+    let sql = "DELETE * FROM resume_reading;"
+    sqlConnection(sql, (err, results) => {
+        if (err) {
+            res.send('Delete all resume_reading fail');
+        } else {
+            if (results.length == 0) {
+                res.send('User does not read yet');
+            } else {
+                res.send(results);
+            }
+        }
+    })
+})
+
 module.exports = router

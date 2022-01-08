@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const sqlConnection = require("./sqlConnection");
 
-//lấy like từ database
+//lấy read_later từ database
 router.get("/user/:idUser", (req, res) => {
-    let sql = 'select user_idUser as idUser, idManga, Name, ImageAPI, DateAdded, Free,(select count(*) from chapter where manga_idManga = idManga) as chapter from likes join manga on likes.manga_idManga = manga.idManga where user_idUser = ?';
+    let sql = 'select user_idUser as idUser, idManga, Name, ImageAPI, DateAdded, Free,(select count(*) from chapter where manga_idManga = idManga) as chapter from read_later join manga on read_later.manga_idManga = manga.idManga where user_idUser = ?';
     sqlConnection(sql, [req.params.idUser], (err, results) => {
         if (err) {
             res.send('User not exist');
@@ -18,12 +18,12 @@ router.get("/user/:idUser", (req, res) => {
     })
 })
 
-//thêm like vào database
+//thêm read_later vào database
 router.post("/add", (req, res) => {
     let idManga = req.body.idManga
     let idUser = req.body.idUser
 
-    let sql = 'call Add_likes(?,?)';
+    let sql = 'call Add_read_later(?,?)';
 
     sqlConnection(sql, [idUser, idManga], (err, results) => {
         if (err) {
@@ -35,12 +35,12 @@ router.post("/add", (req, res) => {
 })
 
 
-//xóa like khỏi database
+//xóa read_later khỏi database
 router.delete('/delete', (req, res) => {
     let idManga = req.body.idManga
     let idUser = req.body.idUser
 
-    let sql = 'delete from likes where user_idUser = ? and manga_idManga = ?;';
+    let sql = 'delete from read_later where user_idUser = ? and manga_idManga = ?;';
 
     sqlConnection(sql, [idUser, idManga], (err, results) => {
         if (err) {
