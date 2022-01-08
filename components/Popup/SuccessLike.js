@@ -26,7 +26,7 @@ class SuccessLike extends Component {
     });
     setTimeout(() => {
       this.setState({ modalVisible: false });
-    }, 1500);
+    }, 200);
   };
   typeFunction = (value) => {
     switch (value) {

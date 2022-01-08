@@ -6,6 +6,7 @@ import {
   Modal,
   Pressable,
   Dimensions,
+  FlatList,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { Font } from "../../variable/Font";
@@ -13,6 +14,9 @@ import { Color } from "../../variable/Color";
 
 import MangaSearch from "../MangaList/MangaSearch";
 import { Ionicons } from "@expo/vector-icons";
+import ResumeList from "../MangaList/ResumeList";
+import LikeTag from "../ProfileScreen/LikeTag";
+import Line from "../AllScreen/Line";
 //pop up login
 class ReadingListPopup extends Component {
   constructor(props) {
@@ -24,6 +28,7 @@ class ReadingListPopup extends Component {
       hideOnSearch: true,
       data: [],
     };
+
     this.height = Dimensions.get("window").height;
   }
 
@@ -40,7 +45,9 @@ class ReadingListPopup extends Component {
     });
   };
   render() {
-    console.log(this.state.data);
+    // if (this.state.data.length > 0) {
+    //   console.log(new Date(this.state.data[0].DateAdded).getSeconds());
+    // }
     const { modalVisible } = this.state;
     return (
       <Modal
@@ -51,55 +58,48 @@ class ReadingListPopup extends Component {
         <View style={[styles.header]}>
           {this.props.userlog ? (
             <View>
-              {this.state.hideOnSearch && (
-                <View
-                  style={{
-                    alignItems: "center",
-                    paddingTop: 25,
-                  }}
+              <View
+                style={{
+                  alignItems: "center",
+                  paddingTop: 25,
+                  height: 50,
+                }}
+              >
+                <Pressable
+                  style={{ position: "absolute", left: 15, paddingTop: 25 }}
+                  onPress={() => this.setState({ modalVisible: false })}
                 >
-                  <Pressable
-                    style={{ position: "absolute", left: 15, paddingTop: 25 }}
-                    onPress={() => this.setState({ modalVisible: false })}
-                  >
-                    <Entypo name='chevron-down' size={24} color='white' />
-                  </Pressable>
+                  <Entypo name='chevron-down' size={24} color='white' />
+                </Pressable>
 
-                  <Text style={Font.title}>{this.state.title}</Text>
-                  <Pressable
-                    style={{ position: "absolute", right: 15, paddingTop: 25 }}
-                  >
-                    <Text style={Font.baseTitle}>Edit</Text>
-                  </Pressable>
-                </View>
-              )}
-              {/* <SearchTitle hideOnSearch={this.hideOnSearch} test={12} /> */}
-              <View style={{ marginTop: 20 }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    paddingHorizontal: 15,
+                <Text style={Font.title}>{this.state.title}</Text>
+              </View>
+
+              <View
+                style={{
+                  marginTop: 20,
+
+                  height: this.height - 75,
+                }}
+              >
+                <FlatList
+                  data={this.state.data}
+                  keyExtractor={(item) => item.chapterId}
+                  renderItem={({ item }) => {
+                    return (
+                      <View>
+                        <LikeTag
+                          data={item}
+                          navigation={this.props.navigation}
+                          hideModel={() =>
+                            this.setState({ modalVisible: false })
+                          }
+                        />
+                        <Line />
+                      </View>
+                    );
                   }}
-                >
-                  <Text style={Font.baseTitle}>
-                    {this.state.data.length} titles
-                  </Text>
-                  {this.state.hideOnSearch && (
-                    <Pressable style={{ flexDirection: "row" }}>
-                      <Text style={Font.baseTitle}>Sort By: Last Added</Text>
-                      <Entypo
-                        name='chevron-down'
-                        size={24}
-                        color='white'
-                        style={{ marginLeft: 5 }}
-                      />
-                    </Pressable>
-                  )}
-                </View>
-                <View>
-                  <MangaSearch count_chapter={15} time_add='Added 19 March' />
-                </View>
+                />
               </View>
             </View>
           ) : (

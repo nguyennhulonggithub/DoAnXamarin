@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { View, Text, ScrollView, FlatList } from "react-native";
 import NewRelease from "../MangaList/NewRelease";
-
-export default function SingleTabNewRelease({ data, navigation }) {
+import LikeTags from "./LikeTags";
+export default function TopLikeTitle({ data, navigation }) {
   const [final_data, set_final_data] = useState([]);
 
   useEffect(() => {
@@ -31,19 +31,19 @@ export default function SingleTabNewRelease({ data, navigation }) {
       keyExtractor={(item, index) => index}
       renderItem={({ item, index }) => {
         return (
-          <View key={index} style={{ height: 1000 }}>
+          <View key={index} style={{ height: 400 }}>
             <View style={{ marginLeft: 10 }}>
-              <NewRelease
+              <LikeTags
                 index={index * 2 + 1}
-                dataRelease={item[0]}
+                data={item[0]}
                 navigation={navigation}
               />
             </View>
             {item[1] && (
               <View style={{ marginLeft: 10 }}>
-                <NewRelease
+                <LikeTags
                   index={index * 2 + 2}
-                  dataRelease={item[1]}
+                  data={item[1]}
                   navigation={navigation}
                 />
               </View>
@@ -53,39 +53,4 @@ export default function SingleTabNewRelease({ data, navigation }) {
       }}
     />
   );
-}
-{
-  /* <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-  {final_data.map((item, index) => {
-    return (
-      <View key={index} style={{ height: 1000 }}>
-        <View>
-          <NewRelease
-            index={index * 2}
-            name={item[0].Name}
-            date={item[0].DateAdded}
-            view={item[0].TotalView}
-            status={item[0].status}
-            image={item[0].ImageAPI}
-            time_update={item[0].time_update}
-          />
-        </View>
-        {item[1] && (
-          <View>
-            <NewRelease
-              index={index * 2 + 1}
-              count_chapter={item[1].count_chapter}
-              name={item[1].Name}
-              date={item[1].DateAdded}
-              view={item[1].TotalView}
-              status={item[1].status}
-              image={item[1].ImageAPI}
-              time_update={item[1].time_update}
-            />
-          </View>
-        )}
-      </View>
-    );
-  })}
-</ScrollView>; */
 }

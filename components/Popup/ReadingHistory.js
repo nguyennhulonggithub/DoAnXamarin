@@ -90,6 +90,7 @@ class ReadingHistory extends Component {
               data={this.state.data}
               keyExtractor={(item) => item.chapterId}
               renderItem={({ item }) => {
+            
                 return (
                   <ResumeList
                     data_resume={item}

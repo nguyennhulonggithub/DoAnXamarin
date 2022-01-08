@@ -10,91 +10,61 @@ import {
   Pressable,
 } from "react-native";
 
-import Header from "../components/MangaScreen/Header";
 import { Color } from "../variable/Color";
 import { Ionicons } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import { Font } from "../variable/Font";
+import { Entypo } from "@expo/vector-icons";
+import SearchSlide from "../components/SearchScreen/SearchSlide";
+import GenreSlide from "../components/GenreScreen/GenreSlide";
 import axios from "axios";
 import { server } from "../variable/ServerName";
-import ContainerBody from "../components/MangaScreen/ContainerBody";
-import MangaSetting from "../components/Popup/MangaSettings";
-import ModelPopup from "../components/Popup/ModelPopup";
-import SyncData from "../components/Popup/SyncData";
-import OnSuccessPopUp from "../components/Popup/OnSuccessPopUp";
-import { useSelector, useDispatch } from "react-redux";
-import { InitialResume, Login, SetIdUser } from "../redux/actions";
-import ConfirmManga from "../components/Popup/ConfirmManga";
-import SuccessLike from "../components/Popup/SuccessLike";
+import images from "../components/SearchScreen/Banner";
+import SingleTabNewRelease from "../components/SearchScreen/SingleTabNewRelease";
+import TopLikeTitle from "../components/GenreScreen/TopLikeTitle";
+
 export default function GenreScreen({ route, navigation }) {
-  const [dataHeader, set_dataHeader] = useState([]);
-  const [dataBody, set_dataBody] = useState([]);
-  useEffect(() => {
-    let check = true;
-    axios.get(server + "/manga/" + route.params.idManga).then((res) => {
-      if (check) {
-        set_dataHeader(res.data[0][0]);
-      }
-    });
-    axios
-      .get(server + "/manga/" + route.params.idManga + "/chapter")
-      .then((res) => {
-        if (check) {
-          set_dataBody(res.data);
-        }
-      });
-    return () => (check = false);
-  }, []);
-  const userlog = useSelector((state) => state.userlog);
   const ref = useRef(new Animated.Value(0)).current;
-  const successRef = useRef();
-  const modelPopupRef = useRef();
-  const SyncDataRef = useRef();
-  const refMangaSettings = useRef();
-  const refConfirmManga = useRef();
-  const refSuccessLike = useRef();
+  const { nameGenre, idGenre } = route.params;
   const translation = ref.interpolate({
-    inputRange: [0, 232],
+    inputRange: [0, 400],
     outputRange: [0, 1],
     extrapolate: "clamp",
   });
-  const translateTitle = ref.interpolate({
-    inputRange: [230, 232, 9999],
-    outputRange: [0, 1, 1],
-    extrapolate: "clamp",
-  });
-  const translateTab = ref.interpolate({
-    inputRange: [232, 5000],
-    outputRange: [0, 4770],
-    extrapolate: "clamp",
-  });
-  const resume = useSelector((state) => state.resume);
-  const idUser = useSelector((state) => state.idUser);
-  const dispatch = useDispatch();
-  const changeUserProfile = (data) => {
-    dispatch(SetIdUser(data.UserId));
-    if (resume.length == 0) {
-      dispatch(Login());
-      Sync_data(data.UserId);
-    } else {
-      SyncDataRef.current.setModalVisible(true, data.UserId);
-    }
-  };
-
-  const Sync_data = (idUser) => {
-    axios.get(server + "/resume_reading/user/" + idUser).then((res) => {
-      dispatch(InitialResume(res.data[0]));
+  const [top_newTitles, set_topNewTitles] = useState();
+  const [top_Subscribe, set_topSubscribe] = useState();
+  const [dataSlide, set_dataSlide] = useState([
+    {
+      key: 1,
+      bannerImg: images.banner1,
+    },
+  ]);
+  useEffect(() => {
+    axios.get(server + "/genre/" + nameGenre).then((res) => {
+      const final_arr = [];
+      res.data[0].map((item, index) => {
+        if (index < 7) {
+          item["key"] = index * 2 + 1;
+          final_arr.push(item);
+        }
+      });
+      set_dataSlide(final_arr);
     });
-  };
-  const changeLoginInfo = (login) => {
-    successRef.current.setModalVisible(true);
-    dispatch(Login());
-  };
+    axios
+      .get(server + "/genre/" + nameGenre + "/top_like_title")
+      .then((res) => {
+        set_topNewTitles(res.data[0]);
+      });
+    axios
+      .get(server + "/genre/" + nameGenre + "/top_subscribe_title")
+      .then((res) => {
+        set_topSubscribe(res.data[0]);
+      });
+  }, []);
 
   return (
     <Animated.ScrollView
-      style={{ backgroundColor: Color.baseColor }}
+      style={{ backgroundColor: Color.defaultColor }}
       onScroll={Animated.event(
         [{ nativeEvent: { contentOffset: { y: ref } } }],
         { useNativeDriver: true }
@@ -106,85 +76,59 @@ export default function GenreScreen({ route, navigation }) {
           styles.control_background,
           { transform: [{ translateY: ref }], opacity: translation },
         ]}
-      ></Animated.View>
+      />
       <Animated.View
         style={[styles.control, { transform: [{ translateY: ref }] }]}
       >
-        <Pressable onPress={() => navigation.pop()}>
+        <Pressable
+          onPress={() => navigation.pop()}
+          style={{
+            position: "absolute",
+            left: 20,
+            top: 25,
+
+            zIndex: 10,
+          }}
+        >
           <Ionicons name='chevron-back' size={24} color={Color.white} />
         </Pressable>
         <Animated.View
           style={{
-            width: 270,
+            width: "100%",
             alignItems: "center",
-            opacity: translateTitle,
+            justifyContent: "center",
+            height: 50,
+            marginBottom: 10,
           }}
         >
-          <Text style={Font.baseTitle} numberOfLines={1}>
-            {dataHeader.Name}
-          </Text>
-        </Animated.View>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <MaterialCommunityIcons
-            name='comment-processing-outline'
-            size={20}
-            color={Color.white}
-          />
           <Pressable
-            onPress={() =>
-              refMangaSettings.current.setState({ isShowing: true })
-            }
+            style={{
+              flexDirection: "row",
+              padding: 5,
+              borderRadius: 10,
+            }}
           >
-            <Entypo
-              name='dots-three-horizontal'
-              size={20}
-              color={Color.white}
-              style={{ marginHorizontal: 15 }}
-            />
+            <Text style={Font.baseTitle} numberOfLines={1}>
+              {nameGenre}
+            </Text>
+            <Entypo name='chevron-down' size={24} color='white' />
           </Pressable>
-        </View>
+        </Animated.View>
       </Animated.View>
 
-      <Header data={dataHeader} count_chapter={dataBody.length} />
-      <ContainerBody
-        data={dataBody}
-        dataHeader={dataHeader}
-        translate={translateTab}
-        navigation={navigation}
-      />
-      <MangaSetting
-        ref={refMangaSettings}
-        name={dataHeader.Name}
-        image={dataHeader.ImageAPI}
-        navigation={navigation}
-        data={dataBody}
-        showLogin={() => modelPopupRef.current.setModalVisible(true)}
-        userlog={userlog}
-        confirmManga={(value) =>
-          refConfirmManga.current.setModalVisible(true, value)
-        }
-        idManga={dataHeader.idManga}
-        idUser={idUser}
-        successLike={(text, type) =>
-          refSuccessLike.current.setModalVisible(text, type)
-        }
-      />
-      <ModelPopup ref={modelPopupRef} changeUserProfile={changeUserProfile} />
-      <SyncData
-        ref={SyncDataRef}
-        Sync_data={Sync_data}
-        changeLoginInfo={changeLoginInfo}
-      />
-      <OnSuccessPopUp ref={successRef} />
-      <ConfirmManga
-        ref={refConfirmManga}
-        idManga={dataHeader.idManga}
-        idUser={idUser}
-        successLike={(text, type) =>
-          refSuccessLike.current.setModalVisible(text, type)
-        }
-      />
-      <SuccessLike ref={refSuccessLike} />
+      <View style={{ flex: 1 }}>
+        <GenreSlide
+          data={dataSlide}
+          nameGenre={nameGenre}
+          navigation={navigation}
+        />
+        <Text style={[Font.title, { marginTop: 50 }]}>Top Liked Titles</Text>
+        <TopLikeTitle data={top_newTitles} navigation={navigation} />
+        <Text style={[Font.title, { marginTop: 20 }]}>
+          Top Subscribe Titles
+        </Text>
+        <TopLikeTitle data={top_Subscribe} navigation={navigation} />
+      </View>
     </Animated.ScrollView>
   );
 }
@@ -197,12 +141,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     top: 0,
-    height: 80,
+    height: 60,
     width: "100%",
     zIndex: 10,
   },
   control_background: {
-    height: 80,
+    height: 60,
     backgroundColor: Color.mangaColor,
     width: "100%",
     position: "absolute",
