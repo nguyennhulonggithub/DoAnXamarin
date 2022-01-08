@@ -15,6 +15,7 @@ export default function ExploreCataLog({ data, navigation }) {
             image={item.ImageAPI}
             name={item.Name}
             key={item.idCategory}
+            idCategory={item.idCategory}
             navigation={navigation}
           />
         );

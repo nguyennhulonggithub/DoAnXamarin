@@ -66,7 +66,6 @@ class ProfileScreen extends Component {
     });
   };
   getDataLike = () => {
-    console.log("hello");
     if (this.props.userlog) {
       axios.get(server + "/like/user/" + this.props.idUser).then((res) => {
         this.setState({ like: res.data });
@@ -192,6 +191,7 @@ class ProfileScreen extends Component {
     this.ReadingListRef.current.setModalVisible(true, title, data);
   };
   render() {
+    console.log(this.state.readlater);
     return (
       <View>
         <ScrollView style={styles.container} keyboardShouldPersistTaps='always'>
@@ -307,6 +307,7 @@ class ProfileScreen extends Component {
             ref={this.ReadingListRef}
             userlog={this.state.userLogin}
             signIn={() => this.myRef.current.setModalVisible(true)}
+            navigation={this.props.navigation}
           />
           <LogoutResume
             ref={this.LogoutResumeRef}

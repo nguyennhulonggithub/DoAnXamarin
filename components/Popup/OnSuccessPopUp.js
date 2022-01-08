@@ -22,7 +22,7 @@ class OnSuccessPopUp extends Component {
     });
     setTimeout(() => {
       this.setState({ modalVisible: false });
-    }, 1500);
+    }, 1000);
   };
 
   render() {
