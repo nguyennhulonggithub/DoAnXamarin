@@ -104,9 +104,9 @@ router.post("/addall", (req, res) => {
 });
 
 //xóa toàn bộ resume reading
-router.post("/delete_all", (req, res) => {
-  let sql = "DELETE * FROM resume_reading;";
-  sqlConnection(sql, (err, results) => {
+router.delete("/delete_all/user/:idUser", (req, res) => {
+  let sql = "DELETE FROM resume_reading where user_idUser = ?;";
+  sqlConnection(sql, [req.params.idUser], (err, results) => {
     if (err) {
       res.send("Delete all resume_reading fail");
     } else {
