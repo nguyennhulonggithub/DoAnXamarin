@@ -2,7 +2,23 @@ const express = require("express");
 const router = express.Router();
 const sqlConnection = require("./sqlConnection");
 
-//lấy read_later từ database
+//kiểm tra read_later có tồn tại không 
+router.get("/check", (req, res) => {
+    let sql = 'select exists(select * from read_later where user_idUser = ? and manga_idManga = ?) as exist;';
+    sqlConnection(sql, [req.body.idUser, req.body.idManga], (err, results) => {
+        if (err) {
+            res.send(err);
+        } else {
+            if (results.length == 0) {
+                res.send('something went wrong');
+            } else {
+                res.send(results);
+            }
+        }
+    })
+})
+
+//lấy toàn bộ thông tin read_later từ database
 router.get("/user/:idUser", (req, res) => {
     let sql = 'select user_idUser as idUser, idManga, Name, ImageAPI, DateAdded, Free,(select count(*) from chapter where manga_idManga = idManga) as chapter from read_later join manga on read_later.manga_idManga = manga.idManga where user_idUser = ?';
     sqlConnection(sql, [req.params.idUser], (err, results) => {
