@@ -7,6 +7,7 @@ import {
   ScrollView,
   ImageBackground,
   Animated,
+  Pressable,
 } from "react-native";
 
 import { Color } from "../variable/Color";
@@ -31,7 +32,8 @@ import {
   SetResumeReading,
 } from "../redux/actions";
 import { getdata } from "../InteractServer/GetUserSqlite";
-
+import { Entypo } from "@expo/vector-icons";
+import ReadingHistory from "../components/Popup/ReadingHistory";
 //màn hình HomeScreen
 export default function HomeScreen({ navigation }) {
   const opacity_head = useRef(new Animated.Value(0)).current;
@@ -42,6 +44,7 @@ export default function HomeScreen({ navigation }) {
   });
   const [data, set_data] = useState([]);
   const dispatch = useDispatch();
+  const refReadingHistory = useRef();
   useEffect(() => {
     let break_get = true;
     axios.get(server + "/genre").then((res) => {
@@ -70,6 +73,20 @@ export default function HomeScreen({ navigation }) {
     return () => (break_get = false);
   }, []);
   const data_resume = useSelector((state) => state.resume);
+  const userlog = useSelector((state) => state.userlog);
+  const idUser = useSelector((state) => state.idUser);
+  const setDataResumePopup = () => {
+    refReadingHistory.current.setModalVisible(true, "Reading History");
+    if (userlog) {
+      axios.get(server + "/resume_reading/user/" + idUser).then((res) => {
+        refReadingHistory.current.setState({ data: res.data[0] });
+      });
+    } else {
+      getResume().then((res) => {
+        refReadingHistory.current.setState({ data: res });
+      });
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -85,12 +102,6 @@ export default function HomeScreen({ navigation }) {
       >
         IKNR
       </Text>
-      <MaterialCommunityIcons
-        name='treasure-chest'
-        size={24}
-        color='white'
-        style={{ position: "absolute", top: 35, right: 20, zIndex: 10 }}
-      />
 
       <Animated.ScrollView
         style={styles.container}
@@ -106,9 +117,22 @@ export default function HomeScreen({ navigation }) {
         {/*resume reading*/}
         {data_resume.length > 0 && (
           <View style={[styles.list]}>
-            <Text style={[Font.homeTitle, { padding: 20 }]}>
-              Resume Reading
-            </Text>
+            <View style={styles.titleResume}>
+              <Text style={[Font.homeTitle, { padding: 20 }]}>
+                Resume Reading
+              </Text>
+              <Pressable onPress={() => setDataResumePopup()}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text style={Font.baseTitle}>See All</Text>
+                  <Entypo
+                    name='chevron-right'
+                    size={18}
+                    color='white'
+                    style={{ marginTop: 2 }}
+                  />
+                </View>
+              </Pressable>
+            </View>
             <ResumeReading navigation={navigation} />
           </View>
         )}
@@ -161,6 +185,11 @@ export default function HomeScreen({ navigation }) {
           </Text>
           <ExploreCataLog data={data} />
         </View>
+        <ReadingHistory
+          ref={refReadingHistory}
+          navigation={navigation}
+          userlog={userlog}
+        />
       </Animated.ScrollView>
     </View>
   );
@@ -193,5 +222,10 @@ const styles = StyleSheet.create({
   action_list: {
     height: 380,
     width: "100%",
+  },
+  titleResume: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
   },
 });

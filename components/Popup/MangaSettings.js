@@ -16,16 +16,77 @@ import { Entypo } from "@expo/vector-icons";
 import { server } from "../../variable/ServerName";
 import { Color } from "../../variable/Color";
 import Line from "../AllScreen/Line";
+import { connect } from "react-redux";
+import axios from "axios";
 
-export default class MangaSetting extends Component {
+class MangaSetting extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       isShowing: false,
+      like: false,
+      subscribe: false,
+      readlater: false,
     };
   }
+  likeFunction = () => {
+    if (this.props.userlog) {
+      if (this.state.like) {
+        this.props.confirmManga("Undo Like?");
+      } else {
+        axios.post(server + "/like/add", {
+          idManga: this.props.idManga,
+          idUser: this.props.idUser,
+        });
+        this.props.successLike("Added to Like", "like");
+        this.setState({ like: true });
+      }
 
+      this.setState({ isShowing: false });
+    } else {
+      this.setState({ isShowing: false });
+      this.props.showLogin();
+    }
+  };
+  subscribeFunction = () => {
+    if (this.props.userlog) {
+      if (this.state.subscribe) {
+        this.props.confirmManga("Unsubscribe?");
+      } else {
+        axios.post(server + "/subscribe/add", {
+          idManga: this.props.idManga,
+          idUser: this.props.idUser,
+        });
+        this.props.successLike("Added to Subscribe", "subscribe");
+        this.setState({ subscribe: true });
+      }
+
+      this.setState({ isShowing: false });
+    } else {
+      this.setState({ isShowing: false });
+      this.props.showLogin();
+    }
+  };
+  readlaterFunction = () => {
+    if (this.props.userlog) {
+      if (this.state.readlater) {
+        this.props.confirmManga("Remove this title from Read Later?");
+      } else {
+        axios.post(server + "/read_later/add", {
+          idManga: this.props.idManga,
+          idUser: this.props.idUser,
+        });
+        this.props.successLike("Added to Read Later", "readlater");
+        this.setState({ readlater: true });
+      }
+
+      this.setState({ isShowing: false });
+    } else {
+      this.setState({ isShowing: false });
+      this.props.showLogin();
+    }
+  };
   render() {
     return (
       <View>
@@ -51,7 +112,23 @@ export default class MangaSetting extends Component {
             </View>
             <Line />
             <View style={styles.bodyContainer}>
-              <Pressable style={styles.row}>
+              <Pressable
+                style={styles.row}
+                onPress={() => {
+                  const data = this.props.data;
+                  this.props.navigation.navigate("ChapterScreen", {
+                    dataChapter: data,
+                    chapterId: data[0].idChapter,
+                    chapterName: data[0].Name
+                      ? data[0].Name
+                      : "Chapter " + data[0].Order,
+                    mangaTitle: this.props.name,
+                    chapterOrder: data[0].Order,
+                    idManga: data[0].manga_idManga,
+                    imageAPI: this.props.image,
+                  });
+                }}
+              >
                 <MaterialCommunityIcons
                   name='book-open-variant'
                   size={24}
@@ -69,18 +146,34 @@ export default class MangaSetting extends Component {
                 <Text style={styles.title}>Share</Text>
               </Pressable>
               <Line />
-              <Pressable style={styles.row}>
+              <Pressable
+                style={styles.row}
+                onPress={() => {
+                  this.readlaterFunction();
+                }}
+              >
                 <MaterialCommunityIcons
                   name='calendar-plus'
                   size={24}
                   color='white'
                 />
-                <Text style={styles.title}>Add to Read Later</Text>
+                <Text style={styles.title}>
+                  {this.state.readlater
+                    ? "Remove From Read Later"
+                    : "Add to Read Later"}
+                </Text>
               </Pressable>
               <Line />
-              <Pressable style={styles.row}>
+              <Pressable
+                style={styles.row}
+                onPress={() => {
+                  this.likeFunction();
+                }}
+              >
                 <AntDesign name='like1' size={24} color='white' />
-                <Text style={styles.title}>Like</Text>
+                <Text style={styles.title}>
+                  {this.state.like ? "Undo Like" : "Like"}
+                </Text>
               </Pressable>
               <Line />
               <Pressable style={styles.row}>
@@ -88,9 +181,16 @@ export default class MangaSetting extends Component {
                 <Text style={styles.title}>Do not Recommend</Text>
               </Pressable>
               <Line />
-              <Pressable style={styles.row}>
+              <Pressable
+                style={styles.row}
+                onPress={() => {
+                  this.subscribeFunction();
+                }}
+              >
                 <FontAwesome name='bell-o' size={24} color='white' />
-                <Text style={styles.title}>Subscribe</Text>
+                <Text style={styles.title}>
+                  {this.state.subscribe ? "Unsubscribe" : "Subscribe"}
+                </Text>
               </Pressable>
             </View>
           </View>
@@ -139,3 +239,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
+
+export default MangaSetting;

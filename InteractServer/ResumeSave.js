@@ -81,7 +81,7 @@ export async function deleteResume() {
 
     db.transaction((tx) => {
       tx.executeSql(
-        "Drop table Resume",
+        "Delete from Resume",
         null,
         (tx, result) => {
           res();

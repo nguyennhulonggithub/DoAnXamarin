@@ -6,18 +6,16 @@ import dateFormat from "dateformat";
 import { useState } from "react";
 import { useRef } from "react";
 import { useMemo } from "react";
-function ResumeTag({ data_resume, navigation }) {
+import ConfirmManga from "../Popup/ConfirmManga";
+function ResumeList({ data_resume, navigation, hideReadingHistory }) {
   const [distance_time, set_distance_time] = useState();
 
   useEffect(() => {
-    clearInterval(refInterVal.current);
-    clearTimeout(refTimeout.current);
     getday();
   }, [data_resume]);
 
-  const refInterVal = useRef();
-  const refTimeout = useRef();
   const refMinutes = useRef(1);
+
   const refSecond = useRef();
   function getday() {
     const date_now = new Date(Date.now());
@@ -40,31 +38,9 @@ function ResumeTag({ data_resume, navigation }) {
         refMinutes.current = now_minutes - last_minutes;
 
         set_distance_time(refMinutes.current + " min");
-
-        refTimeout.current = setTimeout(() => {
-          refMinutes.current += 1;
-          set_distance_time(refMinutes.current + " min");
-          refInterVal.current = setInterval(() => {
-            refMinutes.current += 1;
-            set_distance_time(refMinutes.current + " min");
-          }, 60000);
-        }, (now_second - last_second) * 1000);
       } else {
         refSecond.current = distance_second;
         set_distance_time(refSecond.current + " sec");
-        refInterVal.current = setInterval(() => {
-          refSecond.current += 5;
-          if (refSecond.current > 54) {
-            clearInterval(refInterVal.current);
-            set_distance_time("1 min");
-            refInterVal.current = setInterval(() => {
-              refMinutes.current += 1;
-              set_distance_time(refMinutes.current + " min");
-            }, 60000);
-          } else {
-            set_distance_time(refSecond.current + " sec");
-          }
-        }, 5000);
       }
     }
   }
@@ -72,7 +48,8 @@ function ResumeTag({ data_resume, navigation }) {
   return (
     <Pressable
       style={styles.container}
-      onPress={() =>
+      onPress={() => {
+        hideReadingHistory();
         navigation.navigate("ChapterScreen", {
           // dataChapter: data,
           chapterId: data_resume.chapterId,
@@ -85,8 +62,8 @@ function ResumeTag({ data_resume, navigation }) {
           imageAPI: data_resume.image_chapter,
           percent_read: data_resume.percent_read,
           total_height: data_resume.total_height,
-        })
-      }
+        });
+      }}
     >
       <Image
         source={{ uri: server + data_resume.image_chapter }}
@@ -94,15 +71,15 @@ function ResumeTag({ data_resume, navigation }) {
       ></Image>
 
       <View style={styles.detail}>
-        <Text style={Font.title}>{data_resume.mangaTitle}</Text>
-        <Text style={Font.description} numberOfLines={1}>
-          {data_resume.chapterName
-            ? data_resume.chapterName
-            : "Chapter " + data_resume.chapterOrder}
-        </Text>
-        <Text style={Font.description}>
-          {Math.round(data_resume.percent_read)}% read
-        </Text>
+        <View>
+          <Text style={Font.title}>{data_resume.mangaTitle}</Text>
+          <Text style={Font.description} numberOfLines={1}>
+            {data_resume.chapterName
+              ? data_resume.chapterName
+              : "Chapter " + data_resume.chapterOrder}
+          </Text>
+        </View>
+
         <Text style={[Font.description, { marginTop: 10 }]}>
           Last read {distance_time} ago
         </Text>
@@ -115,14 +92,13 @@ function ResumeTag({ data_resume, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#1E1E1E",
     alignItems: "center",
     borderRadius: 10,
     width: 350,
     height: 150,
     paddingHorizontal: 15,
     flexDirection: "row",
-    marginLeft: 20,
+    marginLeft: 10,
   },
   img: {
     height: 120,
@@ -132,7 +108,9 @@ const styles = StyleSheet.create({
   detail: {
     paddingHorizontal: 15,
     width: 250,
+    justifyContent: "space-between",
+    height: 110,
   },
 });
 
-export default ResumeTag;
+export default ResumeList;

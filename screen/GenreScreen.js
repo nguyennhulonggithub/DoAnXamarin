@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { InitialResume, Login, SetIdUser } from "../redux/actions";
 import ConfirmManga from "../components/Popup/ConfirmManga";
 import SuccessLike from "../components/Popup/SuccessLike";
-export default function MangaScreen({ route, navigation }) {
+export default function GenreScreen({ route, navigation }) {
   const [dataHeader, set_dataHeader] = useState([]);
   const [dataBody, set_dataBody] = useState([]);
   useEffect(() => {

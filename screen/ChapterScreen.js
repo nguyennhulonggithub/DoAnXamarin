@@ -63,7 +63,7 @@ export default function ChapterScreen({ route, navigation }) {
   const dispatch = useDispatch();
   const idUser = useSelector((state) => state.idUser);
   const userlog = useSelector((state) => state.userlog);
-
+  console.log(refChapterName);
   useEffect(() => {
     const didBlurSubscription = navigation.addListener("blur", (e) => {
       const resume_data = {

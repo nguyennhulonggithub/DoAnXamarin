@@ -19,11 +19,8 @@ import { baseThing } from "../variable/BaseThing";
 import ModelPopup from "../components/Popup/ModelPopup";
 import { deleteUser, getdata } from "../InteractServer/GetUserSqlite";
 import OnSuccessPopUp from "../components/Popup/OnSuccessPopUp";
-import AwesomeAlert from "react-native-awesome-alerts";
 import LogoutPopup from "../components/Popup/LogoutPopup";
 import ReadingListPopup from "../components/Popup/ReadingListPopup";
-import SearchTitle from "../components/ProfileScreen/SearchTitle";
-import SearchTabBar from "../components/SearchScreen/SearchTabBar";
 import LogoutResume from "../components/Popup/LogoutResume";
 import { deleteResume, insertResume } from "../InteractServer/ResumeSave";
 import { InitialResume, Login, Logout, SetIdUser } from "../redux/actions";
@@ -168,12 +165,12 @@ class ProfileScreen extends Component {
         <ScrollView style={styles.container} keyboardShouldPersistTaps='always'>
           <View style={styles.account}>
             {this.refreshScreenUser()}
-            <Ionicons
+            {/* <Ionicons
               style={styles.setting}
               name='settings-outline'
               size={24}
               color='white'
-            />
+            /> */}
           </View>
           <View style={styles.list}>
             <Text style={[Font.title, { marginBottom: 20 }]}>Reading List</Text>
