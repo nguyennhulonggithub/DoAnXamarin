@@ -8,8 +8,6 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import Circle from "../AllScreen/Circle";
 import BorderTags from "../AllScreen/BorderTags";
-import Comment from "./CommentScreen";
-import CommentScreen from "./CommentScreen";
 
 function Header({ data, count_chapter }) {
     const { ImageAPI, Likes, Name, TotalView, Author, Genre, New, Hot, Status } =
@@ -29,7 +27,6 @@ function Header({ data, count_chapter }) {
 
     return (
         <View style={{ backgroundColor: Color.mangaColor }}>
-            <CommentScreen />
             {/* header chứa cover manga, thông tin manga */}
             <View style={styles.header}>
                 <Image
