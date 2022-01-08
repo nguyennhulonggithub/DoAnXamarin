@@ -2,10 +2,9 @@ const express = require("express");
 const router = express.Router();
 const sqlConnection = require("./sqlConnection");
 
-//lấy subscribe từ database
+//lấy read_later từ database
 router.get("/user/:idUser", (req, res) => {
-
-    let sql = 'select user_idUser as idUser, idManga, Name, ImageAPI, DateAdded, Free,(select count(*) from chapter where manga_idManga = idManga) as chapter from subscribe join manga on subscribe.manga_idManga = manga.idManga where user_idUser = ?';
+    let sql = 'select user_idUser as idUser, idManga, Name, ImageAPI, DateAdded, Free,(select count(*) from chapter where manga_idManga = idManga) as chapter from read_later join manga on read_later.manga_idManga = manga.idManga where user_idUser = ?';
     sqlConnection(sql, [req.params.idUser], (err, results) => {
         if (err) {
             res.send('User not exist');
@@ -19,32 +18,33 @@ router.get("/user/:idUser", (req, res) => {
     })
 })
 
-//thêm subscribe vào database
+//thêm read_later vào database
 router.post("/add", (req, res) => {
     let idManga = req.body.idManga
     let idUser = req.body.idUser
 
-    let sql = 'call Add_subscribe(?,?)';
+    let sql = 'call Add_read_later(?,?)';
 
     sqlConnection(sql, [idUser, idManga], (err, results) => {
         if (err) {
-            res.send('Add subscribe failed');
+            res.send('Add like failed');
         } else {
             res.send(results)
         }
     })
 })
 
-//xóa subscribe khỏi database
+
+//xóa read_later khỏi database
 router.delete('/delete', (req, res) => {
     let idManga = req.body.idManga
     let idUser = req.body.idUser
 
-    let sql = 'delete from subscribe where user_idUser = ? and manga_idManga = ?;';
+    let sql = 'delete from read_later where user_idUser = ? and manga_idManga = ?;';
 
     sqlConnection(sql, [idUser, idManga], (err, results) => {
         if (err) {
-            res.send('Delete subscribe failed');
+            res.send('Delete like failed');
         } else {
             res.send(results)
         }
