@@ -1,38 +1,34 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
-
+import { useSelector } from "react-redux";
 import Stats from "../AllScreen/Stats";
+import axios from "axios";
+import { server } from "../../variable/ServerName";
 
-export default class ReadingList extends Component {
-  render() {
-    return (
-      <Pressable
-        style={styles.press}
-        onPress={() => this.props.setReadingListPopUp(this.props.title)}
-      >
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Stats
-            color={this.props.color}
-            iconName={this.props.iconName}
-            source={this.props.source}
-          />
+export default function ReadingList(props) {
+  return (
+    <Pressable style={styles.press} onPress={() => props.setReadingListPopUp()}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Stats
+          color={props.color}
+          iconName={props.iconName}
+          source={props.source}
+        />
+      </View>
+      <View style={{ flex: 2 }}>
+        <View style={{ flex: 1, justifyContent: "flex-end" }}>
+          <Text style={Font.baseTitle}>{props.title}</Text>
         </View>
-        <View style={{ flex: 2 }}>
-          <View style={{ flex: 1, justifyContent: "flex-end" }}>
-            <Text style={Font.baseTitle}>{this.props.title}</Text>
-          </View>
-          <View style={{ flex: 1, paddingTop: 2 }}>
-            <Text style={Font.description}>0 titles</Text>
-          </View>
+        <View style={{ flex: 1, paddingTop: 2 }}>
+          <Text style={Font.description}>{props.count_title} titles</Text>
         </View>
-      </Pressable>
-    );
-  }
+      </View>
+    </Pressable>
+  );
 }
+
 const styles = StyleSheet.create({
   press: {
     borderRadius: 10,

@@ -63,7 +63,7 @@ export default function ChapterScreen({ route, navigation }) {
   const dispatch = useDispatch();
   const idUser = useSelector((state) => state.idUser);
   const userlog = useSelector((state) => state.userlog);
-  console.log(refChapterName);
+
   useEffect(() => {
     const didBlurSubscription = navigation.addListener("blur", (e) => {
       const resume_data = {
@@ -88,13 +88,17 @@ export default function ChapterScreen({ route, navigation }) {
     return () => didBlurSubscription;
   }, [navigation]);
   useEffect(() => {
+    let check = true;
     if (dataChapter) {
       set_cur_dataChapter(dataChapter);
     } else {
       axios.get(server + "/manga/" + idManga + "/chapter").then((res) => {
-        set_cur_dataChapter(res.data);
+        if (check) {
+          set_cur_dataChapter(res.data);
+        }
       });
     }
+    return () => (check = false);
   }, [dataChapter]);
   useEffect(() => {
     changeData(chapterId, chapterNameRoute, chapterOrder);
@@ -106,7 +110,6 @@ export default function ChapterScreen({ route, navigation }) {
         offset: (percent_read / 100) * total_height,
       });
     }
-    return;
   }, []);
 
   const changeData = (_chapterId, _chapterName, _order = 0) => {

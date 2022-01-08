@@ -6,7 +6,7 @@ import GenreTag from "./GenreTag";
 import axios from "axios";
 import { server } from "../../variable/ServerName";
 
-export default function ExploreCataLog({ data }) {
+export default function ExploreCataLog({ data, navigation }) {
   return (
     <View style={styles.genreContainer}>
       {data.map((item) => {
@@ -15,6 +15,7 @@ export default function ExploreCataLog({ data }) {
             image={item.ImageAPI}
             name={item.Name}
             key={item.idCategory}
+            navigation={navigation}
           />
         );
       })}

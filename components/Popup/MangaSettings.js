@@ -28,7 +28,49 @@ class MangaSetting extends Component {
       like: false,
       subscribe: false,
       readlater: false,
+      idManga: undefined,
     };
+  }
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+
+    if (this.props.idManga !== prevProps.idManga) {
+      axios
+        .get(
+          server + "/like/check/" + this.props.idUser + "&" + this.props.idManga
+        )
+        .then((res) => {
+          if (res.data[0].exist > 0) {
+            this.setState({ like: true });
+          }
+        });
+      axios
+        .get(
+          server +
+            "/subscribe/check/" +
+            this.props.idUser +
+            "&" +
+            this.props.idManga
+        )
+        .then((res) => {
+          if (res.data[0].exist > 0) {
+            this.setState({ subscribe: true });
+          }
+        });
+      axios
+        .get(
+          server +
+            "/read_later/check/" +
+            this.props.idUser +
+            "&" +
+            this.props.idManga
+        )
+        .then((res) => {
+          if (res.data[0].exist > 0) {
+            this.setState({ readlater: true });
+          }
+        });
+    }
   }
   likeFunction = () => {
     if (this.props.userlog) {

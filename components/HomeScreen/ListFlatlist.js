@@ -8,9 +8,13 @@ import MangaTag from "../MangaList/MangaTag";
 export default function ListFlatlist({ navigation, type }) {
   const [data, set_data] = useState([]);
   useEffect(() => {
+    let check = true;
     axios.get(server + "/list/" + type).then((res) => {
-      set_data(res.data[0].slice(0, 8));
+      if (check) {
+        set_data(res.data[0].slice(0, 8));
+      }
     });
+    return () => (check = false);
   }, []);
 
   return (

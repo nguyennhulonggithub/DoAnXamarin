@@ -112,6 +112,7 @@ class ReadingHistory extends Component {
                 "resume"
               )
             }
+            hideResume={() => this.setState({ modalVisible: false })}
           />
         </View>
       </Modal>

@@ -31,15 +31,20 @@ export default function MangaScreen({ route, navigation }) {
   const [dataHeader, set_dataHeader] = useState([]);
   const [dataBody, set_dataBody] = useState([]);
   useEffect(() => {
+    let check = true;
     axios.get(server + "/manga/" + route.params.idManga).then((res) => {
-      set_dataHeader(res.data[0][0]);
+      if (check) {
+        set_dataHeader(res.data[0][0]);
+      }
     });
     axios
       .get(server + "/manga/" + route.params.idManga + "/chapter")
       .then((res) => {
-        set_dataBody(res.data);
+        if (check) {
+          set_dataBody(res.data);
+        }
       });
-    return;
+    return () => (check = false);
   }, []);
   const userlog = useSelector((state) => state.userlog);
   const ref = useRef(new Animated.Value(0)).current;
@@ -177,6 +182,13 @@ export default function MangaScreen({ route, navigation }) {
         idUser={idUser}
         successLike={(text, type) =>
           refSuccessLike.current.setModalVisible(text, type)
+        }
+        unlike={() => refMangaSettings.current.setState({ like: false })}
+        unsubscribe={() =>
+          refMangaSettings.current.setState({ subscribe: false })
+        }
+        unreadlater={() =>
+          refMangaSettings.current.setState({ readlater: false })
         }
       />
       <SuccessLike ref={refSuccessLike} />
