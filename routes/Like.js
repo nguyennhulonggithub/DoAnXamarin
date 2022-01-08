@@ -3,20 +3,24 @@ const router = express.Router();
 const sqlConnection = require("./sqlConnection");
 
 //kiểm tra likes có tồn tại không
-router.get("/check", (req, res) => {
+router.get("/check/:idUser&:idManga", (req, res) => {
   let sql =
     "select exists(select * from likes where user_idUser = ? and manga_idManga = ?) as exist;";
-  sqlConnection(sql, [req.body.idUser, req.body.idManga], (err, results) => {
-    if (err) {
-      res.send(err);
-    } else {
-      if (results.length == 0) {
-        res.send("something went wrong");
+  sqlConnection(
+    sql,
+    [req.params.idUser, req.params.idManga],
+    (err, results) => {
+      if (err) {
+        res.send(err);
       } else {
-        res.send(results);
+        if (results.length == 0) {
+          res.send("something went wrong");
+        } else {
+          res.send(results);
+        }
       }
     }
-  });
+  );
 });
 
 //lấy like từ database

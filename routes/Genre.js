@@ -150,4 +150,38 @@ router.get("/:nameGenre/hot_update", (req, res) => {
     });
 })
 
+//Top Liked Titles
+//Lấy theo Like
+router.get("/:nameGenre/top_like_title", (req, res) => {
+    let sql = 'call Genre_top_like_title(?)';
+    sqlConnection(sql, [req.params.nameGenre], (err, results) => {
+        if (err) {
+            res.send(err)
+        } else {
+            if (results.length == 0) {
+                res.send('No manga available');
+            } else {
+                res.send(results);
+            }
+        }
+    });
+})
+
+//Top Subscribed Titles
+//Lấy theo Subscribe
+router.get("/:nameGenre/top_subscribe_title", (req, res) => {
+    let sql = 'call Genre_top_subscribe_title(?)';
+    sqlConnection(sql, [req.params.nameGenre], (err, results) => {
+        if (err) {
+            res.send(err)
+        } else {
+            if (results.length == 0) {
+                res.send('No manga available');
+            } else {
+                res.send(results);
+            }
+        }
+    });
+})
+
 module.exports = router;
