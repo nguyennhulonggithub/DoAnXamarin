@@ -1,16 +1,18 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { server } from "../../variable/ServerName";
 
-function GenreTag({ image, name }) {
-
+function GenreTag({ image, name, navigation }) {
   return (
-    <View style={styles.container}>
+    <Pressable
+      style={styles.container}
+      onPress={() => navigation.navigate("GenreScreen")}
+    >
       <Image source={{ uri: server + image }} style={styles.img}></Image>
       <Text style={styles.genreTitle} adjustsFontSizeToFit={true}>
         {name}
       </Text>
-    </View>
+    </Pressable>
   );
 }
 

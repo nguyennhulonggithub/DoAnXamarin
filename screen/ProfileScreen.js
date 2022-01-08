@@ -41,14 +41,20 @@ class ProfileScreen extends Component {
     this.state = {
       userLogin: false,
       userInfo: {},
+      like: [],
+      readlater: [],
+      subscribe: [],
     };
   }
 
   componentDidMount() {
     this.props.navigation.addListener("tabPress", (e) => {
       this.getUserInfo();
+      this.getDataLike();
     });
+
     this.getUserInfo();
+    this.getDataLike();
   }
   getUserInfo = () => {
     getdata().then((res) => {
@@ -59,6 +65,31 @@ class ProfileScreen extends Component {
       }
     });
   };
+  getDataLike = () => {
+    console.log("hello");
+    if (this.props.userlog) {
+      axios.get(server + "/like/user/" + this.props.idUser).then((res) => {
+        this.setState({ like: res.data });
+      });
+      axios.get(server + "/subscribe/user/" + this.props.idUser).then((res) => {
+        this.setState({ subscribe: res.data });
+      });
+      axios
+        .get(server + "/read_later/user/" + this.props.idUser)
+        .then((res) => {
+          this.setState({ readlater: res.data });
+        });
+    }
+  };
+  componentDidUpdate(prevProps) {
+    if (prevProps.userlog !== this.props.userlog) {
+      if (this.props.userlog) {
+        this.getDataLike();
+      } else {
+        this.setState({ like: [], readlater: [], subscribe: [] });
+      }
+    }
+  }
   changeLoginInfo = (login) => {
     this.setState({ userLogin: login });
     this.successRef.current.setModalVisible(true);
@@ -70,6 +101,7 @@ class ProfileScreen extends Component {
   onLogout = () => {
     this.LogoutResumeRef.current.setModalVisible(true);
   };
+
   acceptLogout = (type) => {
     if (type == 0) {
       this.LogoutResumeRef.current.setModalVisible(false);
@@ -156,8 +188,8 @@ class ProfileScreen extends Component {
       this.props.dispatch(InitialResume(res.data[0]));
     });
   };
-  setReadingListPopup = (title) => {
-    this.ReadingListRef.current.setModalVisible(true, title);
+  setReadingListPopup = (title, data) => {
+    this.ReadingListRef.current.setModalVisible(true, title, data);
   };
   render() {
     return (
@@ -180,14 +212,22 @@ class ProfileScreen extends Component {
                 source='awesome5'
                 title='Read Later'
                 color='#e65c00'
-                setReadingListPopUp={this.setReadingListPopup}
+                type='readlater'
+                count_title={this.state.readlater.length}
+                setReadingListPopUp={() =>
+                  this.setReadingListPopup("Read Later", this.state.readlater)
+                }
               />
               <ReadingList
                 iconName='bell'
                 source='awesome5'
                 title='Subscribed'
                 color='#cc00ff'
-                setReadingListPopUp={this.setReadingListPopup}
+                type='subscribe'
+                count_title={this.state.subscribe.length}
+                setReadingListPopUp={() =>
+                  this.setReadingListPopup("Subscribed", this.state.subscribe)
+                }
               />
             </View>
             <View style={styles.reading}>
@@ -196,14 +236,19 @@ class ProfileScreen extends Component {
                 source='ant'
                 title='Liked'
                 color='#008ae6'
-                setReadingListPopUp={this.setReadingListPopup}
+                type='like'
+                count_title={this.state.like.length}
+                setReadingListPopUp={() =>
+                  this.setReadingListPopup("Liked", this.state.like)
+                }
               />
               <ReadingList
                 iconName='clouddownload'
                 source='ant'
                 title='Downloaded'
                 color='#009933'
-                setReadingListPopUp={this.setReadingListPopup}
+                count_title={0}
+                setReadingListPopUp={() => {}}
               />
             </View>
           </View>
@@ -258,7 +303,11 @@ class ProfileScreen extends Component {
           />
           <OnSuccessPopUp ref={this.successRef} />
           <LogoutPopup ref={this.LogoutRef} onLogout={this.onLogout} />
-          <ReadingListPopup ref={this.ReadingListRef} />
+          <ReadingListPopup
+            ref={this.ReadingListRef}
+            userlog={this.state.userLogin}
+            signIn={() => this.myRef.current.setModalVisible(true)}
+          />
           <LogoutResume
             ref={this.LogoutResumeRef}
             acceptLogout={this.acceptLogout}
@@ -308,5 +357,7 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = (state) => ({
   resume: state.resume,
+  userlog: state.userlog,
+  idUser: state.idUser,
 });
 export default connect(mapStateToProps)(ProfileScreen);

@@ -54,19 +54,25 @@ export default function HomeScreen({ navigation }) {
     });
 
     getdata().then((res) => {
-      if (res) {
-        dispatch(SetIdUser(res.UserId));
+      if (break_get) {
+        if (res) {
+          dispatch(SetIdUser(res.UserId));
 
-        dispatch(Login());
-        axios.get(server + "/resume_reading/user/" + res.UserId).then((res) => {
-          if (break_get) {
-            dispatch(InitialResume(res.data[0]));
-          }
-        });
-      } else {
-        getResume().then((res) => {
-          dispatch(InitialResume(res));
-        });
+          dispatch(Login());
+          axios
+            .get(server + "/resume_reading/user/" + res.UserId)
+            .then((res) => {
+              if (break_get) {
+                dispatch(InitialResume(res.data[0]));
+              }
+            });
+        } else {
+          getResume().then((res) => {
+            if (break_get) {
+              dispatch(InitialResume(res));
+            }
+          });
+        }
       }
     });
 
@@ -183,13 +189,19 @@ export default function HomeScreen({ navigation }) {
           <Text style={[Font.homeTitle, { padding: 15 }]}>
             Explore INKR Catalog
           </Text>
-          <ExploreCataLog data={data} />
+          <ExploreCataLog data={data} navigation={navigation} />
         </View>
         <ReadingHistory
           ref={refReadingHistory}
           navigation={navigation}
           userlog={userlog}
         />
+        <Pressable
+          onPress={() => navigation.jumpTo("Search")}
+          style={styles.jumpExplore}
+        >
+          <Text style={Font.title}>Explore More</Text>
+        </Pressable>
       </Animated.ScrollView>
     </View>
   );
@@ -227,5 +239,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
+  },
+  jumpExplore: {
+    padding: 10,
+    marginHorizontal: 20,
+    backgroundColor: Color.onBaseColor,
+    marginBottom: 20,
+    marginTop: 20,
+    borderRadius: 10,
+    alignItems: "center",
   },
 });

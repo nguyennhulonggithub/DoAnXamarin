@@ -13,9 +13,13 @@ export default function ParallaxSlide({ navigation }) {
   const [data, set_data] = useState([]);
 
   useEffect(() => {
+    let check = true;
     axios.get(server + "/list/" + "new_noteworthy").then((res) => {
-      set_data(res.data[0]);
+      if (check) {
+        set_data(res.data[0]);
+      }
     });
+    return () => (check = false);
   }, []);
 
   return (

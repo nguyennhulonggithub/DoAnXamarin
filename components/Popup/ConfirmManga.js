@@ -41,16 +41,16 @@ class ConfirmManga extends Component {
           idManga: this.props.idManga,
         },
       });
+      this.props.unreadlater();
       this.props.successLike("Remove from Read Later", "unreadlater");
     } else if (kind_action == "Undo Like?") {
-      console.log("doing this");
       axios.delete(server + "/like/delete", {
         data: {
           idUser: this.props.idUser,
           idManga: this.props.idManga,
         },
       });
-
+      this.props.unlike();
       this.props.successLike("Remove from Liked", "unlike");
     } else if (kind_action == "Unsubscribe?") {
       axios.delete(server + "/subscribe/delete", {
@@ -59,19 +59,22 @@ class ConfirmManga extends Component {
           idManga: this.props.idManga,
         },
       });
-
+      this.props.unsubscribe();
       this.props.successLike("Remove from Subscribe", "unsubscribe");
     } else if ((kind_action = "Remove All Recently Read")) {
       if (this.props.userlog) {
+        axios.delete(
+          server + "/resume_reading/delete_all/user/" + this.props.idUser
+        );
       } else {
         deleteResume();
       }
       this.props.initialResume();
       this.props.successLike();
+      this.props.hideResume();
     }
   }
   render() {
-    console.log(this.state.kind_action);
     const { modalVisible } = this.state;
     return (
       <Modal animationType={"slide"} transparent={true} visible={modalVisible}>
@@ -135,6 +138,12 @@ const mapDispatchToProps = (dispatch) => {
     initialResume: () => dispatch(InitialResume([])),
   };
 };
-export default connect(null, mapDispatchToProps, null, { forwardRef: true })(
-  ConfirmManga
-);
+const mapStateToProps = (state) => {
+  return {
+    // dispatching plain actions
+    idUser: state.idUser,
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps, null, {
+  forwardRef: true,
+})(ConfirmManga);

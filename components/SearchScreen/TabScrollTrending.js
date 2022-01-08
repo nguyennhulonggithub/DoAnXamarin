@@ -15,19 +15,25 @@ export default function TabScrollTrending({ navigation }) {
   const [data, set_data] = useState(new Object());
 
   useEffect(() => {
+    let check = true;
     axios.get(server + "/genre").then((res) => {
-      const temp = new Object();
-      res.data.map((item) => {
-        axios
-          .get(server + "/genre/" + item.Name + "/trending_today")
-          .then((response) => {
-            temp[item.Name] = response.data[0];
-            if (Object.keys(temp).length == 6) {
-              set_data(temp);
-            }
-          });
-      });
+      if (check) {
+        const temp = new Object();
+        res.data.map((item) => {
+          axios
+            .get(server + "/genre/" + item.Name + "/trending_today")
+            .then((response) => {
+              if (check) {
+                temp[item.Name] = response.data[0];
+                if (Object.keys(temp).length == 6) {
+                  set_data(temp);
+                }
+              }
+            });
+        });
+      }
     });
+    return () => (check = false);
   }, []);
 
   const [index, setIndex] = React.useState(0);
