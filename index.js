@@ -93,6 +93,10 @@ app.use("/comment", postComment);
 const postUser = require("./routes/User");
 app.use("/users", postUser);
 
+//pay
+const postMoney = require("./routes/Money");
+app.use("/money", postMoney);
+
 // const { default: Stripe } = require("../client/components/Stripe/Stripe");
 
 app.listen(3000, () => {
