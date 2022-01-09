@@ -29,6 +29,7 @@ import axios from "axios";
 import { server } from "../variable/ServerName";
 import ResumeReading from "../components/HomeScreen/ResumeReading";
 import Stripe from "../components/Stripe/Stripe";
+import { AntDesign } from "@expo/vector-icons";
 
 class ProfileScreen extends Component {
   constructor(props) {
@@ -39,12 +40,14 @@ class ProfileScreen extends Component {
     this.ReadingListRef = React.createRef();
     this.LogoutResumeRef = React.createRef();
     this.SyncDataRef = React.createRef();
+    this.innerRef = React.createRef(false);
     this.state = {
       userLogin: false,
       userInfo: {},
       like: [],
       readlater: [],
       subscribe: [],
+      coin: 0,
     };
   }
 
@@ -52,10 +55,12 @@ class ProfileScreen extends Component {
     this.props.navigation.addListener("tabPress", (e) => {
       this.getUserInfo();
       this.getDataLike();
+      this.getCoin();
     });
 
     this.getUserInfo();
     this.getDataLike();
+    this.getCoin();
   }
   getUserInfo = () => {
     getdata().then((res) => {
@@ -66,6 +71,7 @@ class ProfileScreen extends Component {
       }
     });
   };
+
   getDataLike = () => {
     if (this.props.userlog) {
       axios.get(server + "/like/user/" + this.props.idUser).then((res) => {
@@ -85,9 +91,17 @@ class ProfileScreen extends Component {
     if (prevProps.userlog !== this.props.userlog) {
       if (this.props.userlog) {
         this.getDataLike();
+        this.getCoin();
       } else {
         this.setState({ like: [], readlater: [], subscribe: [] });
       }
+    }
+  }
+  getCoin() {
+    if (this.props.userlog) {
+      axios.get(server + "/users/get/" + this.props.idUser).then((res) => {
+        this.setState({ coin: res.data[0].Coin });
+      });
     }
   }
   changeLoginInfo = (login) => {
@@ -142,14 +156,27 @@ class ProfileScreen extends Component {
           >
             {this.state.userInfo.UserName}
           </Text>
-
-          {/* <View>
-            <Pressable onPress>
-              <Image source={require("../assets/icons8_coin_125px_1.png")} />
-              <Text>qweqwe</Text>
+          {/* coin */}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: 15,
+            }}
+          >
+            <View>
+              <Image
+                source={require("../assets/icons8_coin_125px_1.png")}
+                style={{ height: 50, width: 50 }}
+              />
+            </View>
+            <Text style={[Font.baseTitle, { marginRight: 10 }]}>
+              {this.state.coin} coins
+            </Text>
+            <Pressable onPress={() => this.innerRef.current(true)}>
+              <AntDesign name='pluscircleo' size={30} color='white' />
             </Pressable>
-            <Stripe />
-          </View> */}
+          </View>
 
           <Pressable
             style={[baseThing.button, { backgroundColor: Color.button }]}
@@ -204,14 +231,13 @@ class ProfileScreen extends Component {
     return (
       <View>
         <ScrollView style={styles.container} keyboardShouldPersistTaps='always'>
-          <View style={styles.account}>
+          <View
+            style={[
+              styles.account,
+              { height: this.state.userLogin ? 320 : 250 },
+            ]}
+          >
             {this.refreshScreenUser()}
-            {/* <Ionicons
-              style={styles.setting}
-              name='settings-outline'
-              size={24}
-              color='white'
-            /> */}
           </View>
 
           <View style={styles.list}>
@@ -328,6 +354,7 @@ class ProfileScreen extends Component {
             Sync_data={this.Sync_data}
             changeLoginInfo={this.changeLoginInfo}
           />
+          <Stripe innerRef={this.innerRef} />
         </ScrollView>
       </View>
     );
@@ -344,7 +371,6 @@ const styles = StyleSheet.create({
     backgroundColor: Color.baseColor,
 
     width: "100%",
-    height: 250,
   },
   setting: {
     position: "absolute",

@@ -1,12 +1,13 @@
-import { StripeProvider } from '@stripe/stripe-react-native';
-import React, { useState, useEffect } from 'react';
-import { Platform, Alert } from 'react-native';
-import { server } from '../../variable/ServerName';
-import Card from './Card';
+import { StripeProvider } from "@stripe/stripe-react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { Platform, Alert } from "react-native";
+import { server } from "../../variable/ServerName";
+import Card from "./Card";
 
-export const publish = 'pk_test_51KFt1gF2EZ3ThaNawwPxRUmGLA4U5dM8EsJylkm4FsSLOaF12kMNknwGcr3PkIhDgfQWmPkeN6L06UlYODn5xQAb00EHXtzkKZ';
+export const publish =
+  "pk_test_51KFt1gF2EZ3ThaNawwPxRUmGLA4U5dM8EsJylkm4FsSLOaF12kMNknwGcr3PkIhDgfQWmPkeN6L06UlYODn5xQAb00EHXtzkKZ";
 
-export const API_URL = server
+export const API_URL = server;
 // Platform.OS === 'android' ? 'http://192.168.1.3:3000' : 'http://192.168.1.3:3000'
 
 // export async function fetchPublishableKey() {
@@ -22,24 +23,24 @@ export const API_URL = server
 //     }
 // }
 
-function Stripe(props) {
-    const [publishableKey, setPublishableKey] = useState(publish)
+function Stripe({ innerRef }) {
+  const [publishableKey, setPublishableKey] = useState(publish);
 
-    // useEffect(() => {
-    //     async function init() {
-    //         const publishableKey = await fetchPublishableKey()
-    //         if (publishableKey) {
-    //             setPublishableKey(publishableKey)
-    //         }
-    //     }
-    //     init()
-    // })
+  // useEffect(() => {
+  //     async function init() {
+  //         const publishableKey = await fetchPublishableKey()
+  //         if (publishableKey) {
+  //             setPublishableKey(publishableKey)
+  //         }
+  //     }
+  //     init()
+  // })
 
-    return (
-        <StripeProvider publishableKey={publishableKey}>
-            <Card show={props.show} />
-        </StripeProvider>
-    )
+  return (
+    <StripeProvider publishableKey={publishableKey}>
+      <Card innerRef={innerRef} />
+    </StripeProvider>
+  );
 }
 
-export default Stripe
+export default Stripe;
