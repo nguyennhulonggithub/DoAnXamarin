@@ -45,9 +45,6 @@ class ReadingListPopup extends Component {
     });
   };
   render() {
-    // if (this.state.data.length > 0) {
-    //   console.log(new Date(this.state.data[0].DateAdded).getSeconds());
-    // }
     const { modalVisible } = this.state;
     return (
       <Modal

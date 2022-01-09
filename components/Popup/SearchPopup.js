@@ -58,7 +58,6 @@ export default class SearchPopup extends Component {
             data={this.props.data}
             keyExtractor={(item, index) => item.idManga}
             renderItem={({ item }) => {
-              console.log(item);
               return (
                 <View>
                   <SearchTags data={item} navigation={this.props.navigation} />
