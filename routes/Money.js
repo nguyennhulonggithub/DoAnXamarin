@@ -3,10 +3,13 @@ const router = express.Router();
 const sqlConnection = require("./sqlConnection");
 
 //mua manga
-//sau khi mua thì trừ tiền trong database và mở manga đó, tính là đã trả
+//sau khi mua thì trừ tiền trong database và thêm manga và bảng đã trả
 router.post("/buy", (req, res) => {
-    let sql = 'insert into pay values (?,?);'
-    sqlConnection(sql, [req.body.idChapter, req.body.idUser], (err, results) => {
+    let idChapter = req.body.idChapter;
+    let idUser = req.body.idUser;
+    let pay = req.body.pay;
+    let sql = 'call Money_pay(?,?,?)';
+    sqlConnection(sql, [idChapter, idUser, pay], (err, results) => {
         if (err) {
             res.send(err);
         } else {
@@ -25,11 +28,6 @@ router.get("/get/:idUser", (req, res) => {
             res.send(results);
         }
     });
-})
-
-//lưu tiền
-router.post("/save/:idUser", (req, res) => {
-    let sql = 'update pay '
 })
 
 module.exports = router;
