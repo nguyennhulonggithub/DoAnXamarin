@@ -23,7 +23,7 @@ router.post("/add", (req, res) => {
 
 //lấy comment từ database
 router.get("/get/:idManga", (req, res) => {
-    let sql = 'select idComment, idUser, content, Email, Image from comment join user on comment.user_idUser = user.idUser where manga_idManga = ?';
+    let sql = 'select idComment, idUser, content, Email, Image, Name from comment join user on comment.user_idUser = user.idUser where manga_idManga = ?';
     sqlConnection(sql, [req.params.idManga], (err, results) => {
         if (err) {
             res.send(err)
