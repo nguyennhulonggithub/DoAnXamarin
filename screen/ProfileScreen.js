@@ -145,8 +145,8 @@ class ProfileScreen extends Component {
 
                     <View>
                         <Pressable onPress>
-                            <Image source={require('../assets/icons8_coin_125px_1.png')} />
-                            <Text>qweqwe</Text>
+                            {/* <Image source={require('../assets/icons8_coin_125px_1.png')} /> */}
+                            <Text>{this.props.coin}</Text>
                         </Pressable>
                         <Stripe />
                     </View>

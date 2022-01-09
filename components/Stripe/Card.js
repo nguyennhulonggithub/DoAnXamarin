@@ -52,7 +52,7 @@ function Card(props) {
     };
 
     return (
-        <Modal animationType="slide" visible={props.show}>
+        <Modal animationType="slide" visible='false'>
             <View style={styles.container}>
                 <TextInput autoCapitalize="none"
                     placeholder="E-mail"
