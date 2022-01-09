@@ -19,8 +19,20 @@ router.post("/buy", (req, res) => {
 })
 
 //lấy tiền từ database
-router.get("/get/:idUser", (req, res) => {
+router.get("/coin/:idUser", (req, res) => {
     let sql = 'select Coin from user where idUser =?;'
+    sqlConnection(sql, [req.params.idUser], (err, results) => {
+        if (err) {
+            res.send(err);
+        } else {
+            res.send(results);
+        }
+    });
+})
+
+//lấy thông tin chapter đã trả từ database
+router.get("/get/:idUser", (req, res) => {
+    let sql = 'select * from pay where user_idUser = ?;';
     sqlConnection(sql, [req.params.idUser], (err, results) => {
         if (err) {
             res.send(err);
