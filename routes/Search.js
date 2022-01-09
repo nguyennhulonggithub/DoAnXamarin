@@ -15,7 +15,7 @@ router.get("/:word", (req, res) => {
       if (results.length == 0) {
         res.send(null);
       } else {
-        res.send(null);
+        res.send(results);
       }
     }
   });
