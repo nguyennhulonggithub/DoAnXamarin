@@ -25,7 +25,7 @@ import TabScrollTrending from "../components/SearchScreen/TabScrollTrending";
 export default function SearchScreen({ navigation }) {
   return (
     <View>
-      <SearchTabBar />
+      <SearchTabBar navigation={navigation} />
       <ScrollView>
         <View style={{ height: 920, backgroundColor: Color.defaultColor }}>
           <SearchSlide />
@@ -79,7 +79,7 @@ export default function SearchScreen({ navigation }) {
           </Text>
           <View style={styles.exploreMoreContainer}>
             <View style={styles.inside_exploreMore}>
-              <ExploreMore />
+              <ExploreMore navigation={navigation} />
             </View>
           </View>
         </View>

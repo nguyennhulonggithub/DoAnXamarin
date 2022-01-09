@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Color } from "../../variable/Color";
 import { Entypo } from "@expo/vector-icons";
@@ -8,10 +8,16 @@ import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default function ExploreMore() {
-  function tab(icon, title, color, type) {
+export default function ExploreMore({ navigation }) {
+  function tab(icon, title, color, type, id) {
     return (
-      <View
+      <Pressable
+        onPress={() =>
+          navigation.navigate("GenreScreen", {
+            idGenre: id,
+            nameGenre: title,
+          })
+        }
         style={{
           flexDirection: "row",
           marginTop: 20,
@@ -76,23 +82,23 @@ export default function ExploreMore() {
             }}
           ></View>
         </View>
-      </View>
+      </Pressable>
     );
   }
   return (
     <View>
-      {tab("sword-cross", "Action", Color.blue, "MaterialCommunityIcons")}
-      {tab("cards-heart", "Romance", "#ff3333", "MaterialCommunityIcons")}
-      {tab("smile-circle", "Comedy", "yellow", "AntDesign")}
-      {tab("star", "Fantasy", "#cc33ff", "AntDesign")}
-      {tab("knife", "Horror", "orange", "MaterialCommunityIcons")}
+      {tab("sword-cross", "Action", Color.blue, "MaterialCommunityIcons", 1)}
+      {tab("cards-heart", "Romance", "#ff3333", "MaterialCommunityIcons", 2)}
+      {tab("smile-circle", "Comedy", "yellow", "AntDesign", 3)}
+      {tab("star", "Fantasy", "#cc33ff", "AntDesign", 4)}
+      {tab("knife", "Horror", "orange", "MaterialCommunityIcons", 5)}
       {tab(
         "md-checkmark-done-circle-outline",
-        "Completed",
+        "Slice Of Life",
         "green",
-        "Ionicons"
+        "Ionicons",
+        6
       )}
-      {tab("money-off", "Free", "green", "MaterialIcons")}
     </View>
   );
 }

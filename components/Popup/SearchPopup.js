@@ -1,10 +1,21 @@
 import React, { Component } from "react";
 import { useState } from "react";
-import { Text, View, StyleSheet, Modal, Pressable } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Modal,
+  Pressable,
+  FlatList,
+} from "react-native";
 
 import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
 import { AntDesign } from "@expo/vector-icons";
+import LoadingChapter from "../ChapterScreen/LoadingChapter";
+import { TabBarItem } from "react-native-tab-view";
+import SearchTags from "../SearchScreen/SearchTags";
+import Line from "../AllScreen/Line";
 //pop up login
 
 export default class SearchPopup extends Component {
@@ -13,6 +24,16 @@ export default class SearchPopup extends Component {
     this.state = {
       zIndex_search: 0,
     };
+    this.refLoading = React.createRef();
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.loading !== this.props.loading) {
+      if (this.props.loading) {
+        this.refLoading.current.setState({ show: true });
+      } else {
+        this.refLoading.current.setState({ show: false });
+      }
+    }
   }
   setModalVisible = (_zindex) => {
     this.setState({ zIndex_search: _zindex });
@@ -30,23 +51,22 @@ export default class SearchPopup extends Component {
           onPress={() => {
             this.props.remove_focus();
           }}
-          style={{ height: 700 }}
+          style={{ height: 500 }}
         >
-          <Text style={[Font.title]}>Quick Filters</Text>
-          <View style={{ marginTop: 10, flexDirection: "row" }}>
-            <Text style={[Font.baseTitle]}>Styles Origin</Text>
-            <AntDesign
-              name='questioncircleo'
-              size={24}
-              color='white'
-              style={{ marginLeft: 10 }}
-            />
-          </View>
-          <View
-            style={{ flexWrap: "wrap", flexDirection: "row", marginTop: 10 }}
-          >
-            {this.Tags("hello")}
-          </View>
+          <LoadingChapter ref={this.refLoading} height={500} />
+          <FlatList
+            data={this.props.data}
+            keyExtractor={(item, index) => item.idManga}
+            renderItem={({ item }) => {
+              console.log(item);
+              return (
+                <View>
+                  <SearchTags data={item} navigation={this.props.navigation} />
+                  <Line />
+                </View>
+              );
+            }}
+          />
         </Pressable>
       </View>
     );
@@ -60,7 +80,6 @@ const styles = StyleSheet.create({
     backgroundColor: Color.defaultColor,
     position: "absolute",
     top: 100,
-    padding: 15,
   },
   tags: {
     backgroundColor: Color.baseColor,

@@ -23,7 +23,7 @@ export default class LoadingChapter extends Component {
             position: "absolute",
             top: 0,
             width: width,
-            height: height,
+            height: this.props.height ? 500 : height,
             justifyContent: "center",
             alignItems: "center",
           },

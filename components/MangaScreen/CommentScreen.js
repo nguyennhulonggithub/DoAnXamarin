@@ -32,9 +32,7 @@ function CommentScreen(props) {
   const idUser = useSelector((state) => state.idUser);
   const userlog = useSelector((state) => state.userlog);
   useEffect(() => {
-    console.log("hello");
     if (userlog) {
-      console.log("hello");
       getdata().then((res) => {
         set_userName(res.UserName);
         set_userImage(res.UserImage);
