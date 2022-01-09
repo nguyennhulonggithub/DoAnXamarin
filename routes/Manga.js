@@ -68,14 +68,14 @@ router.get("/:idManga", (req, res) => {
 
 //show toàn bộ chapter trong manga
 router.get("/:idManga/chapter", (req, res) => {
-    let sql = "select * from chapter where manga_idManga=?";
+    let sql = "call Get_chapter(?)";
     sqlConnection(sql, [req.params.idManga], (err, results) => {
         if (err) {
             res.send("Chapter or Manga not exist");
         } else {
             idManga = req.params.idManga;
             if (results.length == 0) {
-                res.send("Chapter not exist");
+                res.send([]);
             } else {
                 res.send(results);
             }
