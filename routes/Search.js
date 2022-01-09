@@ -4,7 +4,7 @@ const sqlConnection = require("./sqlConnection");
 
 router.get('/:word', (req, res) => {
     let word = req.params.word;
-    let sql = "select idManga, Name, ImageAPI, Free from manga where Name like '%" + word + "%';";
+    let sql = "select idManga, Name, ImageAPI, Free, (select count(*) from chapter where manga_idManga = idManga)as Chapter from manga where Name like '%" + word + "%';";
     sqlConnection(sql, (err, results) => {
         if (err) {
             res.send(err);
