@@ -10,7 +10,7 @@ import ConfirmManga from "../Popup/ConfirmManga";
 import Line from "../AllScreen/Line";
 function LikeTag({ data, navigation, hideModel }) {
   const [distance_time, set_distance_time] = useState();
-  console.log(data);
+
   useEffect(() => {
     getday();
   }, [data]);

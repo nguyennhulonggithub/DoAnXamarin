@@ -85,10 +85,11 @@ class ReadingListPopup extends Component {
                 <FlatList
                   data={this.state.data}
                   keyExtractor={(item) => item.chapterId}
-                  renderItem={({ item }) => {
+                  renderItem={({ item, index }) => {
                     return (
                       <View>
                         <LikeTag
+                          key={index}
                           data={item}
                           navigation={this.props.navigation}
                           hideModel={() =>

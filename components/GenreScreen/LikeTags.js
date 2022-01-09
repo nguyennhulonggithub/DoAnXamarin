@@ -12,7 +12,7 @@ import Circle from "../AllScreen/Circle";
 
 function LikeTags({ data, index, navigation }) {
   // Basic usage
-  console.log(data);
+
   return (
     <Pressable
       style={styles.viewManga}
