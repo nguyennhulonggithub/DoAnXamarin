@@ -3,6 +3,32 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
+const stripe = require('stripe')('sk_test_51KFt1gF2EZ3ThaNaIhBhZKtGvI02LpTE3JXSMAGvXkfdtYrhQl3tBYmbsCDvruGSiSKiB9nzNOwPbk216b886v2800Dn3iPopg');
+
+//
+app.post("/create-payment-intent", async (req, res) => {
+    try {
+        // const paymentIntent = await stripe.paymentIntent.create({
+        //     amout: 1099,
+        //     currency: "usd",
+        //     payment_method_types: ["card"],
+        // });
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: 2000,
+            currency: 'usd',
+            payment_method_types: ['card'],
+        });
+        const clientSecret = paymentIntent.client_secret;
+
+        res.json({
+            clientSecret: clientSecret
+        });
+    } catch (e) {
+        console.log(e.message);
+        res.json({ error: e.message });
+    }
+})
+
 app.use(
     cors({
         origin: "*",
@@ -19,6 +45,10 @@ app.use(bodyParser.json());
 //link tĩnh
 app.use("/m", express.static("manga"));
 app.use("/g", express.static("genre"));
+
+//lấy thông key publish vs scret Key
+const postKey = require("./routes/Key")
+app.use("/key", postKey)
 
 //thể loại
 const postGenre = require("./routes/Genre");
@@ -60,10 +90,11 @@ app.use("/search", postSearch);
 const postComment = require("./routes/Comment");
 app.use("/comment", postComment);
 
-// const postGenre = require("/routes/Genre");
-
+//user
 const postUser = require("./routes/User");
 app.use("/users", postUser);
+
+// const { default: Stripe } = require("../client/components/Stripe/Stripe");
 
 app.listen(3000, () => {
     console.log("server is running on port 3000");
