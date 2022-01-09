@@ -4,7 +4,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const stripe = require('stripe')('sk_test_51KFt1gF2EZ3ThaNaIhBhZKtGvI02LpTE3JXSMAGvXkfdtYrhQl3tBYmbsCDvruGSiSKiB9nzNOwPbk216b886v2800Dn3iPopg');
-
 //
 app.post("/create-payment-intent", async (req, res) => {
     try {
