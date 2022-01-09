@@ -42,7 +42,8 @@
     "react-navigation": "^4.4.4",
     "react-redux": "^7.2.6",
     "redux": "^4.1.2",
-    "redux-devtools-extension": "^2.13.9"
+    "redux-devtools-extension": "^2.13.9",
+    "@stripe/stripe-react-native": "0.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
