@@ -58,7 +58,7 @@ app.use("/search", postSearch);
 
 //comment
 const postComment = require("./routes/Comment");
-app.use("/comment", postSearch);
+app.use("/comment", postComment);
 
 // const postGenre = require("/routes/Genre");
 
