@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { deleteResume } from "../../InteractServer/ResumeSave";
-import { InitialResume } from "../../redux/actions";
+import { InitialResume, PushPurchase, SetPurchase } from "../../redux/actions";
 
 import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
@@ -26,11 +26,16 @@ class ConfirmManga extends Component {
     this.state = {
       modalVisible: false,
       kind_action: "",
+      coin: 0,
+      idChapter: -1,
     };
   }
 
-  setModalVisible = (visible, kind_action) => {
+  setModalVisible = (visible, kind_action, coin, idChapter) => {
     this.setState({ modalVisible: visible, kind_action: kind_action });
+    if (coin) {
+      this.setState({ coin: coin, idChapter: idChapter });
+    }
   };
   kind_actionFunction(kind_action) {
     this.setState({ modalVisible: false });
@@ -61,7 +66,7 @@ class ConfirmManga extends Component {
       });
       this.props.unsubscribe();
       this.props.successLike("Remove from Subscribe", "unsubscribe");
-    } else if ((kind_action = "Remove All Recently Read")) {
+    } else if (kind_action == "Remove All Recently Read") {
       if (this.props.userlog) {
         axios.delete(
           server + "/resume_reading/delete_all/user/" + this.props.idUser
@@ -72,6 +77,17 @@ class ConfirmManga extends Component {
       this.props.initialResume();
       this.props.successLike();
       this.props.hideResume();
+    } else if (
+      kind_action ==
+      "Purchase this chapter for " + this.state.coin + " coin?"
+    ) {
+      axios.post(server + "/money/buy", {
+        idChapter: this.state.idChapter,
+        idUser: this.props.idUser,
+        pay: this.state.coin,
+      });
+      this.props.successLike("Purchase Success", "purchase");
+      this.props.purchase(this.state.idChapter);
     }
   }
   render() {
@@ -136,6 +152,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     // dispatching plain actions
     initialResume: () => dispatch(InitialResume([])),
+    purchase: (data) => dispatch(PushPurchase(data)),
   };
 };
 const mapStateToProps = (state) => {

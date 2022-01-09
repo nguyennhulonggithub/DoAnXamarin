@@ -3,13 +3,24 @@ import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
 import { server } from "../../variable/ServerName";
-
+import { useSelector } from "react-redux";
+import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import SuccessLike from "../Popup/SuccessLike";
+import { useRef } from "react";
 export default function ChapsNavigate({
   data,
   changeData,
   hidePopup,
   changeImage,
 }) {
+  const user_payData = useSelector((state) => state.purchase);
+  const refPopup = useRef();
+  function itemPay(item) {
+    if (item.Pay > 0 && !user_payData.includes(item.idChapter)) {
+      return <FontAwesome name='lock' size={24} color='white' />;
+    }
+  }
   return (
     <>
       {data.map((item) => {
@@ -17,13 +28,24 @@ export default function ChapsNavigate({
           <Pressable
             key={item.idChapter}
             onPress={() => {
-              changeData(
-                item.idChapter,
-                item.Name ? item.Name : "Chapter " + item.Order,
-                item.Order
-              );
+              if (
+                item.Pay == 0 ||
+                user_payData.includes(item.idChapter) ||
+                item.Free > 0
+              ) {
+                changeData(
+                  item.idChapter,
+                  item.Name ? item.Name : "Chapter " + item.Order,
+                  item.Order
+                );
 
-              hidePopup();
+                hidePopup();
+              } else {
+                refPopup.current.setModalVisible(
+                  "Please Purchase to read this chapter!",
+                  "purchase"
+                );
+              }
             }}
           >
             <View style={styles.container}>
@@ -39,6 +61,10 @@ export default function ChapsNavigate({
                 </Text>
                 <Text style={Font.baseTitle}>{item.status}</Text>
               </View>
+              {item.Free == 1 && (
+                <MaterialIcons name='money-off' size={24} color='white' />
+              )}
+              {itemPay(item)}
             </View>
             <View
               style={{
@@ -47,6 +73,7 @@ export default function ChapsNavigate({
             >
               <View style={styles.line}></View>
             </View>
+            <SuccessLike ref={refPopup} />
           </Pressable>
         );
       })}
@@ -58,15 +85,16 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     width: "100%",
-    justifyContent: "space-between",
+
     alignItems: "center",
     marginVertical: 10,
   },
 
   DetailContainer: {
+    marginLeft: 15,
     flexDirection: "row",
     alignItems: "center",
-    width: 280,
+    width: 220,
     paddingRight: 20,
     justifyContent: "space-between",
   },

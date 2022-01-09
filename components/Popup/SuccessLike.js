@@ -5,7 +5,7 @@ import { Color } from "../../variable/Color";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-
+import { MaterialIcons } from "@expo/vector-icons";
 //pop up login
 class SuccessLike extends Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class SuccessLike extends Component {
     });
     setTimeout(() => {
       this.setState({ modalVisible: false });
-    }, 200);
+    }, 1000);
   };
   typeFunction = (value) => {
     switch (value) {
@@ -42,6 +42,8 @@ class SuccessLike extends Component {
         return (
           <MaterialCommunityIcons name='tag-outline' size={70} color='white' />
         );
+      case "purchase":
+        return <MaterialIcons name='attach-money' size={70} color='white' />;
       case "unreadlater":
         return (
           <MaterialCommunityIcons

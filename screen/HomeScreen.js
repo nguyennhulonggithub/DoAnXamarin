@@ -45,6 +45,7 @@ export default function HomeScreen({ navigation }) {
   const [data, set_data] = useState([]);
   const dispatch = useDispatch();
   const refReadingHistory = useRef();
+
   useEffect(() => {
     let break_get = true;
     axios.get(server + "/genre").then((res) => {

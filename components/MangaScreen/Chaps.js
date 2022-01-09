@@ -3,21 +3,48 @@ import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { Color } from "../../variable/Color";
 import { Font } from "../../variable/Font";
 import { server } from "../../variable/ServerName";
+import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { SetPurchase } from "../../redux/actions";
 
-export default function Chaps({
-  data,
-  navigation,
-  reverseBoolean,
-  mangaTitle,
-  mangaImage,
-}) {
+export default function Chaps(props) {
+  const {
+    navigation,
+    reverseBoolean,
+    mangaTitle,
+    mangaImage,
+    showLogin,
+    confirmPurchase,
+  } = props;
+
+  const data = props.data[0];
   const [reverse_data, set_reverse_data] = useState([]);
   const [map_data, set_map_data] = useState([]);
-  useEffect(() => {
-    set_map_data(data);
-    set_reverse_data(data.slice().reverse());
-  }, [data]);
+  const user_payData = useSelector((state) => state.purchase);
 
+  const idUser = useSelector((state) => state.idUser);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (userlog) {
+      axios.get(server + "/money/get/" + idUser).then((res) => {
+        const final_data = [];
+        res.data.map((item) => {
+          final_data.push(item.chapter_idChapter);
+        });
+        dispatch(SetPurchase(final_data));
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      set_map_data(data);
+      set_reverse_data(data.slice().reverse());
+    }
+  }, [data]);
+  const userlog = useSelector((state) => state.userlog);
   useEffect(() => {
     if (reverseBoolean) {
       set_map_data(reverse_data);
@@ -25,49 +52,73 @@ export default function Chaps({
       set_map_data(data);
     }
   }, [reverseBoolean]);
-
+  function navigate(item) {
+    if (item.Free > 0 || user_payData.includes(item.idChapter)) {
+      navigation.navigate("ChapterScreen", {
+        dataChapter: data,
+        chapterId: item.idChapter,
+        chapterName: item.Name ? item.Name : "Chapter " + item.Order,
+        mangaTitle: mangaTitle,
+        chapterOrder: item.Order,
+        idManga: item.manga_idManga,
+        imageAPI: mangaImage,
+      });
+    } else {
+      if (!userlog) {
+        showLogin();
+      } else {
+        confirmPurchase(
+          "Purchase this chapter for " + item.Pay + " coin?",
+          item.Pay,
+          item.idChapter
+        );
+      }
+    }
+  }
+  function itemPay(item) {
+    if (item.Pay > 0 && !user_payData.includes(item.idChapter)) {
+      return <FontAwesome name='lock' size={24} color='white' />;
+    }
+  }
   return (
     <>
-      {map_data.map((item) => {
-        return (
-          <Pressable
-            key={item.idChapter}
-            onPress={() => {
-              navigation.navigate("ChapterScreen", {
-                dataChapter: data,
-                chapterId: item.idChapter,
-                chapterName: item.Name ? item.Name : "Chapter " + item.Order,
-                mangaTitle: mangaTitle,
-                chapterOrder: item.Order,
-                idManga: item.manga_idManga,
-                imageAPI: mangaImage,
-              });
-            }}
-          >
-            <View style={styles.container}>
-              <Image
-                style={styles.image}
-                source={{ uri: server + item.ImageAPI }}
-              />
-              <View style={styles.DetailContainer}>
-                <Text style={Font.baseTitle}>
-                  Chapter {item.Order}
-                  {item.Name && ": "}
-                  {item.Name}
-                </Text>
-                <Text style={Font.baseTitle}>{item.status}</Text>
-              </View>
-            </View>
-            <View
-              style={{
-                alignItems: "flex-end",
+      {map_data &&
+        map_data.map((item) => {
+          return (
+            <Pressable
+              key={item.idChapter}
+              onPress={() => {
+                navigate(item);
               }}
             >
-              <View style={styles.line}></View>
-            </View>
-          </Pressable>
-        );
-      })}
+              <View style={styles.container}>
+                <Image
+                  style={styles.image}
+                  source={{ uri: server + item.ImageAPI }}
+                />
+                <View style={styles.DetailContainer}>
+                  <Text style={Font.baseTitle}>
+                    Chapter {item.Order}
+                    {item.Name && ": "}
+                    {item.Name}
+                  </Text>
+                  <Text style={Font.baseTitle}>{item.status}</Text>
+                </View>
+                {item.Free == 1 && (
+                  <MaterialIcons name='money-off' size={24} color='white' />
+                )}
+                {itemPay(item)}
+              </View>
+              <View
+                style={{
+                  alignItems: "flex-end",
+                }}
+              >
+                <View style={styles.line}></View>
+              </View>
+            </Pressable>
+          );
+        })}
     </>
   );
 }
@@ -76,15 +127,16 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     width: "100%",
-    justifyContent: "space-between",
+
     alignItems: "center",
     marginVertical: 10,
   },
 
   DetailContainer: {
+    marginLeft: 15,
     flexDirection: "row",
     alignItems: "center",
-    width: 280,
+    width: 220,
     paddingRight: 20,
     justifyContent: "space-between",
   },

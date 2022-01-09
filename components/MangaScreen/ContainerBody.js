@@ -7,6 +7,8 @@ export default function ContainerBody({
   dataHeader,
   translate,
   navigation,
+  showLogin,
+  confirmPurchase,
 }) {
   return (
     <View
@@ -20,6 +22,8 @@ export default function ContainerBody({
         dataHeader={dataHeader}
         translate={translate}
         navigation={navigation}
+        showLogin={showLogin}
+        confirmPurchase={confirmPurchase}
       />
     </View>
   );

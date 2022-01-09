@@ -32,3 +32,15 @@ export const SetIdUser = (data) => {
     data: data,
   };
 };
+export const SetPurchase = (data) => {
+  return {
+    type: "PURCHASE",
+    data: data,
+  };
+};
+export const PushPurchase = (data) => {
+  return {
+    type: "PUSH_PURCHASE",
+    data: data,
+  };
+};

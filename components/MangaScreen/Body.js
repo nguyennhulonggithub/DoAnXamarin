@@ -9,8 +9,9 @@ export default function Body({
   data,
   translate,
   navigation,
-
+  showLogin,
   dataHeader,
+  confirmPurchase,
 }) {
   const {
     Status,
@@ -53,6 +54,8 @@ export default function Body({
             mangaTitle={Name}
             navigation={navigation}
             mangaImage={ImageAPI}
+            showLogin={showLogin}
+            confirmPurchase={confirmPurchase}
           />
         );
       case "Detail":

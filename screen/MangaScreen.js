@@ -152,6 +152,10 @@ export default function MangaScreen({ route, navigation }) {
         dataHeader={dataHeader}
         translate={translateTab}
         navigation={navigation}
+        showLogin={() => modelPopupRef.current.setModalVisible(true)}
+        confirmPurchase={(value, coin, idChapter) =>
+          refConfirmManga.current.setModalVisible(true, value, coin, idChapter)
+        }
       />
       <MangaSetting
         ref={refMangaSettings}
