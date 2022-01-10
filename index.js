@@ -22,6 +22,7 @@ app.post("/create-payment-intent", async (req, res) => {
         res.json({
             clientSecret: clientSecret
         });
+
     } catch (e) {
         console.log(e.message);
         res.json({ error: e.message });
@@ -95,6 +96,7 @@ app.use("/users", postUser);
 
 //pay
 const postMoney = require("./routes/Money");
+const sqlConnection = require("./routes/sqlConnection");
 app.use("/money", postMoney);
 
 // const { default: Stripe } = require("../client/components/Stripe/Stripe");
