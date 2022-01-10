@@ -105,6 +105,7 @@ class ProfileScreen extends Component {
     }
   }
   changeLoginInfo = (login) => {
+    console.log("hrllo");
     this.setState({ userLogin: login });
     this.successRef.current.setModalVisible(true);
     this.props.dispatch(Login());
@@ -213,11 +214,8 @@ class ProfileScreen extends Component {
   changeUserProfile = (data) => {
     this.setState({ userInfo: data });
     this.props.dispatch(SetIdUser(data.UserId));
-    if (this.props.resume.length == 0) {
-      this.Sync_data(data.UserId);
-    } else {
-      this.SyncDataRef.current.setModalVisible(true, data.UserId);
-    }
+
+    this.SyncDataRef.current.setModalVisible(true, data.UserId);
   };
   Sync_data = (idUser) => {
     axios.get(server + "/resume_reading/user/" + idUser).then((res) => {

@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     height: 80,
     width: 100,
     marginLeft: 15,
+    borderRadius: 10,
   },
   line: {
     width: 280,

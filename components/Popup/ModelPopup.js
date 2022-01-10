@@ -38,6 +38,7 @@ class ModelPopup extends Component {
           };
 
           //post userdata to database server if not exist
+
           PostUser(data);
           //insert data user to sqlite
           insertUser(data).then((res) => {

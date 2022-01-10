@@ -13,6 +13,7 @@ import UpdateScreen from "../screen/UpdateScreen";
 import ProfileScreen from "../screen/ProfileScreen";
 import ChapterScreen from "../screen/ChapterScreen";
 import GenreScreen from "../screen/GenreScreen";
+import { Color } from "../variable/Color";
 
 //gọi hàm stack
 const Stack = createNativeStackNavigator();
@@ -37,6 +38,7 @@ export function Navigate() {
   return (
     <Tab.Navigator
       screenOptions={{
+        tabBarActiveBackgroundColor: Color.onBaseColor,
         tabBarStyle: {
           backgroundColor: "#272727",
         },

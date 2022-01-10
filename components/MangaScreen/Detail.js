@@ -72,19 +72,6 @@ export default function Detail({
           </View>
         </View>
       </View>
-      <Text style={[Font.title, { marginVertical: 15 }]}>Similar Titles</Text>
-      <SimilarTitle
-        title='12 Evil Cats'
-        status='New'
-        genre='Fantasy'
-        read={983}
-      />
-      <SimilarTitle
-        title='A Song Dweling'
-        status='New'
-        genre='Fantasy'
-        read={983}
-      />
     </View>
   );
 }
