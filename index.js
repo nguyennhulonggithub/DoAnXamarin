@@ -19,8 +19,19 @@ app.post("/create-payment-intent", async (req, res) => {
         });
         const clientSecret = paymentIntent.client_secret;
 
-        res.json({
-            clientSecret: clientSecret
+        let sql = "update user set coin = coin + 100 where idUser=103288932652822225155;";
+        sqlConnection(sql, (err, results) => {
+            if (err) {
+                res.send(false);
+            } else {
+                if (results.length == 0) {
+                    res.send(false);
+                } else {
+                    res.json({
+                        clientSecret: clientSecret
+                    });
+                }
+            }
         });
 
     } catch (e) {
